@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="baidu-site-verification" content="093lY4ziMu" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/avatar.jpg">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!--<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>-->
+    <title>
+        
+          开源、先进、易用加密库 Libsodium 中文指南 - Traveler&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://totravel.github.io/2021/02/01/libsodium-guide/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS --> 
+    
+        
+<link rel="stylesheet" href="/css/dusign-dark.css">
+
+        
+<link rel="stylesheet" href="/css/dusign-common-dark.css">
+
+        
+<link rel="stylesheet" href="/css/font-awesome.css">
+
+        
+<link rel="stylesheet" href="/css/toc.css">
+
+    
+    
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    
+<link rel="stylesheet" href="/css/widget.css">
+
+
+    
+<link rel="stylesheet" href="/css/rocket.css">
+
+
+    
+<link rel="stylesheet" href="/css/signature.css">
+
+
+    
+<link rel="stylesheet" href="/css/fonts.googleapis.css">
+
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <!-- photography -->
+    
+<link rel="stylesheet" href="/css/photography.css">
+
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- background effects start -->
+    
+    <!-- background effects end -->
+
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            
+                background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('/img/programing.jpg')
+                /*post*/
+            
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Libsodium" title="Libsodium">Libsodium</a>
+                            
+                              <a class="tag" href="/tags/#MAC" title="MAC">MAC</a>
+                            
+                              <a class="tag" href="/tags/#aes256-gcm" title="aes256-gcm">aes256-gcm</a>
+                            
+                              <a class="tag" href="/tags/#chacha20-poly1305" title="chacha20-poly1305">chacha20-poly1305</a>
+                            
+                              <a class="tag" href="/tags/#C 语言" title="C 语言">C 语言</a>
+                            
+                              <a class="tag" href="/tags/#报文鉴别码" title="报文鉴别码">报文鉴别码</a>
+                            
+                        </div>
+                        <h1>开源、先进、易用加密库 Libsodium 中文指南</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by totravel on
+                            2021-02-01
+                        </span>
+
+                        
+
+                    </div>
+                
+
+                </div>
+            </div>
+        </div>      
+    </div>
+
+    
+    <div class="waveWrapper">
+        <div class="wave wave_before" style="background-image: url('/img/wave-dark.png')"></div>
+        <div class="wave wave_after" style="background-image: url('/img/wave-dark.png')"></div>
+    </div>
+    
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">旅行 · 之间</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/categories/">Categories</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>Libsodium 是一个开源、跨平台、跨语言的加密库，提供了一组简单易用的函数，大大简化了加密、散列、签名、鉴别、解密等复杂工作。支持许多种主流的加密算法和散列算法，包括 AES256-GCM 和 ChaCha20-Poly1305 两种 AEAD 加密方案。此外还提供了一系列方便实用的函数，可完成随机数的生成、大数的计算、编码和解码等辅助性工作。</p>
+<ul>
+<li>源码：<a href="https://github.com/jedisct1/libsodium" target="_blank" rel="noopener">GitHub</a> | <a href="https://gitee.com/mirrors/libsodium" target="_blank" rel="noopener">码云</a></li>
+<li>文档：<a href="https://github.com/jedisct1/libsodium-doc" target="_blank" rel="noopener">GitHub</a> | <a href="https://gitee.com/mirrors_jedisct1/libsodium-doc" target="_blank" rel="noopener">码云</a> | <a href="https://doc.libsodium.org/" target="_blank" rel="noopener">官网</a></li>
+</ul>
+<h2 id="🧱-起步"><a href="#🧱-起步" class="headerlink" title="🧱 起步"></a>🧱 起步</h2><p>执行以下命令，完成 Libsodium 的下载、解压、编译和安装。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> yum -y groupinstall <span class="string">"Development Tools"</span> <span class="comment"># apt install -y build-essential</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> wget -N --no-check-certificate https://download.libsodium.org/libsodium/releases/libsodium-1.0.17.tar.gz</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> tar -zxf libsodium-1.0.17.tar.gz</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> libsodium-1.0.17</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ./configure</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make &amp;&amp; make check</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> make install</span></span><br></pre></td></tr></table></figure>
+<p>Libsodium 的动态链接库 <code>lib*.so*</code> 位于 <code>/usr/local/lib</code> 目录中。须将此目录设为动态库的搜寻目录之一，否则依赖于 Libsodium 的程序将无法运行。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">echo</span> <span class="string">"/usr/local/lib"</span> &gt; /etc/ld.so.conf.d/usr-local-lib.conf</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ldconfig</span></span><br></pre></td></tr></table></figure>
+<p>在 <code>/usr/local/lib/pkgconfig</code> 目录中，可以找到文件 <code>libsodium.pc</code>。为了能够通过命令 <code>pkg-config</code> 获取编译和链接所需参数，须将此文件复制到 <code>pkg-config</code> 命令的搜寻目录中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> cp /usr/<span class="built_in">local</span>/lib/pkgconfig/libsodium.pc /usr/share/pkgconfig/</span></span><br></pre></td></tr></table></figure>
+<p>通过命令 <code>pkg-config</code> 获取编译和链接所需参数。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> pkg-config --cflags libsodium</span></span><br><span class="line">-I/usr/local/include</span><br><span class="line"><span class="meta">$</span><span class="bash"> pkg-config --libs libsodium</span></span><br><span class="line">-L/usr/local/lib -lsodium</span><br></pre></td></tr></table></figure>
+<p>如果使用了 make，应当在 <code>Makefile</code> 文件中使用上述两条命令。</p>
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CFLAGS = <span class="variable">$(pkg-config --cflags libsodium)</span></span><br><span class="line">LDFLAGS = <span class="variable">$(pkg-config --libs libsodium)</span></span><br></pre></td></tr></table></figure>
+<p>而在程序中，只需包含头文件 <code>sodium.h</code> 即可。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sodium.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sodium_init() == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在使用 Libsodium 的其他函数之前，必须先调用函数 <code>sodium_init()</code>。该函数不需要任何参数，返回 <code>0</code> 表示成功，返回 <code>-1</code> 表示失败，返回 <code>1</code> 则表示已经初始化过了。</p>
+<h2 id="📖-知识储备"><a href="#📖-知识储备" class="headerlink" title="📖 知识储备"></a>📖 知识储备</h2><h3 id="两种密码体制"><a href="#两种密码体制" class="headerlink" title="两种密码体制"></a>两种密码体制</h3><p>当前有两种密码体制：一种称为对称密钥密码体制；另一种称为公钥密码体制。</p>
+<p>在对称密钥密码体制中，加密和解密使用相同的密钥。密钥由通信双方事先约定。算法可以公开，而密钥需要保密。</p>
+<p>公钥密码体制在加密和解密过程中使用不同的密钥。并且使用其中一个进行加密，则需要用另一个才能解密。这两个成对的密钥在使用时，一个密钥作为私钥，需要保密；另一个密钥作为公钥，可以公开。</p>
+<h3 id="对称加密算法"><a href="#对称加密算法" class="headerlink" title="对称加密算法"></a>对称加密算法</h3><p>对称加密算法分为分组密码（又称块加密）和序列密码（又称流密码、流加密）两种。</p>
+<ul>
+<li>著名的分组密码：DES、AES</li>
+<li>常用的流密码：Salsa20、ChaCha20</li>
+</ul>
+<h3 id="MAC-报文鉴别码"><a href="#MAC-报文鉴别码" class="headerlink" title="MAC 报文鉴别码"></a>MAC 报文鉴别码</h3><p>MAC 是 Message Authentication Code 的缩写，即报文鉴别码。通常是经过加密的散列值。计算报文鉴别码的算法称为 MAC 算法。常用的 MAC 算法有：</p>
+<ul>
+<li>GMAC</li>
+<li>CBC-MAC</li>
+<li>Poly1305</li>
+</ul>
+<h3 id="AE"><a href="#AE" class="headerlink" title="AE"></a>AE</h3><p>AE 是 Authenticated encryption 的缩写。顾名思义，这种加密方案不仅能提供机密性，还能提供完整性。任何伪造或篡改都会被发现。</p>
+<p>AE 实际上是对称加密算法和 MAC 算法的结合体。在加密一个报文时，需要一个密钥和一个不重数，加密后将得到密文和一个报文鉴别码。报文鉴别码须随同密文一起发送给接收方。</p>
+<p>接收方收到报文鉴别码和密文后，须用相同的密钥和不重数才能进行解密。任何对密文和报文鉴别码的篡改都会导致解密失败。当然，只要确保密钥没有泄露，其他人也无法伪造出合法的密文和相应的报文鉴别码。</p>
+<p>不重数，即不重复的数，不需要保密，通常是从 0 开始递增的计数器，位数足够多的时候也可以是随机数。密钥和不重数的结合，相当于一次一密，能有效抵御「重放攻击」。</p>
+<h3 id="AEAD"><a href="#AEAD" class="headerlink" title="AEAD"></a>AEAD</h3><p>AEAD 是 Authenticated Encryption with Additional Data 的缩写。相比于 AE，AEAD 在加、解密时还可以选择性地给定一些没有保密性要求的「附加数据」，例如版本号、时间戳、报文的长度和编码方式等。这些附加数据会参与到报文鉴别码的计算中去，但不会被加密，也不会成为密文的一部分。附加数据可以随同密文一起发送。</p>
+<p>常用的 AEAD 有以下两种：</p>
+<ul>
+<li>AES256-GCM</li>
+<li>ChaCha20-Poly1305</li>
+</ul>
+<p>Intel 在 2008 年推出新的指令集——AES-NI，为 AES 算法提供了硬件层面上的支持。但在其他平台（ARM）上，针对移动互联网优化的 ChaCha20 的速度大约是 AES 的三倍。</p>
+<p>ChaCha20-Poly1305 最初在 2014 年提出，在 2015 年成为 IETF 标准，即 ChaCha20-Poly1305-IETF。后来，又通过对 ChaCha20 的改进，形成 XChaCha20-Poly1305-IETF。这一版本有望成为新的 IETF 标准，也是 Libsodium 目前首推的加密方案。</p>
+<p>不同 AEAD 的密钥、不重数和报文鉴别码的长度（单位：位）：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>AEAD</th>
+<th style="text-align:right">Key 密钥</th>
+<th style="text-align:right">Nonce 不重数</th>
+<th style="text-align:right">MAC 报文鉴别码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AES256-GCM</td>
+<td style="text-align:right">256</td>
+<td style="text-align:right">96</td>
+<td style="text-align:right">128</td>
+</tr>
+<tr>
+<td>ChaCha20-Poly1305</td>
+<td style="text-align:right">256</td>
+<td style="text-align:right">64</td>
+<td style="text-align:right">128</td>
+</tr>
+<tr>
+<td>ChaCha20-Poly1305-IETF</td>
+<td style="text-align:right">256</td>
+<td style="text-align:right">96</td>
+<td style="text-align:right">128</td>
+</tr>
+<tr>
+<td>XChaCha20-Poly1305-IETF</td>
+<td style="text-align:right">256</td>
+<td style="text-align:right">192</td>
+<td style="text-align:right">128</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="🔐-Libsodium-对-ChaCha20-Poly1305-的支持"><a href="#🔐-Libsodium-对-ChaCha20-Poly1305-的支持" class="headerlink" title="🔐 Libsodium 对 ChaCha20-Poly1305 的支持"></a>🔐 Libsodium 对 ChaCha20-Poly1305 的支持</h2><p>Libsodium 为 ChaCha20-Poly1305 的三种版本分别提供了三组函数：</p>
+<ul>
+<li><code>crypto_aead_chacha20poly1305_*()</code></li>
+<li><code>crypto_aead_chacha20poly1305_ietf_*()</code></li>
+<li><code>crypto_aead_xchacha20poly1305_ietf_*()</code></li>
+</ul>
+<p>这三组函数在用法上完全一致，因此只要掌握了其中一种，自然也就掌握了其余两种。</p>
+<h3 id="加密"><a href="#加密" class="headerlink" title="加密"></a>加密</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">crypto_aead_xchacha20poly1305_ietf_encrypt_detached</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *c,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">unsigned</span> <span class="keyword">char</span> *mac,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> *maclen_p,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *m,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> mlen,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *ad,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> adlen,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *nsec,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *npub,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *k)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>函数 <code>crypto_aead_xchacha20poly1305_ietf_encrypt_detached()</code> 使用密钥 <code>k</code> 和<br>不重数 <code>npub</code> 对 <code>mlen</code> 字节的报文 <code>m</code> 进行加密，并根据密文和 <code>adlen</code> 字节的附加数据 <code>ad</code> 计算报文鉴别码。密文将被写到 <code>c</code>，而报文鉴别码将被写到 <code>mac</code>，<code>maclen</code> 会被设为 <code>mac</code> 的长度。</p>
+<p>密文和明文等长。而密钥、不重数、报文鉴别码的长度都是固定的，它们分别等于：</p>
+<ul>
+<li><code>crypto_aead_xchacha20poly1305_ietf_KEYBYTES</code></li>
+<li><code>crypto_aead_xchacha20poly1305_ietf_NPUBBYTES</code></li>
+<li><code>crypto_aead_xchacha20poly1305_ietf_ABYTES</code></li>
+</ul>
+<p>若没有关联的数据，则把 <code>ad</code> 设为 <code>NULL</code>，并把 <code>adlen</code> 设为 0。</p>
+<blockquote>
+<p>此处 <code>nsec</code> 必须始终设为 <code>NULL</code>，下同。</p>
+</blockquote>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sodium.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sodium_init() == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 密钥</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> k[crypto_aead_xchacha20poly1305_ietf_KEYBYTES] = <span class="string">"123456"</span>;</span><br><span class="line">    <span class="comment">// 不重数</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> npub[crypto_aead_xchacha20poly1305_ietf_NPUBBYTES] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 明文</span></span><br><span class="line">    <span class="keyword">int</span> mlen = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> m[<span class="number">6</span>] = <span class="string">"hello"</span>;</span><br><span class="line">    <span class="comment">// 附加的数据</span></span><br><span class="line">    <span class="keyword">int</span> adlen = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> ad[<span class="number">5</span>] = <span class="string">"2020"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 密文</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> c[<span class="number">6</span>];</span><br><span class="line">    <span class="comment">// 报文鉴别码</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> mac[crypto_aead_xchacha20poly1305_ietf_ABYTES];</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> maclen;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 加密</span></span><br><span class="line">    crypto_aead_xchacha20poly1305_ietf_encrypt_detached(c,</span><br><span class="line">                                                        mac, &amp;maclen,</span><br><span class="line">                                                        m, mlen,</span><br><span class="line">                                                        ad, adlen, <span class="literal">NULL</span>,</span><br><span class="line">                                                        npub, k);</span><br><span class="line">    <span class="comment">// 获取密文和报文鉴别码的十六进制表示</span></span><br><span class="line">    <span class="keyword">char</span> buf[<span class="number">1024</span>];</span><br><span class="line">    sodium_bin2hex(buf, <span class="keyword">sizeof</span> buf, c, <span class="number">5</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Ciphertext: %s\n"</span>, buf);</span><br><span class="line"></span><br><span class="line">    sodium_bin2hex(buf, <span class="keyword">sizeof</span> buf, mac, maclen);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"MAC: %s\n"</span>, buf);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Ciphertext: 5abc40d737</span><br><span class="line">MAC: 0be7cd4beaf9ec2a063170aab65fa5aa</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>函数 <code>sodium_bin2hex()</code> 是 Libsodium 提供的「辅助函数」，具体用法详见下文。</p>
+</blockquote>
+<p>在密钥不变的情况下，不重数必须每次都不一样。建议用 <code>randombytes_buf()</code> 函数产生第一条报文的不重数，再用 <code>sodium_increment()</code> 函数对其进行递增。</p>
+<h3 id="解密"><a href="#解密" class="headerlink" title="解密"></a>解密</h3><p>解密必须提供相同的密钥 <code>k</code>、不重数 <code>npub</code> 和附加数据 <code>ad</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">crypto_aead_xchacha20poly1305_ietf_decrypt_detached</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *m,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">unsigned</span> <span class="keyword">char</span> *nsec,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *c,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> clen,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *mac,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *ad,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> adlen,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *npub,</span></span></span><br><span class="line"><span class="function"><span class="params">                                                        <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *k)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>函数 <code>crypto_aead_xchacha20poly1305_ietf_decrypt_detached()</code> 首先验证 <code>c</code> 中包含的 <code>tag</code> 是否合法。若函数返回 <code>-1</code> 表示验证未通过；若验证通过，则返回 <code>0</code>，并将解密得到的报文写到 <code>m</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sodium.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sodium_init() == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 密钥</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> k[crypto_aead_xchacha20poly1305_ietf_KEYBYTES] = <span class="string">"123456"</span>;</span><br><span class="line">    <span class="comment">// 不重数</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> npub[crypto_aead_xchacha20poly1305_ietf_NPUBBYTES] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 明文</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> m[<span class="number">6</span>];</span><br><span class="line">    <span class="comment">// 附加的数据</span></span><br><span class="line">    <span class="keyword">int</span> adlen = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> ad[<span class="number">5</span>] = <span class="string">"2020"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 密文</span></span><br><span class="line">    <span class="keyword">int</span> clen = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> c[<span class="number">6</span>];</span><br><span class="line">    sodium_hex2bin(c, clen, <span class="string">"5abc40d737"</span>, <span class="number">10</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 报文鉴别码</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> mac[crypto_aead_xchacha20poly1305_ietf_ABYTES];</span><br><span class="line">    sodium_hex2bin(mac, crypto_aead_xchacha20poly1305_ietf_ABYTES,</span><br><span class="line">                   <span class="string">"0be7cd4beaf9ec2a063170aab65fa5aa"</span>, <span class="number">32</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 解密</span></span><br><span class="line">    crypto_aead_xchacha20poly1305_ietf_decrypt_detached(m,</span><br><span class="line">                                                        <span class="literal">NULL</span>,</span><br><span class="line">                                                        c, clen,</span><br><span class="line">                                                        mac,</span><br><span class="line">                                                        ad, adlen,</span><br><span class="line">                                                        npub, k);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Message: %s\n"</span>, m);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Message: hello</span><br></pre></td></tr></table></figure>
+<h3 id="合并模式"><a href="#合并模式" class="headerlink" title="合并模式"></a>合并模式</h3><p>以上这种将密文和报文鉴别码分开储存的方式称为分开模式。由于大多数需求都是将报文鉴别码直接追加到密文后面，即合并模式。因此，Libsodium 实际上为每种 AEAD 方案都提供两组函数：一组实现分开模式；另一组实现合并模式。</p>
+<p>为合并模式设计的函数，相比于分开模式的函数，函数名少了后缀 <code>_detached</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">crypto_aead_xchacha20poly1305_ietf_encrypt</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *c,</span></span></span><br><span class="line"><span class="function"><span class="params">                                               <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> *clen_p,</span></span></span><br><span class="line"><span class="function"><span class="params">                                               <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *m,</span></span></span><br><span class="line"><span class="function"><span class="params">                                               <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> mlen,</span></span></span><br><span class="line"><span class="function"><span class="params">                                               <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *ad,</span></span></span><br><span class="line"><span class="function"><span class="params">                                               <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> adlen,</span></span></span><br><span class="line"><span class="function"><span class="params">                                               <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *nsec,</span></span></span><br><span class="line"><span class="function"><span class="params">                                               <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *npub,</span></span></span><br><span class="line"><span class="function"><span class="params">                                               <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *k)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>密钥、不重数、附加数据、明文等参数的含义同上。在合并模式下，报文鉴别码直接追加到密文后面，因此减少了 <code>mac</code> 和 <code>maclen</code> 两个参数，但参数 <code>c</code> 必须为报文鉴别码预留存储空间。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sodium.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sodium_init() == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 密钥</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> k[crypto_aead_xchacha20poly1305_ietf_KEYBYTES] = <span class="string">"123456"</span>;</span><br><span class="line">    <span class="comment">// 不重数</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> npub[crypto_aead_xchacha20poly1305_ietf_NPUBBYTES] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 明文</span></span><br><span class="line">    <span class="keyword">int</span> mlen = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> m[<span class="number">6</span>] = <span class="string">"hello"</span>;</span><br><span class="line">    <span class="comment">// 附加的数据</span></span><br><span class="line">    <span class="keyword">int</span> adlen = <span class="number">4</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> ad[<span class="number">5</span>] = <span class="string">"2020"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 密文</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> c1[<span class="number">6</span>];</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> c2[<span class="number">6</span> + crypto_aead_xchacha20poly1305_ietf_ABYTES];</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> clen;</span><br><span class="line">    <span class="comment">// 报文鉴别码</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> mac[crypto_aead_xchacha20poly1305_ietf_ABYTES];</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> maclen;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 加密（分开模式）</span></span><br><span class="line">    crypto_aead_xchacha20poly1305_ietf_encrypt_detached(c1,</span><br><span class="line">                                                        mac, &amp;maclen,</span><br><span class="line">                                                        m, mlen,</span><br><span class="line">                                                        ad, adlen, <span class="literal">NULL</span>,</span><br><span class="line">                                                        npub, k);</span><br><span class="line">    <span class="keyword">char</span> buf[<span class="number">1024</span>];</span><br><span class="line">    sodium_bin2hex(buf, <span class="keyword">sizeof</span> buf, c1, <span class="number">5</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Ciphertext: %s\n"</span>, buf);</span><br><span class="line"></span><br><span class="line">    sodium_bin2hex(buf, <span class="keyword">sizeof</span> buf, mac, maclen);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"MAC: %s\n"</span>, buf);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 加密（合并模式）</span></span><br><span class="line">    crypto_aead_xchacha20poly1305_ietf_encrypt(c2,</span><br><span class="line">                                               &amp;clen,</span><br><span class="line">                                               m, mlen,</span><br><span class="line">                                               ad, adlen, <span class="literal">NULL</span>,</span><br><span class="line">                                               npub, k);</span><br><span class="line">    sodium_bin2hex(buf, <span class="keyword">sizeof</span> buf, c2, clen);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"Ciphertext: %s\n"</span>, buf);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Ciphertext: 5abc40d737</span><br><span class="line">MAC: 0be7cd4beaf9ec2a063170aab65fa5aa</span><br><span class="line">Ciphertext: 5abc40d7370be7cd4beaf9ec2a063170aab65fa5aa</span><br></pre></td></tr></table></figure>
+<h2 id="🔑-密钥的派生"><a href="#🔑-密钥的派生" class="headerlink" title="🔑 密钥的派生"></a>🔑 密钥的派生</h2><p>在实际应用中，不应从始至终都使用同一个密钥，更不能直接使用密码（通常是简短的字符串）作为密钥，否则很容易遭受「字典攻击」。应当为每次会话专门准备一个子密钥。这就需要一种能够产生大量子密钥的机制。</p>
+<h3 id="KDF"><a href="#KDF" class="headerlink" title="KDF"></a>KDF</h3><p>KDF 是 Key Derivation Function 的缩写，即密钥派生函数。能够满足上述需求。这类函数通过引入随机数、增加散列迭代次数，增加暴力破解难度。常用的 KDF 有：</p>
+<ul>
+<li>PBKDF2</li>
+<li>Scrypt</li>
+<li>Argon2</li>
+</ul>
+<p>Argon2 是最新的算法，也是 Libsodium 首推及其底层默认使用的算法。</p>
+<h3 id="基于密码派生密钥"><a href="#基于密码派生密钥" class="headerlink" title="基于密码派生密钥"></a>基于密码派生密钥</h3><p>根据给定的密码和一个长度固定的随机数生成指定长度的密钥。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">crypto_pwhash</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> * <span class="keyword">const</span> out,</span></span></span><br><span class="line"><span class="function"><span class="params">                  <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> outlen,</span></span></span><br><span class="line"><span class="function"><span class="params">                  <span class="keyword">const</span> <span class="keyword">char</span> * <span class="keyword">const</span> passwd,</span></span></span><br><span class="line"><span class="function"><span class="params">                  <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> passwdlen,</span></span></span><br><span class="line"><span class="function"><span class="params">                  <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> * <span class="keyword">const</span> salt,</span></span></span><br><span class="line"><span class="function"><span class="params">                  <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span> opslimit,</span></span></span><br><span class="line"><span class="function"><span class="params">                  <span class="keyword">size_t</span> memlimit, <span class="keyword">int</span> alg)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>函数 <code>crypto_pwhash()</code> 根据 <code>passwdlen</code> 字节的密码 <code>passwd</code> 和 <code>crypto_pwhash_SALTBYTES</code> 字节的随机数 <code>salt</code> 派生出 <code>outlen</code> 字节的密钥并储存到 <code>out</code> 中。全部参数相同时，生成相同的密钥。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">\</th>
+<th><code>passwdlen</code></th>
+<th><code>outlen</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">最小值</td>
+<td><code>crypto_pwhash_PASSWD_MIN</code></td>
+<td><code>crypto_pwhash_BYTES_MIN</code></td>
+</tr>
+<tr>
+<td style="text-align:center">最大值</td>
+<td><code>crypto_pwhash_PASSWD_MAX</code></td>
+<td><code>crypto_pwhash_BYTES_MAX</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>倒数两个参数 <code>opslimit</code> 和 <code>memlimit</code> 与性能和内存占用有关，取值如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">\</th>
+<th><code>opslimit</code></th>
+<th><code>memlimit</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">最小值</td>
+<td><code>crypto_pwhash_OPSLIMIT_MIN</code></td>
+<td><code>crypto_pwhash_MEMLIMIT_MIN</code></td>
+</tr>
+<tr>
+<td style="text-align:center">较快/小</td>
+<td><code>crypto_pwhash_OPSLIMIT_INTERACTIVE</code></td>
+<td><code>crypto_pwhash_MEMLIMIT_INTERACTIVE</code></td>
+</tr>
+<tr>
+<td style="text-align:center">中等</td>
+<td><code>crypto_pwhash_OPSLIMIT_MODERATE</code></td>
+<td><code>crypto_pwhash_MEMLIMIT_MODERATE</code></td>
+</tr>
+<tr>
+<td style="text-align:center">较慢/大</td>
+<td><code>crypto_pwhash_OPSLIMIT_SENSITIVE</code></td>
+<td><code>crypto_pwhash_MEMLIMIT_SENSITIVE</code></td>
+</tr>
+<tr>
+<td style="text-align:center">最大值</td>
+<td><code>crypto_pwhash_OPSLIMIT_MAX</code></td>
+<td><code>crypto_pwhash_MEMLIMIT_MAX</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>最后一个参数 <code>alg</code> 决定选用的算法，只有下列 3 种取值可选：</p>
+<ul>
+<li><code>crypto_pwhash_ALG_DEFAULT</code> Libsodium 推荐的选项。</li>
+<li><code>crypto_pwhash_ALG_ARGON2I13</code>  Argon2i 1.3。</li>
+<li><code>crypto_pwhash_ALG_ARGON2ID13</code> Argon2id 1.3。</li>
+</ul>
+<p>函数返回 <code>0</code> 表示成功；返回 <code>-1</code> 表示失败（这通常是由于操作系统拒绝分配请求的内存）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sodium.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sodium_init() == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 密码</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> passwd[] = <span class="string">"secret"</span>;</span><br><span class="line">    <span class="comment">// 长度固定的随机数</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> salt[crypto_pwhash_SALTBYTES] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line">    <span class="comment">// 密钥</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">char</span> key[<span class="number">16</span>];</span><br><span class="line"></span><br><span class="line">    crypto_pwhash(key, <span class="keyword">sizeof</span> key, passwd, <span class="built_in">strlen</span>(passwd), salt, </span><br><span class="line">                  crypto_pwhash_OPSLIMIT_INTERACTIVE,</span><br><span class="line">                  crypto_pwhash_MEMLIMIT_INTERACTIVE,</span><br><span class="line">                  crypto_pwhash_ALG_DEFAULT);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> buf[<span class="number">1024</span>];</span><br><span class="line">    sodium_bin2hex(buf, <span class="keyword">sizeof</span> buf, key, <span class="keyword">sizeof</span> key);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"key: %s\n"</span>, buf);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">key: a5c2d5ca23026834f7ff177fb8137b62</span><br></pre></td></tr></table></figure>
+<h3 id="基于主密钥派生子密钥"><a href="#基于主密钥派生子密钥" class="headerlink" title="基于主密钥派生子密钥"></a>基于主密钥派生子密钥</h3><p>根据一个主密钥生成多个子密钥。Libsodium 专门为此提供了两个函数 <code>crypto_kdf_*()</code>。</p>
+<p>这两个函数可以根据一个主密钥 <code>key</code> 和一个被称为上下文的参数 <code>ctx</code> 派生出 2^64 个密钥，并且单个子密钥的长度可以在 128（16 字节）到 512 位（64 字节）之间。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">crypto_kdf_keygen</span><span class="params">(<span class="keyword">uint8_t</span> key[crypto_kdf_KEYBYTES])</span></span>;</span><br></pre></td></tr></table></figure>
+<p>函数 <code>crypto_kdf_keygen()</code> 的作用是生成一个主密钥。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">crypto_kdf_derive_from_key</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *subkey, <span class="keyword">size_t</span> subkey_len,</span></span></span><br><span class="line"><span class="function"><span class="params">                               <span class="keyword">uint64_t</span> subkey_id,</span></span></span><br><span class="line"><span class="function"><span class="params">                               <span class="keyword">const</span> <span class="keyword">char</span> ctx[crypto_kdf_CONTEXTBYTES],</span></span></span><br><span class="line"><span class="function"><span class="params">                               <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> key[crypto_kdf_KEYBYTES])</span></span>;</span><br></pre></td></tr></table></figure>
+<p>函数 <code>crypto_kdf_derive_from_key()</code> 可以根据主密钥 <code>key</code> 和上下文 <code>ctx</code> 派生出长度为 <code>subkey_len</code> 字节的子密钥。<code>subkey_id</code> 是子密钥的编号，可以是不大于 <code>2^64 - 1</code> 的任意值。</p>
+<p>主密钥的长度必须是 <code>crypto_kdf_KEYBYTES</code>。子密钥的长度 <code>subkey_len</code> 必须介于 <code>crypto_kdf_BYTES_MIN</code>（含）和 <code>crypto_kdf_BYTES_MAX</code>（含）之间。</p>
+<p>上下文 <code>ctx</code> 是一个 8 字符的字符串，应能描述子密钥的用途。不需要保密，并且强度可以很低。比如 <code>&quot;UserName&quot;</code>、<code>&quot;__auth__&quot;</code>、<code>&quot;pictures&quot;</code> 和 <code>&quot;userdata&quot;</code> 等。但其长度必须是 <code>crypto_kdf_CONTEXTBYTES</code> 字节。</p>
+<p>使用相同的密钥，但使用不同的 <code>ctx</code>，就会得到不同的输出。正如其名，<code>ctx</code> 可以和程序的上下文对应。当然，就算一个程序从头到尾只使用一个 <code>ctx</code>，那也有防止密钥被不同程序重复使用的作用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sodium.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">void</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (sodium_init() == <span class="number">-1</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">char</span> ctx[] = <span class="string">"Examples"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">uint8_t</span> master_key[crypto_kdf_KEYBYTES];</span><br><span class="line">    <span class="keyword">uint8_t</span> subkey1[<span class="number">16</span>];</span><br><span class="line">    <span class="keyword">uint8_t</span> subkey2[<span class="number">16</span>];</span><br><span class="line">    <span class="keyword">uint8_t</span> subkey3[<span class="number">32</span>];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建主密钥</span></span><br><span class="line">    crypto_kdf_keygen(master_key);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 派生子密钥</span></span><br><span class="line">    crypto_kdf_derive_from_key(subkey1, <span class="keyword">sizeof</span> subkey1, <span class="number">1</span>, ctx, master_key);</span><br><span class="line">    crypto_kdf_derive_from_key(subkey2, <span class="keyword">sizeof</span> subkey2, <span class="number">2</span>, ctx, master_key);</span><br><span class="line">    crypto_kdf_derive_from_key(subkey3, <span class="keyword">sizeof</span> subkey3, <span class="number">3</span>, ctx, master_key);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取子密钥的十六进制表示</span></span><br><span class="line">    <span class="keyword">char</span> buf[<span class="number">1024</span>];</span><br><span class="line">    sodium_bin2hex(buf, <span class="keyword">sizeof</span> buf, subkey1, <span class="keyword">sizeof</span> subkey1);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"subkey1: %s\n"</span>, buf);</span><br><span class="line"></span><br><span class="line">    sodium_bin2hex(buf, <span class="keyword">sizeof</span> buf, subkey2, <span class="keyword">sizeof</span> subkey2);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"subkey2: %s\n"</span>, buf);</span><br><span class="line"></span><br><span class="line">    sodium_bin2hex(buf, <span class="keyword">sizeof</span> buf, subkey3, <span class="keyword">sizeof</span> subkey3);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"subkey3: %s\n"</span>, buf);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">subkey1: 0440b65332dc5f6b4a46d262996af08e</span><br><span class="line">subkey2: 73e6d9bbfb25c25d3898ba435f16b710</span><br><span class="line">subkey3: 9fdffff7fd9d4ba7a8b1172c79cdf86b7a823256b418e9a61cb8e21f1170ef1f</span><br></pre></td></tr></table></figure>
+<h2 id="🔩-辅助函数"><a href="#🔩-辅助函数" class="headerlink" title="🔩 辅助函数"></a>🔩 辅助函数</h2><blockquote>
+<p>尽可能使用这些函数，以抵御「时序攻击」。</p>
+</blockquote>
+<h3 id="测试字节序列"><a href="#测试字节序列" class="headerlink" title="测试字节序列"></a>测试字节序列</h3><h4 id="sodium-memcmp"><a href="#sodium-memcmp" class="headerlink" title="sodium_memcmp()"></a>sodium_memcmp()</h4><p>函数 <code>sodium_memcmp()</code> 可完成两个等长字节序列的对比。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sodium_memcmp</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> * <span class="keyword">const</span> b1_, <span class="keyword">const</span> <span class="keyword">void</span> * <span class="keyword">const</span> b2_, <span class="keyword">size_t</span> len)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>如果位于 <code>b1_</code> 的 <code>len</code> 个字节和位于 <code>b2_</code> 的 <code>len</code> 个字节相同，函数返回 <code>0</code>，否则返回 <code>-1</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> b1_[<span class="number">6</span>] = <span class="string">"hello"</span>;</span><br><span class="line"><span class="keyword">char</span> b2_[<span class="number">6</span>] = <span class="string">"hello"</span>;</span><br><span class="line"><span class="keyword">char</span> b3_[<span class="number">6</span>] = <span class="string">"Hello"</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (sodium_memcmp(b1_, b2_, <span class="number">5</span>) == <span class="number">-1</span>) &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"No match"</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"Match"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (sodium_memcmp(b1_, b3_, <span class="number">5</span>) == <span class="number">-1</span>) &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"No match"</span>);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">puts</span>(<span class="string">"Match"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Match</span><br><span class="line">No match</span><br></pre></td></tr></table></figure>
+<h4 id="sodium-is-zero"><a href="#sodium-is-zero" class="headerlink" title="sodium_is_zero()"></a>sodium_is_zero()</h4><p>函数 <code>sodium_is_zero()</code> 可判断给定的字节序列是否全为 <code>0</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sodium_is_zero</span><span class="params">(<span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *n, <span class="keyword">const</span> <span class="keyword">size_t</span> nlen)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>若位于 <code>n</code> 的 <code>nlen</code> 个字节是否全为 <code>0</code>，则返回 <code>1</code>，否则返回 <code>0</code>。</p>
+<h3 id="字节序列的十六进制表示"><a href="#字节序列的十六进制表示" class="headerlink" title="字节序列的十六进制表示"></a>字节序列的十六进制表示</h3><h4 id="sodium-bin2hex"><a href="#sodium-bin2hex" class="headerlink" title="sodium_bin2hex()"></a>sodium_bin2hex()</h4><p>函数 <code>sodium_bin2hex()</code> 可获取字节序列的十六进制表示，并由此得到一个字符串。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">sodium_bin2hex</span><span class="params">(<span class="keyword">char</span> * <span class="keyword">const</span> hex, <span class="keyword">const</span> <span class="keyword">size_t</span> hex_maxlen,</span></span></span><br><span class="line"><span class="function"><span class="params">                     <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> * <span class="keyword">const</span> bin, <span class="keyword">const</span> <span class="keyword">size_t</span> bin_len)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>函数将字符串写到 <code>hex</code>，这个字符串就是从 <code>bin</code> 开始的 <code>bin_len</code> 个字节的十六进制表示，包括 <code>&#39;\0&#39;</code>，故 <code>hex_maxlen</code> 至少为 <code>2*bin_len + 1</code>。该函数始终返回 <code>hex</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> hex[<span class="number">9</span>]; <span class="comment">// 2*4 + 1 = 9</span></span><br><span class="line"><span class="keyword">char</span> bin[<span class="number">5</span>] = <span class="string">"AAAA"</span>;</span><br><span class="line"></span><br><span class="line">sodium_bin2hex(hex, <span class="number">9</span>, bin, <span class="number">4</span>);</span><br><span class="line"><span class="built_in">puts</span>(hex);</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">41414141</span><br></pre></td></tr></table></figure>
+<h4 id="sodium-hex2bin"><a href="#sodium-hex2bin" class="headerlink" title="sodium_hex2bin()"></a>sodium_hex2bin()</h4><p>函数 <code>sodium_hex2bin()</code> 作用相反，通过解析字节序列的十六进制表示，还原该字节序列。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sodium_hex2bin</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> * <span class="keyword">const</span> bin, <span class="keyword">const</span> <span class="keyword">size_t</span> bin_maxlen,</span></span></span><br><span class="line"><span class="function"><span class="params">                   <span class="keyword">const</span> <span class="keyword">char</span> * <span class="keyword">const</span> hex, <span class="keyword">const</span> <span class="keyword">size_t</span> hex_len,</span></span></span><br><span class="line"><span class="function"><span class="params">                   <span class="keyword">const</span> <span class="keyword">char</span> * <span class="keyword">const</span> ignore, <span class="keyword">size_t</span> * <span class="keyword">const</span> bin_len,</span></span></span><br><span class="line"><span class="function"><span class="params">                   <span class="keyword">const</span> <span class="keyword">char</span> ** <span class="keyword">const</span> hex_end)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>函数将字节序列写到  <code>bin</code>。<code>bin_maxlen</code> 表示允许写入的最大字节数。而位于 <code>hex</code> 的字符串应当是一个字节序列的十六进制表示，可以没有 <code>&#39;\0&#39;</code> 结尾，需要解析的长度由 <code>hex_len</code> 指定。</p>
+<p><code>ignore</code> 是需要跳过的字符组成的字符串。比如  <code>&quot;: &quot;</code> 表示跳过冒号和空格。此时 <code>&quot;69:FC&quot;</code>、<code>&quot;69 FC&quot;</code>、<code>&quot;69 : FC&quot;</code> 和 <code>&quot;69FC&quot;</code> 都视为合法的输入，并产生相同的输出。<code>ignore</code> 可以设为 <code>NULL</code>，表示不允许任何非法的字符出现。</p>
+<p>函数返回 <code>0</code> 表示转换成功，同时 <code>bin_len</code> 会被设为解析得到的字节数；返回 <code>-1</code> 则表示失败。失败的情况有以下两种：</p>
+<ul>
+<li>解析的结果超过 <code>bin_maxlen</code> 字节；</li>
+<li>遇到非法字符时，如果前面的字符都能顺利解析，函数仍然返回 <code>0</code>，否则返回 <code>-1</code>。</li>
+</ul>
+<p>无论如何 <code>hex_end</code> 总是会被设为下一个待解析的字符的地址。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> bin[<span class="number">5</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"><span class="keyword">char</span> hex[<span class="number">12</span>] = <span class="string">"61*62636472"</span>;</span><br><span class="line"><span class="keyword">size_t</span> bin_len = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> * hex_end;</span><br><span class="line"></span><br><span class="line">sodium_hex2bin(bin, <span class="number">4</span>, hex, <span class="number">9</span>, <span class="string">"*"</span>, &amp;bin_len, &amp;hex_end);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d: %s, %c\n"</span>, bin_len, bin, *hex_end);</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">4: abcd, 7</span><br></pre></td></tr></table></figure>
+<h3 id="Base64-编码-解码"><a href="#Base64-编码-解码" class="headerlink" title="Base64 编码/解码"></a>Base64 编码/解码</h3><h4 id="sodium-bin2base64"><a href="#sodium-bin2base64" class="headerlink" title="sodium_bin2base64()"></a>sodium_bin2base64()</h4><p>函数 <code>sodium_bin2base64()</code> 可获取字节序列的 Base64 编码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">char</span> *<span class="title">sodium_bin2base64</span><span class="params">(<span class="keyword">char</span> * <span class="keyword">const</span> b64, <span class="keyword">const</span> <span class="keyword">size_t</span> b64_maxlen,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> * <span class="keyword">const</span> bin, <span class="keyword">const</span> <span class="keyword">size_t</span> bin_len,</span></span></span><br><span class="line"><span class="function"><span class="params">                        <span class="keyword">const</span> <span class="keyword">int</span> variant)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>Base64 编码有多种变体，采用哪种变体由 <code>variant</code> 指定，有下列 4 种取值可选：</p>
+<ul>
+<li><code>sodium_base64_VARIANT_ORIGINAL</code></li>
+<li><code>sodium_base64_VARIANT_ORIGINAL_NO_PADDING</code></li>
+<li><code>sodium_base64_VARIANT_URLSAFE</code></li>
+<li><code>sodium_base64_VARIANT_URLSAFE_NO_PADDING</code></li>
+</ul>
+<p>这些 Base64 编码并不提供任何形式的加密；就像十六进制编码一样，任何人都可以对它们进行解码。</p>
+<p>可以令 <code>b64_maxlen</code> 等于宏 <code>sodium_base64_ENCODED_LEN(BIN_LEN, VARIANT)</code>，它表示使用 <code>VARIANT</code> 这种变体时，<code>BIN_LEN</code> 个字节的 Base64 编码（包括 <code>&#39;\0&#39;</code>）的最小长度。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> bin[<span class="number">6</span>] = <span class="string">"hello"</span>;</span><br><span class="line"><span class="keyword">int</span> b64_len = sodium_base64_ENCODED_LEN(<span class="number">5</span>, sodium_base64_VARIANT_ORIGINAL);</span><br><span class="line"><span class="keyword">char</span> b64[b64_len];</span><br><span class="line"></span><br><span class="line">sodium_bin2base64(b64, b64_len, bin, <span class="number">5</span>, sodium_base64_VARIANT_ORIGINAL);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d: %s\n"</span>, b64_len, b64);</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">9: aGVsbG8=</span><br></pre></td></tr></table></figure>
+<h4 id="sodium-base642bin"><a href="#sodium-base642bin" class="headerlink" title="sodium_base642bin()"></a>sodium_base642bin()</h4><p>函数 <code>sodium_base642bin()</code> 可完成 Base64 解码工作。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sodium_base642bin</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> * <span class="keyword">const</span> bin, <span class="keyword">const</span> <span class="keyword">size_t</span> bin_maxlen,</span></span></span><br><span class="line"><span class="function"><span class="params">                      <span class="keyword">const</span> <span class="keyword">char</span> * <span class="keyword">const</span> b64, <span class="keyword">const</span> <span class="keyword">size_t</span> b64_len,</span></span></span><br><span class="line"><span class="function"><span class="params">                      <span class="keyword">const</span> <span class="keyword">char</span> * <span class="keyword">const</span> ignore, <span class="keyword">size_t</span> * <span class="keyword">const</span> bin_len,</span></span></span><br><span class="line"><span class="function"><span class="params">                      <span class="keyword">const</span> <span class="keyword">char</span> ** <span class="keyword">const</span> b64_end, <span class="keyword">const</span> <span class="keyword">int</span> variant)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>返回 <code>-1</code> 表示错误，返回 <code>0</code> 表示解码成功，同时 <code>bin_len</code> 会被设为解码得到的字节数，其他参数的含义参考前文。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">size_t</span> bin_len;</span><br><span class="line"><span class="keyword">char</span> bin[<span class="number">6</span>];</span><br><span class="line"><span class="keyword">char</span> b64[<span class="number">9</span>] = <span class="string">"aGVsbG8="</span>;</span><br><span class="line">sodium_base642bin(bin, <span class="keyword">sizeof</span> bin,</span><br><span class="line">                  b64, <span class="built_in">strlen</span>(b64), <span class="string">""</span>, &amp;bin_len, <span class="literal">NULL</span>,</span><br><span class="line">                  sodium_base64_VARIANT_ORIGINAL);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d: %s\n"</span>, bin_len, bin);</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">5: hello</span><br></pre></td></tr></table></figure>
+<h3 id="大数的计算"><a href="#大数的计算" class="headerlink" title="大数的计算"></a>大数的计算</h3><h4 id="sodium-increment"><a href="#sodium-increment" class="headerlink" title="sodium_increment()"></a>sodium_increment()</h4><p>函数 <code>sodium_increment()</code> 用来递增一个任意长度的无符号数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sodium_increment</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *n, <span class="keyword">const</span> <span class="keyword">size_t</span> nlen)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>位于 <code>n</code> 的 <code>nlen</code> 字节的数字将按小端字节序处理。加密算法中经常提到的不重数 <code>nonce</code> 就可用此函数进行递增。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> nonce[<span class="number">8</span>] = &#123;<span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">sodium_increment(nonce, <span class="keyword">sizeof</span>(nonce));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, *(<span class="keyword">int</span> *)nonce);</span><br><span class="line"></span><br><span class="line">sodium_increment(nonce, <span class="keyword">sizeof</span>(nonce));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, *(<span class="keyword">int</span> *)nonce);</span><br><span class="line"></span><br><span class="line">sodium_increment(nonce, <span class="keyword">sizeof</span>(nonce));</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, *(<span class="keyword">int</span> *)nonce);</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+<h4 id="sodium-add"><a href="#sodium-add" class="headerlink" title="sodium_add()"></a>sodium_add()</h4><p>函数 <code>sodium_add()</code> 可完成大数的加法。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sodium_add</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *a, <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *b, <span class="keyword">const</span> <span class="keyword">size_t</span> len)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>位于 <code>a</code> 和 <code>b</code> 的两个 <code>nlen</code> 字节的加数均按小端字节序的无符号数处理。计算结果将覆盖 <code>a</code>。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> a[<span class="number">8</span>] = &#123;<span class="number">1</span>&#125;;</span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> b[<span class="number">8</span>] = &#123;<span class="number">1</span>&#125;;</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, *(<span class="keyword">int</span> *)a);</span><br><span class="line"></span><br><span class="line">sodium_add(a, b, <span class="keyword">sizeof</span> a); <span class="comment">// a = a + b</span></span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%d\n"</span>, *(<span class="keyword">int</span> *)a);</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td></tr></table></figure>
+<h4 id="sodium-sub"><a href="#sodium-sub" class="headerlink" title="sodium_sub()"></a>sodium_sub()</h4><p>函数 <code>sodium_sub()</code> 可完成大数减法。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sodium_sub</span><span class="params">(<span class="keyword">unsigned</span> <span class="keyword">char</span> *a, <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *b, <span class="keyword">const</span> <span class="keyword">size_t</span> len)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>位于 <code>a</code> 和 <code>b</code> 的两个 <code>nlen</code> 字节的加数均按小端字节序的无符号数处理。计算结果将覆盖 <code>a</code>。</p>
+<h4 id="sodium-compare"><a href="#sodium-compare" class="headerlink" title="sodium_compare()"></a>sodium_compare()</h4><p>函数 <code>sodium_compare()</code> 可完成两个大数的比较。两个大数均按小端字节序处理。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sodium_compare</span><span class="params">(<span class="keyword">const</span> <span class="keyword">void</span> * <span class="keyword">const</span> b1_, <span class="keyword">const</span> <span class="keyword">void</span> * <span class="keyword">const</span> b2_, <span class="keyword">size_t</span> len)</span></span>;</span><br></pre></td></tr></table></figure>
+<p>返回 <code>0</code> 表示相等，返回 <code>-1</code> 表示 <code>b1_</code> 小于 <code>b2_</code>；返回 <code>1</code> 表示 <code>b1_</code> 大于 <code>b2_</code>。</p>
+<h2 id="🔗-参考文献"><a href="#🔗-参考文献" class="headerlink" title="🔗 参考文献"></a>🔗 参考文献</h2><ol>
+<li><a href="https://github.com/byronhe/libsodium-doc-cn" target="_blank" rel="noopener">libsodium 密码学库 中文文档 </a></li>
+<li><a href="https://byronhe.com/post/2015/06/05/modern-crypto/" target="_blank" rel="noopener">现代密码学实践指南[2015年]</a></li>
+<li><a href="https://byronhe.com/post/2015/04/12/translate-Everything-you-need-to-know-about-cryptgraphy-in-1-hour/" target="_blank" rel="noopener">【翻译】密码学一小时必知</a></li>
+<li><a href="https://learnku.com/articles/6819/crypto" target="_blank" rel="noopener">加密解密学习笔记</a></li>
+<li><a href="https://www.jianshu.com/p/035454204202" target="_blank" rel="noopener">密码学基础系列</a></li>
+<li><a href="https://zhuanlan.zhihu.com/p/24678857" target="_blank" rel="noopener">实用密码学工具——KDF</a></li>
+<li><a href="https://www.hgoldfish.com/blogs/article/108/" target="_blank" rel="noopener">如何存储密码(KDF)</a></li>
+<li><a href="https://man.linuxde.net/ldconfig" target="_blank" rel="noopener">ldconfig命令</a></li>
+<li><a href="https://blog.csdn.net/newchenxf/article/details/51750239" target="_blank" rel="noopener">pkg-config 详解</a></li>
+<li><a href="https://blog.csdn.net/T0mato_/article/details/72628676" target="_blank" rel="noopener">什么是 AES-NI（AES指令集）</a></li>
+</ol>
+
+                
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2021/02/26/webpack-manual/" data-toggle="tooltip" data-placement="top" title="webpack 5.x 简易手册">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2021/01/04/socks5-protocol/" data-toggle="tooltip" data-placement="top" title="SOCKS5 协议与 C 语言实现">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                <!-- tip start -->
+                
+
+                
+                <div class="comment_notes">
+                    <p>
+                        Licence: <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a>
+                    </p>
+                </div>
+                
+                <!-- tip end -->
+
+                <!-- Music start-->
+                
+                <!-- Music end -->
+
+                <!-- Sharing -->
+                
+                <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                <!--  css & js -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!-- Sharing -->
+
+                <!-- gitment start -->
+                
+                <!-- gitment end -->
+
+                <!-- 来必力City版安装代码 -->
+                
+                <!-- City版安装代码已完成 -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      
+        <aside id="sidebar">
+          <div id="toc" class="toc-article">
+          <strong class="toc-title">Contents</strong>
+          
+            
+              <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#🧱-起步"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">🧱 起步</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#📖-知识储备"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">📖 知识储备</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#两种密码体制"><span class="toc-nav-number">2.1.</span> <span class="toc-nav-text">两种密码体制</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#对称加密算法"><span class="toc-nav-number">2.2.</span> <span class="toc-nav-text">对称加密算法</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#MAC-报文鉴别码"><span class="toc-nav-number">2.3.</span> <span class="toc-nav-text">MAC 报文鉴别码</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#AE"><span class="toc-nav-number">2.4.</span> <span class="toc-nav-text">AE</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#AEAD"><span class="toc-nav-number">2.5.</span> <span class="toc-nav-text">AEAD</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#🔐-Libsodium-对-ChaCha20-Poly1305-的支持"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">🔐 Libsodium 对 ChaCha20-Poly1305 的支持</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#加密"><span class="toc-nav-number">3.1.</span> <span class="toc-nav-text">加密</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#解密"><span class="toc-nav-number">3.2.</span> <span class="toc-nav-text">解密</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#合并模式"><span class="toc-nav-number">3.3.</span> <span class="toc-nav-text">合并模式</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#🔑-密钥的派生"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">🔑 密钥的派生</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#KDF"><span class="toc-nav-number">4.1.</span> <span class="toc-nav-text">KDF</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#基于密码派生密钥"><span class="toc-nav-number">4.2.</span> <span class="toc-nav-text">基于密码派生密钥</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#基于主密钥派生子密钥"><span class="toc-nav-number">4.3.</span> <span class="toc-nav-text">基于主密钥派生子密钥</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#🔩-辅助函数"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">🔩 辅助函数</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#测试字节序列"><span class="toc-nav-number">5.1.</span> <span class="toc-nav-text">测试字节序列</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sodium-memcmp"><span class="toc-nav-number">5.1.1.</span> <span class="toc-nav-text">sodium_memcmp()</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sodium-is-zero"><span class="toc-nav-number">5.1.2.</span> <span class="toc-nav-text">sodium_is_zero()</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#字节序列的十六进制表示"><span class="toc-nav-number">5.2.</span> <span class="toc-nav-text">字节序列的十六进制表示</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sodium-bin2hex"><span class="toc-nav-number">5.2.1.</span> <span class="toc-nav-text">sodium_bin2hex()</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sodium-hex2bin"><span class="toc-nav-number">5.2.2.</span> <span class="toc-nav-text">sodium_hex2bin()</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Base64-编码-解码"><span class="toc-nav-number">5.3.</span> <span class="toc-nav-text">Base64 编码&#x2F;解码</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sodium-bin2base64"><span class="toc-nav-number">5.3.1.</span> <span class="toc-nav-text">sodium_bin2base64()</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sodium-base642bin"><span class="toc-nav-number">5.3.2.</span> <span class="toc-nav-text">sodium_base642bin()</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#大数的计算"><span class="toc-nav-number">5.4.</span> <span class="toc-nav-text">大数的计算</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sodium-increment"><span class="toc-nav-number">5.4.1.</span> <span class="toc-nav-text">sodium_increment()</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sodium-add"><span class="toc-nav-number">5.4.2.</span> <span class="toc-nav-text">sodium_add()</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sodium-sub"><span class="toc-nav-number">5.4.3.</span> <span class="toc-nav-text">sodium_sub()</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#sodium-compare"><span class="toc-nav-number">5.4.4.</span> <span class="toc-nav-text">sodium_compare()</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#🔗-参考文献"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">🔗 参考文献</span></a></li></ol>
+            
+          
+          </div>
+        </aside>
+      
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Libsodium" title="Libsodium">Libsodium</a>
+                        
+                          <a class="tag" href="/tags/#MAC" title="MAC">MAC</a>
+                        
+                          <a class="tag" href="/tags/#aes256-gcm" title="aes256-gcm">aes256-gcm</a>
+                        
+                          <a class="tag" href="/tags/#chacha20-poly1305" title="chacha20-poly1305">chacha20-poly1305</a>
+                        
+                          <a class="tag" href="/tags/#C 语言" title="C 语言">C 语言</a>
+                        
+                          <a class="tag" href="/tags/#报文鉴别码" title="报文鉴别码">报文鉴别码</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+
+
+<style  type="text/css">
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/totravel">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; totravel 2021 
+                    <br>
+                    Powered by 
+                    <a href="https://github.com/dusign/hexo-theme-snail" target="_blank" rel="noopener">
+                        <i>hexo-theme-snail</i>
+                    </a> | 
+                    <iframe name="star" style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0"
+                        width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=dusign&repo=hexo-theme-snail&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- Search -->
+
+<script src="/js/search.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://totravel.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'e3035a98f106cf2bbd8245fa6a75266d';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Search -->
+
+    <script type="text/javascript">      
+        var search_path = "search.xml";
+        if (search_path.length == 0) {
+            search_path = "search.xml";
+        }
+    var path = "/" + search_path;
+    searchFunc(path, 'local-search-input', 'local-search-result');
+    </script>
+
+
+<!-- busuanzi -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+
+    
+        <!-- background effects line -->
+        
+
+        
+
+        <!-- background effects end -->
+    
+
+    <!--<script size="50" alpha='0.3' zIndex="-999" src="/js/ribbonStatic.js"></script>-->
+    
+        <script src="/js/ribbonDynamic.js"></script>
+    
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>

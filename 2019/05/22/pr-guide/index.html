@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="baidu-site-verification" content="093lY4ziMu" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/avatar.jpg">
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <!--<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>-->
+    <title>
+        
+          Premiere 视频剪辑快速入门 - Traveler&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="https://totravel.github.io/2019/05/22/pr-guide/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS --> 
+    
+        
+<link rel="stylesheet" href="/css/dusign-dark.css">
+
+        
+<link rel="stylesheet" href="/css/dusign-common-dark.css">
+
+        
+<link rel="stylesheet" href="/css/font-awesome.css">
+
+        
+<link rel="stylesheet" href="/css/toc.css">
+
+    
+    
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    
+<link rel="stylesheet" href="/css/widget.css">
+
+
+    
+<link rel="stylesheet" href="/css/rocket.css">
+
+
+    
+<link rel="stylesheet" href="/css/signature.css">
+
+
+    
+<link rel="stylesheet" href="/css/fonts.googleapis.css">
+
+
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <!-- photography -->
+    
+<link rel="stylesheet" href="/css/photography.css">
+
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- background effects start -->
+    
+    <!-- background effects end -->
+
+	<!-- Modified by Yu-Hsuan Yen -->
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        
+            
+                background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('wahid-khene-iKdQCIiSMlQ-unsplash.jpg')
+                /*post*/
+            
+        
+    }
+    
+</style>
+
+<header class="intro-header" >
+    <!-- Signature -->
+    <div id="signature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                
+                    <div class="post-heading">
+                        <div class="tags">
+                            
+                              <a class="tag" href="/tags/#Pr" title="Pr">Pr</a>
+                            
+                              <a class="tag" href="/tags/#video editing" title="video editing">video editing</a>
+                            
+                              <a class="tag" href="/tags/#视频剪辑" title="视频剪辑">视频剪辑</a>
+                            
+                        </div>
+                        <h1>Premiere 视频剪辑快速入门</h1>
+                        <h2 class="subheading"></h2>
+                        <span class="meta">
+                            Posted by totravel on
+                            2019-05-22
+                        </span>
+
+                        
+
+                    </div>
+                
+
+                </div>
+            </div>
+        </div>      
+    </div>
+
+    
+    <div class="waveWrapper">
+        <div class="wave wave_before" style="background-image: url('/img/wave-dark.png')"></div>
+        <div class="wave wave_after" style="background-image: url('/img/wave-dark.png')"></div>
+    </div>
+    
+</header>
+
+	
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">旅行 · 之间</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archive/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/categories/">Categories</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>Premiere Pro 是 Adobe 推出的一款功能强大的视频编辑软件。</p>
+<p>在使用 Pr 进行创作之前，要事先准备好素材，并且为便于管理，还应该把所有素材放到同一个文件夹下。为此，在桌面创建文件夹 <code>test</code>，在里面放置一些图片素材和视频素材。</p>
+<p><img src="01.gif" alt=""></p>
+<h2 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h2><p>使用 Pr 的第一步，是创建一个扩展名为 <code>.prproj</code> 的文件，后续的操作都将记录在这个文件中，建议把这个文件和素材放在同一文件夹下。</p>
+<p>菜单栏 &gt; 文件 &gt; 新建 &gt; 项目，下图表示在文件夹 <code>test</code> 中创建文件 <code>未命名.prproj</code></p>
+<p><img src="02.png" alt=""></p>
+<h2 id="导入素材"><a href="#导入素材" class="headerlink" title="导入素材"></a>导入素材</h2><p>要在 Pr 中使用这些素材，要将素材导入，这样 Pr 才知道有哪些素材可以用。导入的素材会罗列在 <strong>项目面板</strong> 中。项目面板默认位于左下角。</p>
+<p><img src="03.png" alt=""></p>
+<p>菜单栏 &gt; 文件 &gt; 导入，或者在项目面板中间的空白处双击，就可以开始导入素材。</p>
+<p>当然，也可以通过拖拽的方式导入素材，只须将素材拖拽到项目面板。</p>
+<p><img src="04.gif" alt=""></p>
+<h2 id="管理素材"><a href="#管理素材" class="headerlink" title="管理素材"></a>管理素材</h2><p>素材在项目面板中呈现的名称可以修改，文件名不会跟着改变。</p>
+<p>先选中素材，再单击名称，就可以编辑素材的名称。下面将一个素材的名称修改为 <code>spring</code></p>
+<p><img src="05.gif" alt=""></p>
+<p>下列操作作用同上：</p>
+<ul>
+<li>选中素材 &gt; 鼠标右键 &gt; 重命名</li>
+<li>选中素材 &gt; 菜单栏 &gt; 剪辑 &gt; 重命名</li>
+</ul>
+<p>可以对素材进行分类，如同把不同类型的文件放到不同的文件夹一样，素材可以放到 <strong>素材箱</strong> 中。单击项目面板右下角的「新建素材箱」按钮，就可以创建一个素材箱。</p>
+<p><img src="06.gif" alt=""></p>
+<p>下列操作作用同上：</p>
+<ul>
+<li>在项目面板中间的空白处 &gt; 鼠标右键 &gt; 新建素材箱</li>
+</ul>
+<h2 id="预览素材"><a href="#预览素材" class="headerlink" title="预览素材"></a>预览素材</h2><p>在 Pr 中，素材又称为 <strong>源</strong>，在 <strong>源监视器</strong> 中可以打开素材。</p>
+<p>单击素材的名称，拖拽到源监视器中，就可以在源监视器中打开。</p>
+<p><img src="07.gif" alt=""></p>
+<p>下列操作作用同上：</p>
+<ul>
+<li>选中素材 &gt; 在素材名称以外区域双击</li>
+<li>选中素材 &gt; 鼠标右键 &gt; 在源监视器中打开</li>
+</ul>
+<p>使用源监视器时，可以使用下列按键来控制视频的播放：</p>
+<ul>
+<li>按 J 倒放，倒放时再按 J 快退</li>
+<li>按 K 暂停</li>
+<li>按 L 播放，播放时再按 L 快进</li>
+</ul>
+<blockquote>
+<p>小结：</p>
+<ul>
+<li>项目面板列出了所有素材，以及后续操作产生的所有文件。</li>
+<li>可以在源监视器中预览素材。</li>
+</ul>
+</blockquote>
+<h2 id="新建序列"><a href="#新建序列" class="headerlink" title="新建序列"></a>新建序列</h2><p>简单地说，剪辑就是把素材修剪后，再拼接起来。显然，这种拼接是有序的，而不是杂乱无章的。这将形成一个 <strong>序列</strong>。下面要做的是将两个视频拼接起来。</p>
+<p>拼接操作在 <strong>时间轴面板</strong> 中进行，只需将素材拖拽到时间轴面板中。</p>
+<p><img src="08.gif" alt=""></p>
+<p>可以发现，在把第一个素材拖过去后，项目面板中就多出了一项，这就是对应的序列。现在，它就是前面所做操作（拼接）的成果。</p>
+<p>实际上，在把第一个素材拖过去时，Pr 做了两个动作：</p>
+<ol>
+<li>新建一个空白的序列。</li>
+<li>放置第一个素材。</li>
+</ol>
+<blockquote>
+<p>在这里，序列是由 Pr 根据放入的素材自动创建的，因此分辨率、帧速率和采样率等参数都和第一个素材一致。</p>
+</blockquote>
+<p>也可以通过拖拽的方式，将正在源监视器中预览的素材放入序列中。</p>
+<p><img src="09.gif" alt=""></p>
+<h2 id="管理序列"><a href="#管理序列" class="headerlink" title="管理序列"></a>管理序列</h2><p>下面将前面得到的序列在项目面板中对应的条目重命名为 <code>序列 01</code> 并移出 <code>videos</code> 素材箱。</p>
+<p><img src="10.gif" alt=""></p>
+<p>时间轴面板就是用来编辑序列的面板。在需要编辑的序列上双击，就可以在时间轴内打开。面板的标题就是当前打开的序列名称。可以同时打开多个序列，也可以逐个关闭。</p>
+<p><img src="11.gif" alt=""></p>
+<p>下列操作作用同上：</p>
+<ul>
+<li>选中序列 &gt; 鼠标右键 &gt; 在时间轴内打开</li>
+</ul>
+<h2 id="预览序列"><a href="#预览序列" class="headerlink" title="预览序列"></a>预览序列</h2><p><strong>节目监视器</strong> 用来预览序列的最终效果。其实，序列在时间轴内打开的同时，也会在节目监视器中打开，并且节目监视器和时间轴的光标是同步的。</p>
+<p><img src="12.png" alt=""></p>
+<h2 id="导出媒体"><a href="#导出媒体" class="headerlink" title="导出媒体"></a>导出媒体</h2><p>最终的成果应该是一个普通的视频文件，如 <code>.mp4</code> 格式的文件，以便在一般的视频播放器中播放。得到一个序列后，需要 <strong>导出媒体</strong>，来得到一个普通的视频文件。</p>
+<p>选中序列 &gt; 鼠标右键 &gt; 导出媒体，这将弹出一个对话框。在这个对话框的左侧，切换到「源」看到的是序列，切换到「输出」看到的是最终的效果。</p>
+<p><img src="13.png" alt=""></p>
+<p>右侧提供了一些参数设置，如果想要得到一个 <code>mp4</code> 文件，格式应该选择 <code>H.264</code></p>
+<p><img src="14.png" alt=""></p>
+<p>预设一般选择 <code>匹配源 - 中等比特率</code>，这会影响文件的大小，在底部可以看到估算值。</p>
+<p><img src="15.png" alt=""></p>
+<p>可以分别决定是否要包含画面和声音。</p>
+<p><img src="16.png" alt=""></p>
+<p>也可以直接勾选「与序列设置匹配」，这样就不需要再设定其他参数。</p>
+<p><img src="17.png" alt=""></p>
+<p>单击「输出名称」，可以设定导出的位置和文件名。</p>
+<p><img src="18.png" alt=""></p>
+<p>最后单击「导出」按钮，开始导出。</p>
+<p><img src="19.png" alt=""></p>
+<h2 id="剪辑的入点、出点"><a href="#剪辑的入点、出点" class="headerlink" title="剪辑的入点、出点"></a>剪辑的入点、出点</h2><p>通常只需要素材的一小段，这一小段的起点称为 <strong>入点</strong>，终点称为 <strong>出点</strong>。在源监视器中预览素材时，就可以设定入点、出点。</p>
+<p>将光标定位到入点，单击底部的「标记入点」按钮设定入点；将光标定位到出点，单击底部的「标记出点」按钮设定出点。</p>
+<p><img src="20.gif" alt=""></p>
+<p>此时若将其拖拽到时间轴，就只有入点到出点之间的片段会加入到序列中去。</p>
+<p><img src="21.gif" alt=""></p>
+<p>素材在使用前一般都要经过简单地修剪，为了和硬盘上实实在在的文件区分开来，一般把和某个素材对应的条目，称为 <strong>剪辑</strong>。例如，通过导入而罗列在项目面板中的素材，这些「剪辑」都是完整的素材；而上面放入序列的「剪辑」则是片段，不是完整的素材。</p>
+<p>如果没有设定入点、出点，那么剪辑的入点就是素材的开头，剪辑的出点就是素材的结尾，并且会有相应的白色的三角形标记。</p>
+<p><img src="22.png" alt=""></p>
+
+                
+                <hr>
+                <!-- Pager -->
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/2020/02/11/scrcpy-guide/" data-toggle="tooltip" data-placement="top" title="开源、跨平台投屏软件 Scrcpy 中文指南">&larr; Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/2019/03/17/linux-multi-process-and-muti-threaded/" data-toggle="tooltip" data-placement="top" title="Linux 多进程、多线程编程">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                <!-- tip start -->
+                
+
+                
+                <div class="comment_notes">
+                    <p>
+                        Licence: <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">CC BY-NC-ND 4.0</a>
+                    </p>
+                </div>
+                
+                <!-- tip end -->
+
+                <!-- Music start-->
+                
+                <!-- Music end -->
+
+                <!-- Sharing -->
+                
+                <div class="social-share"  data-wechat-qrcode-helper="" align="center"></div>
+                <!--  css & js -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/css/share.min.css">
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/social-share.js/1.0.16/js/social-share.min.js"></script>
+                
+                <!-- Sharing -->
+
+                <!-- gitment start -->
+                
+                <!-- gitment end -->
+
+                <!-- 来必力City版安装代码 -->
+                
+                <!-- City版安装代码已完成 -->
+
+                <!-- disqus comment start -->
+                
+                <!-- disqus comment end -->
+            </div>
+            
+            <!-- Tabe of Content -->
+            <!-- Table of Contents -->
+
+    
+      
+        <aside id="sidebar">
+          <div id="toc" class="toc-article">
+          <strong class="toc-title">Contents</strong>
+          
+            
+              <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#新建项目"><span class="toc-nav-number">1.</span> <span class="toc-nav-text">新建项目</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#导入素材"><span class="toc-nav-number">2.</span> <span class="toc-nav-text">导入素材</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#管理素材"><span class="toc-nav-number">3.</span> <span class="toc-nav-text">管理素材</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#预览素材"><span class="toc-nav-number">4.</span> <span class="toc-nav-text">预览素材</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#新建序列"><span class="toc-nav-number">5.</span> <span class="toc-nav-text">新建序列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#管理序列"><span class="toc-nav-number">6.</span> <span class="toc-nav-text">管理序列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#预览序列"><span class="toc-nav-number">7.</span> <span class="toc-nav-text">预览序列</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#导出媒体"><span class="toc-nav-number">8.</span> <span class="toc-nav-text">导出媒体</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#剪辑的入点、出点"><span class="toc-nav-number">9.</span> <span class="toc-nav-text">剪辑的入点、出点</span></a></li></ol>
+            
+          
+          </div>
+        </aside>
+      
+    
+
+                
+            <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Pr" title="Pr">Pr</a>
+                        
+                          <a class="tag" href="/tags/#video editing" title="video editing">video editing</a>
+                        
+                          <a class="tag" href="/tags/#视频剪辑" title="视频剪辑">视频剪辑</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'hover',
+          placement: 'left',
+          icon: 'ℬ'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+
+
+<style  type="text/css">
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/totravel">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; totravel 2021 
+                    <br>
+                    Powered by 
+                    <a href="https://github.com/dusign/hexo-theme-snail" target="_blank" rel="noopener">
+                        <i>hexo-theme-snail</i>
+                    </a> | 
+                    <iframe name="star" style="margin-left: 2px; margin-bottom:-5px;" frameborder="0" scrolling="0"
+                        width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=dusign&repo=hexo-theme-snail&type=star&count=true">
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- Search -->
+
+<script src="/js/search.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://totravel.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = 'e3035a98f106cf2bbd8245fa6a75266d';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Search -->
+
+    <script type="text/javascript">      
+        var search_path = "search.xml";
+        if (search_path.length == 0) {
+            search_path = "search.xml";
+        }
+    var path = "/" + search_path;
+    searchFunc(path, 'local-search-input', 'local-search-result');
+    </script>
+
+
+<!-- busuanzi -->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+	<a id="rocket" href="#top" class=""></a>
+	<script type="text/javascript" src="/js/totop.js?v=1.0.0" async=""></script>
+    <script type="text/javascript" src="/js/toc.js?v=1.0.0" async=""></script>
+
+    
+        <!-- background effects line -->
+        
+
+        
+
+        <!-- background effects end -->
+    
+
+    <!--<script size="50" alpha='0.3' zIndex="-999" src="/js/ribbonStatic.js"></script>-->
+    
+        <script src="/js/ribbonDynamic.js"></script>
+    
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+
+</html>
