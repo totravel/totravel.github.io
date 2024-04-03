@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"totravel.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Linux 是多任务操作系统，可以同时运行多个进程，来完成多项工作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 多进程、多线程编程">
+<meta property="og:url" content="https://totravel.github.io/2019/03/17/2021-03-06-linux-multi-process-and-muti-threaded/">
+<meta property="og:site_name" content="旅行 · 之间">
+<meta property="og:description" content="Linux 是多任务操作系统，可以同时运行多个进程，来完成多项工作。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-03-17T12:22:00.000Z">
+<meta property="article:modified_time" content="2022-11-14T18:08:40.409Z">
+<meta property="article:author" content="totravel">
+<meta property="article:tag" content="C 语言">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://totravel.github.io/2019/03/17/2021-03-06-linux-multi-process-and-muti-threaded/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://totravel.github.io/2019/03/17/2021-03-06-linux-multi-process-and-muti-threaded/","path":"2019/03/17/2021-03-06-linux-multi-process-and-muti-threaded/","title":"Linux 多进程、多线程编程"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Linux 多进程、多线程编程 | 旅行 · 之间</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">旅行 · 之间</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">总是跌跌撞撞，到底是顺其自然还是无头苍蝇？傻傻分不清……</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">47</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">2</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">19</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="nav-number">1.</span> <span class="nav-text">进程的状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%9A%84%E7%AE%A1%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">进程的管理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#fork-%E5%A4%8D%E5%88%B6%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.1.</span> <span class="nav-text">fork() 复制进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sleep-%E8%BF%9B%E5%85%A5%E7%9D%A1%E7%9C%A0"><span class="nav-number">2.2.</span> <span class="nav-text">sleep() 进入睡眠</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wait-%E7%AD%89%E5%BE%85%E8%BF%9B%E7%A8%8B%E7%BB%93%E6%9D%9F%E3%80%81exit-%E7%BB%93%E6%9D%9F%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.3.</span> <span class="nav-text">wait() 等待进程结束、exit() 结束进程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1"><span class="nav-number">3.</span> <span class="nav-text">进程间通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#signal-%E7%BB%91%E5%AE%9A%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">signal() 绑定信号处理函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E5%83%B5%E5%B0%B8%E8%BF%9B%E7%A8%8B"><span class="nav-number">3.2.</span> <span class="nav-text">处理僵尸进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kill-%E3%80%81raise-%E5%8F%91%E9%80%81%E4%BF%A1%E5%8F%B7"><span class="nav-number">3.3.</span> <span class="nav-text">kill()、raise() 发送信号</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B"><span class="nav-number">4.</span> <span class="nav-text">多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#pthread-create-%E5%88%9B%E5%BB%BA%E7%BA%BF%E7%A8%8B"><span class="nav-number">4.1.</span> <span class="nav-text">pthread_create() 创建线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pthread-exit-%E7%BB%93%E6%9D%9F%E7%BA%BF%E7%A8%8B"><span class="nav-number">4.2.</span> <span class="nav-text">pthread_exit() 结束线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pthread-join-%E7%AD%89%E5%BE%85%E7%BA%BF%E7%A8%8B%E7%BB%93%E6%9D%9F"><span class="nav-number">4.3.</span> <span class="nav-text">pthread_join() 等待线程结束</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pthread-detach-%E8%84%B1%E7%A6%BB%E5%90%8C%E6%AD%A5"><span class="nav-number">4.4.</span> <span class="nav-text">pthread_detach() 脱离同步</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="totravel"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">totravel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/totravel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;totravel" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:totravel@foxmail.com" title="E-Mail → mailto:totravel@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_nd.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://totravel.github.io/2019/03/17/2021-03-06-linux-multi-process-and-muti-threaded/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="totravel">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="旅行 · 之间">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Linux 多进程、多线程编程 | 旅行 · 之间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux 多进程、多线程编程
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-03-17 20:22:00" itemprop="dateCreated datePublished" datetime="2019-03-17T20:22:00+08:00">2019-03-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-11-15 02:08:40" itemprop="dateModified" datetime="2022-11-15T02:08:40+08:00">2022-11-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Linux 是多任务操作系统，可以同时运行多个进程，来完成多项工作。</p>
+<p>进程就是处于活动状态的程序，占用一定的内存空间。进程可以新建进程，新的进程称为 <strong>子进程</strong>，原来的进程称为 <strong>父进程</strong>。</p>
+<p>进程可以复制自己。这意味着启动一个程序，可能会产生多个进程。这样的程序能同时进行多项工作。多进程编程就是要设计一个这样的程序。</p>
+<h2 id="进程的状态"><a href="#进程的状态" class="headerlink" title="进程的状态"></a>进程的状态</h2><p>进程从创建到运行结束，经历的全部过程，称为进程的生命周期。在生命周期的不同阶段，进程会呈现不同的状态。下表列出了进程可能出现的所有状态。</p>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>创建状态</td>
+<td>正在创建</td>
+</tr>
+<tr>
+<td>就绪</td>
+<td>刚刚创建好，还没运行过</td>
+</tr>
+<tr>
+<td>内核状态</td>
+<td>运行中</td>
+</tr>
+<tr>
+<td>用户状态</td>
+<td>暂停中</td>
+</tr>
+<tr>
+<td>睡眠</td>
+<td>运行中的进程因为某些需求得不到满足而进入等待状态</td>
+</tr>
+<tr>
+<td>唤醒</td>
+<td>睡眠中的进程，正在被唤醒</td>
+</tr>
+<tr>
+<td>被抢占</td>
+<td>运行期间，CPU 被另一个进程抢占</td>
+</tr>
+<tr>
+<td>僵死状态</td>
+<td>进程已经结束，但内存空间等占用的资源还未释放，被称为僵尸进程</td>
+</tr>
+</tbody></table>
+<h2 id="进程的管理"><a href="#进程的管理" class="headerlink" title="进程的管理"></a>进程的管理</h2><p>每个进程都有一个唯一的编号，记为 PID (process id)。PID 应该用 <code>pid_t</code> 类型的变量来保存，<code>pid_t</code> 类型其实是 <code>unsigned int</code> 的别名。</p>
+<p>下面两个函数一个返回当前进程的 PID，一个返回父进程的 PID</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">pid_t</span> <span class="title function_">getpid</span><span class="params">(<span class="type">void</span>)</span>;</span><br><span class="line"><span class="type">pid_t</span> <span class="title function_">getppid</span><span class="params">(<span class="type">void</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在 Linux 系统中，除了 <code>init</code> 进程，其他进程都有一个父进程。对于在终端启动程序，它的父进程就是 Shell。下面程序在运行时输出自己的 PID 和父进程的 PID</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">pid_t</span> pid;</span><br><span class="line">    <span class="type">pid_t</span> ppid;</span><br><span class="line"></span><br><span class="line">    pid = getpid();</span><br><span class="line">    ppid = getppid();</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;pid: %d\n&quot;</span>, pid);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;ppid: %d\n&quot;</span>, ppid);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="fork-复制进程"><a href="#fork-复制进程" class="headerlink" title="fork() 复制进程"></a>fork() 复制进程</h3><p><code>fork()</code> 函数以父进程为蓝本，产生一个子进程。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">pid_t</span> <span class="title function_">fork</span><span class="params">(<span class="type">void</span>)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>对于 <code>fork()</code> 函数的返回值，如果创建失败，将得到 -1；如果创建成功，在父进程中将得到子进程的 PID，在子进程中将得到 0</p>
+<p>如果在 <code>fork()</code> 函数之后用一个 <code>if</code> 语句对 <code>fork()</code> 函数的返回值进行判断，子进程和父进程将进入不同的分支。</p>
+<p>下面程序中的 <code>if</code> 语句让父进程输出 <code>parent hello!</code>，而子进程输出 <code>child hello!</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">pid_t</span> pid;</span><br><span class="line"></span><br><span class="line">    pid = fork();</span><br><span class="line">    <span class="keyword">if</span> (pid == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;fork error&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (pid == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;child hello!\n&quot;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;parent hello!\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="sleep-进入睡眠"><a href="#sleep-进入睡眠" class="headerlink" title="sleep() 进入睡眠"></a>sleep() 进入睡眠</h3><p>调用 <code>sleep()</code> 函数，进程将进入睡眠状态，传递给 <code>sleep()</code> 函数的参数就是睡眠的持续时间，单位秒。下面代码将使进程进入睡眠状态，持续 3 秒钟。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">sleep(<span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="wait-等待进程结束、exit-结束进程"><a href="#wait-等待进程结束、exit-结束进程" class="headerlink" title="wait() 等待进程结束、exit() 结束进程"></a>wait() 等待进程结束、exit() 结束进程</h3><p>父进程调用 <code>wait()</code>，将进入睡眠状态，直至子进程进入僵死状态，返回值是子进程的 PID。子进程调用 <code>exit()</code> 将使自己进入僵死状态。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/wait.h&gt;</span> <span class="comment">// wait()</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span> <span class="comment">// exit()</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">pid_t</span> <span class="title function_">wait</span><span class="params">(<span class="type">int</span> * status)</span>;</span><br><span class="line"><span class="type">void</span> <span class="title function_">exit</span><span class="params">(<span class="type">int</span> status)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>这两个函数都只有一个参数。<code>exit()</code> 函数的参数是一个整型变量，用来保存一个范围在 <code>0-255</code> 之间的整数，最终这个整数的地址会保存在 <code>wait()</code> 函数的参数中。</p>
+<h2 id="进程间通信"><a href="#进程间通信" class="headerlink" title="进程间通信"></a>进程间通信</h2><p>信号机制是进程间的一种通信机制。信号是一系列整数，用来代表不同的事情发生。信号可以被进程捕获，捕获时会调用提前指定的信号处理函数，信号会作为参数传递。信号可以是由另一进程产生，也可由内核发出。</p>
+<p>实际上，子进程调用 <code>exit()</code> 时就会产生一个名为 <code>SIGCHLD</code> 的信号，父进程只要提前为这个信号指定处理函数就好，而不用专门调用 <code>wait()</code> 来等待。</p>
+<h3 id="signal-绑定信号处理函数"><a href="#signal-绑定信号处理函数" class="headerlink" title="signal() 绑定信号处理函数"></a>signal() 绑定信号处理函数</h3><p>调用 <code>signal()</code> 函数可以为某个信号指定处理函数。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(* <span class="type">sighandler_t</span>)</span><span class="params">(<span class="type">int</span>)</span>;</span><br><span class="line"><span class="type">sighandler_t</span> <span class="title function_">signal</span><span class="params">(<span class="type">int</span> signum, <span class="type">sighandler_t</span> sighandler)</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>signal()</code> 函数只接受两个参数，一个用于指定信号，一个用于给出信号的处理函数。信号处理函数必须是无返回值、只接受一个整数作为参数的函数。</p>
+<p>如果成功，<code>signal()</code> 函数的返回值是原本的信号处理函数，否则返回 <code>SIG_ERR</code></p>
+<p>信号 <code>SIGINT</code> 是一个在前台运行的进程在用户按下 Ctrl + C 时可以捕获到的信号。下面程序将信号 <code>SIGINT</code> 的处理函数设为 <code>sig_handler()</code>，这个函数会输出 <code>interrupted!</code>，故用户按下 Ctrl + C 时会提示 <code>interrupted!</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">sig_handler</span><span class="params">(<span class="type">int</span> sig)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;interrupted!\n&quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (signal(SIGINT, sig_handler) == SIG_ERR) &#123;</span><br><span class="line">        perror(<span class="string">&quot;signal error&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>信号处理函数除了可以是自定义的函数，还可以使用 <code>SIG_IGN</code> 和 <code>SIG_DFL</code> 这两个宏。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;bits/signum.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SIG_IGN ((sighandler_t) 0)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SIG_DFL ((sighandler_t) 1)</span></span><br></pre></td></tr></table></figure>
+
+<p><code>SIG_IGN</code> 表示忽略目标信号；<code>SIG_DFL</code> 表示采用信号的默认处理方式。</p>
+<h3 id="处理僵尸进程"><a href="#处理僵尸进程" class="headerlink" title="处理僵尸进程"></a>处理僵尸进程</h3><p>子进程终止时，父进程可以捕获 <code>SIGCHLD</code> 信号。如果父进程不对 <code>SIGCHLD</code> 信号进行处理，子进程会继续占用资源而成为僵尸进程。</p>
+<p>最简单的解决办法是把 <code>SIGCHLD</code> 信号的处理函数指定为 <code>SIG_IGN</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">signal(SIGCHLD, SIG_IGN);</span><br></pre></td></tr></table></figure>
+
+<h3 id="kill-、raise-发送信号"><a href="#kill-、raise-发送信号" class="headerlink" title="kill()、raise() 发送信号"></a>kill()、raise() 发送信号</h3><p>进程可以用 <code>signal()</code> 函数给信号绑定信号处理函数，一旦信号到来，信号处理函数就会被调用。进程还可以用 <code>kill()</code> 函数给另一进程发送信号，或者用 <code>raise()</code> 函数给自己发送信号。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">kill</span><span class="params">(<span class="type">pid_t</span> pid, <span class="type">int</span> sig)</span>;</span><br><span class="line"><span class="type">int</span> <span class="title function_">raise</span><span class="params">(<span class="type">int</span> sig)</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>kill()</code> 函数在成功时返回 0，失败时返回 -1，<code>errno</code> 的可能取值如下：</p>
+<ul>
+<li><code>EINVAL</code> 无效的信号</li>
+<li><code>EPERM</code> 无权限发送信号</li>
+<li><code>ESRCH</code> 目标不存在</li>
+</ul>
+<p>下面程序创建的子进程在给信号 <code>SIGINT</code> 绑定处理函数后进入死循环，父进程在睡眠 3 秒后向子进程发送信号 <code>SIGINT</code>，使得子进程中的信号处理函数被调用，最终输出 <code>interrupted!</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;signal.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">sig_handler</span><span class="params">(<span class="type">int</span> sig)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;interrupted!\n&quot;</span>);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">pid_t</span> pid;</span><br><span class="line"></span><br><span class="line">    pid = fork();</span><br><span class="line">    <span class="keyword">if</span> (pid == <span class="number">-1</span>) &#123;</span><br><span class="line">        perror(<span class="string">&quot;fork error&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (pid == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (signal(SIGINT, sig_handler) == SIG_ERR) &#123;</span><br><span class="line">            perror(<span class="string">&quot;signal error&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span> (<span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        sleep(<span class="number">3</span>);</span><br><span class="line">        kill(pid, SIGINT);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h2><p>进程进一步细分，就是线程。每一个进程都至少有一个线程，这个线程称为 <strong>主线程</strong>。主线程就是运行主函数 <code>main()</code> 的线程。创建线程相当于调用一个函数，只不过原来的线程会立即执行后续的代码而不等待这个函数返回。这使得被调函数中的代码和后续的代码是并行执行的。因此，可以简单地认为多线程就是同时运行多个函数。</p>
+<p>历史上曾出现过多种线程标准。这些标准互不兼容，这使得程序员难以开发可移植的应用程序。为此，IEEE 制订了后来被广泛采用的线程标准 POSIX threads，简称 Pthreads。<strong>POSIX 线程库</strong> 实现了这个标准。POSIX 线程库也是最常用的线程库。使用 POSIX 线程库需要包含头文件 <code>pthread.h</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>由于 POSIX 线程库并不属于默认库，因此在使用 <code>gcc</code> 命令进行编译时，要加上 <code>-lpthread</code> 选项。</p>
+</blockquote>
+<h3 id="pthread-create-创建线程"><a href="#pthread-create-创建线程" class="headerlink" title="pthread_create() 创建线程"></a>pthread_create() 创建线程</h3><p>线程通过调用 <code>pthread_create()</code> 函数创建。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_create</span><span class="params">(</span></span><br><span class="line"><span class="params">	<span class="type">pthread_t</span> * id, </span></span><br><span class="line"><span class="params">    <span class="type">pthread_attr_t</span> * attr, </span></span><br><span class="line"><span class="params">    <span class="type">void</span> * (* start_routine)(<span class="type">void</span> *), </span></span><br><span class="line"><span class="params">    <span class="type">void</span> * arg</span></span><br><span class="line"><span class="params">)</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>第一个参数要求一个 <code>pthread_t</code> 变量的地址。这个变量用来保存线程的标识符</li>
+<li>第二个参数要求一个 <code>pthread_attr_t</code> 结构的地址。这个结构用于设定线程的一些属性，一般设为 <code>0</code></li>
+<li>第三个参数要求一个函数。创建的线程将调用这个函数。这个函数称为 <strong>线程函数</strong>。线程函数必须以一个 <code>void</code> 指针为参数，返回值也必须是一个 <code>void</code> 指针。</li>
+<li>第四个参数是一个 <code>void</code> 指针，它将会作为线程函数的参数。如果不需要传参，设为 <code>0</code></li>
+</ul>
+<p>如果线程创建成功，<code>pthread_create()</code> 函数将返回 <code>0</code>，否则返回要给错误代码。这些错误代码是线程库定义的一些常量，但没有一个是 <code>-1</code></p>
+<h3 id="pthread-exit-结束线程"><a href="#pthread-exit-结束线程" class="headerlink" title="pthread_exit() 结束线程"></a>pthread_exit() 结束线程</h3><p>线程调用 <code>pthread_exit()</code> 函数可结束自己，这个函数相当于结束进程的 <code>exit()</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">pthread_exit</span><span class="params">(<span class="type">void</span> * retval)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>唯一的参数是一个 <code>void</code> 指针，用来指向返回值。</p>
+<h3 id="pthread-join-等待线程结束"><a href="#pthread-join-等待线程结束" class="headerlink" title="pthread_join() 等待线程结束"></a>pthread_join() 等待线程结束</h3><p>可以调用 <code>pthread_join()</code> 函数来等待另一个线程结束。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_join</span><span class="params">(<span class="type">pthread_t</span> id, <span class="type">void</span> ** retval)</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>第一个参数要求一个线程的标识符</li>
+<li>第二个参数要求一个 <code>void</code> 指针的地址。这个指针将被指向线程的返回值。如果不需要得到线程的返回值，可设为 <code>0</code></li>
+</ul>
+<p>如果顺利，<code>pthread_join()</code> 函数将返回 <code>0</code>，否则返回一个错误代码。</p>
+<p>下面是一个完整的例子。演示了从创建线程到结束线程的过程。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span> <span class="comment">// exit()</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span> <span class="comment">// fork(), sleep(), _exit(), pid_t</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;pthread.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> * <span class="title function_">hello</span><span class="params">(<span class="type">void</span> * arg)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Thread start running!\n&quot;</span>);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, (<span class="type">char</span> *)arg);</span><br><span class="line">    sleep(<span class="number">3</span>);</span><br><span class="line">    pthread_exit(<span class="string">&quot;Hello from thread!&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">pthread_t</span> id;</span><br><span class="line">    <span class="type">void</span> * thread_retval;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (pthread_create(&amp;id, <span class="number">0</span>, hello, <span class="string">&quot;Hello from main!&quot;</span>) != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;Create thread failed!\n&quot;</span>);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    pthread_join(id, &amp;thread_retval);</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%s\n&quot;</span>, (<span class="type">char</span> *)thread_retval);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="pthread-detach-脱离同步"><a href="#pthread-detach-脱离同步" class="headerlink" title="pthread_detach() 脱离同步"></a>pthread_detach() 脱离同步</h3><p><code>pthread_detach()</code> 函数用来使一个线程与其他线程脱离同步。脱离同步是指其他线程不能用 <code>pthread_join()</code> 函数来等待这个线程结束。这个线程将在退出时自行释放所占的资源。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">pthread_detach</span><span class="params">(<span class="type">pthread_t</span> id)</span>;</span><br></pre></td></tr></table></figure>
+
+<p><code>pthread_detach()</code> 函数唯一的参数就是需要脱离同步的线程的标识符。如果顺利，将返回 <code>0</code>，否则返回一个错误代码。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>totravel
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://totravel.github.io/2019/03/17/2021-03-06-linux-multi-process-and-muti-threaded/" title="Linux 多进程、多线程编程">https://totravel.github.io/2019/03/17/2021-03-06-linux-multi-process-and-muti-threaded/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/C-%E8%AF%AD%E8%A8%80/" rel="tag"><i class="fa fa-tag"></i> C 语言</a>
+              <a href="/tags/Linux/" rel="tag"><i class="fa fa-tag"></i> Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/02/13/2021-03-05-linux-socket/" rel="prev" title="Linux 套接字编程基础">
+                  <i class="fa fa-chevron-left"></i> Linux 套接字编程基础
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/05/22/2021-03-05-pr-guide/" rel="next" title="Premiere 视频剪辑快速入门">
+                  Premiere 视频剪辑快速入门 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">totravel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

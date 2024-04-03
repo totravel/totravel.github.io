@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"totravel.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="SOCKS5 协议是常用的代理协议，许多应用程序都支持设置 SOCKS5 代理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SOCKS5 协议与 C 语言实现">
+<meta property="og:url" content="https://totravel.github.io/2021/01/04/2021-03-05-socks5-protocol/">
+<meta property="og:site_name" content="旅行 · 之间">
+<meta property="og:description" content="SOCKS5 协议是常用的代理协议，许多应用程序都支持设置 SOCKS5 代理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://totravel.github.io/2021/01/04/2021-03-05-socks5-protocol/01.png">
+<meta property="og:image" content="https://totravel.github.io/2021/01/04/2021-03-05-socks5-protocol/02.png">
+<meta property="article:published_time" content="2021-01-04T12:30:00.000Z">
+<meta property="article:modified_time" content="2022-11-14T18:05:58.338Z">
+<meta property="article:author" content="totravel">
+<meta property="article:tag" content="C 语言">
+<meta property="article:tag" content="SOCKS 5">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://totravel.github.io/2021/01/04/2021-03-05-socks5-protocol/01.png">
+
+
+<link rel="canonical" href="https://totravel.github.io/2021/01/04/2021-03-05-socks5-protocol/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://totravel.github.io/2021/01/04/2021-03-05-socks5-protocol/","path":"2021/01/04/2021-03-05-socks5-protocol/","title":"SOCKS5 协议与 C 语言实现"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SOCKS5 协议与 C 语言实现 | 旅行 · 之间</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">旅行 · 之间</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">总是跌跌撞撞，到底是顺其自然还是无头苍蝇？傻傻分不清……</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">47</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">2</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">19</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%91%89-%E6%8F%A1%E6%89%8B%E9%98%B6%E6%AE%B5"><span class="nav-number">1.</span> <span class="nav-text">👉 握手阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82"><span class="nav-number">1.1.</span> <span class="nav-text">客户端发送请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%91%E9%80%81%E5%BA%94%E7%AD%94"><span class="nav-number">1.2.</span> <span class="nav-text">代理服务器发送应答</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E8%A1%8C%E7%94%A8%E6%88%B7%E5%90%8D%E5%AF%86%E7%A0%81%E8%AE%A4%E8%AF%81"><span class="nav-number">1.3.</span> <span class="nav-text">进行用户名密码认证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%8E%AF-%E7%A1%AE%E5%AE%9A%E6%9C%8D%E5%8A%A1%E9%98%B6%E6%AE%B5"><span class="nav-number">2.</span> <span class="nav-text">🎯 确定服务阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%8F%91%E9%80%81%E8%AF%B7%E6%B1%82-1"><span class="nav-number">2.1.</span> <span class="nav-text">客户端发送请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%8F%91%E9%80%81%E5%BA%94%E7%AD%94-1"><span class="nav-number">2.2.</span> <span class="nav-text">代理服务器发送应答</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-%E4%BB%A3%E7%90%86"><span class="nav-number">2.3.</span> <span class="nav-text">TCP 代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP-%E4%BB%A3%E7%90%86"><span class="nav-number">2.4.</span> <span class="nav-text">UDP 代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-%E8%AF%AD%E8%A8%80%E5%AF%B9%E8%AF%B7%E6%B1%82%E7%9A%84%E5%B0%81%E8%A3%85"><span class="nav-number">2.5.</span> <span class="nav-text">C 语言对请求的封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-%E8%AF%AD%E8%A8%80%E5%AF%B9%E5%BA%94%E7%AD%94%E7%9A%84%E5%B0%81%E8%A3%85"><span class="nav-number">2.6.</span> <span class="nav-text">C 语言对应答的封装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%F0%9F%93%A1-%E8%BD%AC%E5%8F%91%E6%95%B0%E6%8D%AE%E9%98%B6%E6%AE%B5"><span class="nav-number">3.</span> <span class="nav-text">📡 转发数据阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TCP-%E4%BB%A3%E7%90%86-1"><span class="nav-number">3.1.</span> <span class="nav-text">TCP 代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UDP-%E4%BB%A3%E7%90%86-1"><span class="nav-number">3.2.</span> <span class="nav-text">UDP 代理</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="totravel"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">totravel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/totravel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;totravel" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:totravel@foxmail.com" title="E-Mail → mailto:totravel@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_nd.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://totravel.github.io/2021/01/04/2021-03-05-socks5-protocol/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="totravel">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="旅行 · 之间">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SOCKS5 协议与 C 语言实现 | 旅行 · 之间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SOCKS5 协议与 C 语言实现
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-04 20:30:00" itemprop="dateCreated datePublished" datetime="2021-01-04T20:30:00+08:00">2021-01-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-11-15 02:05:58" itemprop="dateModified" datetime="2022-11-15T02:05:58+08:00">2022-11-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>SOCKS5 协议的作用是为应用层提供代理服务，通信过程分为三个阶段：</p>
+<ol>
+<li>握手阶段。客户端跟代理服务器确定协议的版本和认证方法，完成身份认证；</li>
+<li>确定服务阶段。客户端向代理服务器说明需要提供何种代理服务；</li>
+<li>转发数据阶段。代理服务器在客户端和目标服务器之间转发数据。</li>
+</ol>
+<p>在确定服务阶段，客户端要向代理服务器发送一个请求，代理服务器要给客户端发送一个应答。如果是要进行 TCP 代理，客户端发送的请求须包含目标服务器的地址和端口；代理服务器成功连接到目标服务器后，须在应答中给出代理服务器与目标服务器通信用的地址和端口号。</p>
+<p><img data-src="/2021/01/04/2021-03-05-socks5-protocol/01.png" alt="TCP 过程"></p>
+<p>如果是要进行 UDP 代理，则目标服务器的地址和端口号是包含在每一个 UDP 数据报中的。客户端发送的请求中包含的是 UDP 数据报的源地址和源端口；代理服务器在应答中给出的是代理服务器用来接收 UDP 数据报的地址和端口号。</p>
+<p><img data-src="/2021/01/04/2021-03-05-socks5-protocol/02.png" alt="UDP 过程"></p>
+<p>不管是 TCP 代理还是 UDP 代理，代理服务器和客户端之间都要建立一条 TCP 连接来完成前面两个阶段。</p>
+<h2 id="👉-握手阶段"><a href="#👉-握手阶段" class="headerlink" title="👉 握手阶段"></a>👉 握手阶段</h2><p>握手的目的是确定协议的版本和认证方法，并依据选定的认证方法进行认证。</p>
+<h3 id="客户端发送请求"><a href="#客户端发送请求" class="headerlink" title="客户端发送请求"></a>客户端发送请求</h3><p>客户端发送给代理服务器的 <strong>方法选择消息</strong> 格式如下（表格第二行表示长度，单位字节）：</p>
+<table>
+<thead>
+<tr>
+<th>ver</th>
+<th>nmethods</th>
+<th>methods</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1</td>
+<td>1-255</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>ver</code> 协议的版本号，固定为 <code>0x05</code></li>
+<li><code>nmethods</code> 认证方法的数量，即第三个字段 <code>methods</code> 的长度</li>
+<li><code>methods</code> 认证方法的列表，每个字节代表一种认证方法</li>
+</ul>
+<p>目前，绝大多数客户端只支持下面两种认证方法：</p>
+<ul>
+<li><code>0x00</code> NO AUTHENTICATION REQUIRED，无需认证</li>
+<li><code>0x02</code> USERNAME&#x2F;PASSWORD，用户名密码</li>
+</ul>
+<p>如果客户端不支持用户名密码认证，应该把 <code>nmethods</code> 设为 <code>0x01</code>，并在 <code>methods</code> 中填上 <code>0x00</code>，实际发送的数据如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ver  nmethods methods</span><br><span class="line">0x05 0x01     0x00</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>SOCKS 协议把「不需要认证」也视为一种认证方法</p>
+</blockquote>
+<p>如果客户端支持用户名密码认证，应该把 <code>nmethods</code> 设为 <code>0x02</code>，然后在 <code>methods</code> 中填上 <code>0x00</code> 和 <code>0x02</code>，实际发送的数据如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ver  nmethods methods</span><br><span class="line">0x05 0x02     0x00 0x02</span><br></pre></td></tr></table></figure>
+
+<p>客户端发送的方法选择消息可用下面结构体封装：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">uint8_t</span> ver;</span><br><span class="line">    <span class="type">uint8_t</span> nmethods;</span><br><span class="line">    <span class="type">uint8_t</span> methods[];</span><br><span class="line">&#125; <span class="type">client_hello_t</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="代理服务器发送应答"><a href="#代理服务器发送应答" class="headerlink" title="代理服务器发送应答"></a>代理服务器发送应答</h3><p>代理服务器收到客户端的消息后，先检查 <code>methods</code> 中是否包含要求的认证方法，然后向客户端发送一条 <strong>认证方法选择消息</strong>，以说明被采纳的认证方法，格式如下：</p>
+<table>
+<thead>
+<tr>
+<th>ver</th>
+<th>method</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>ver</code> 协议的版本号，固定为 <code>0x05</code></li>
+<li><code>method</code> 采纳的认证方法，决定后续的动作</li>
+</ul>
+<p>下面是 <code>method</code> 的三种常见取值：</p>
+<ul>
+<li><code>0x00</code> NO AUTHENTICATION REQUIRED，无需认证</li>
+<li><code>0x02</code> USERNAME&#x2F;PASSWORD，用户名密码</li>
+<li><code>0xff</code> NO ACCEPTABLE METHODS，没有能够接受的认证方法</li>
+</ul>
+<p>若不需要进行认证，就把 <code>method</code> 设为 <code>0x00</code>，实际发送给客户端的数据如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ver  method</span><br><span class="line">0x05 0x00</span><br></pre></td></tr></table></figure>
+
+<p>若代理服务器要求通过用户名密码认证，但客户端发来的消息中的 <code>methods</code> 字段不包含代表用户名密码认证方式的 <code>0x02</code>，则代理服务器应该把 <code>method</code> 设为 <code>0xff</code>，表示没有能够接受的认证方法，此时客户端应关闭连接。</p>
+<p>下面函数可检查 <code>methods</code> 中是否包含要求的认证方法。函数需要两个参数：第一个参数 <code>request</code> 指向客户端发来的方法选择消息；第二个参数 <code>method</code> 是要查找的认证方法。若找到，返回 1，否则返回 0</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">method_exists</span><span class="params">(<span class="type">client_hello_t</span> * client_hello, <span class="type">uint8_t</span> method)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; client_hello-&gt;nmethods; i++)</span><br><span class="line">        <span class="keyword">if</span> (client_hello-&gt;methods[i] == method)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代理服务器发送的方法选中消息可用下面结构体封装：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">uint8_t</span> ver;</span><br><span class="line">    <span class="type">uint8_t</span> method;</span><br><span class="line">&#125; <span class="type">server_hello_t</span>;</span><br></pre></td></tr></table></figure>
+
+<p>此外，SOCKS5 还定义了认证方法在下面三种取值时的含义：</p>
+<ul>
+<li><code>0x01</code> GSSAPI，采用 GSSAPI</li>
+<li><code>0x03 - 0x7e</code> ANA ASSIGNED，由互联网数字分配机构定义</li>
+<li><code>0x80 - 0xef</code> RESERVED FOR PRIVATE METHODS，保留，可定义私有的认证方法</li>
+</ul>
+<h3 id="进行用户名密码认证"><a href="#进行用户名密码认证" class="headerlink" title="进行用户名密码认证"></a>进行用户名密码认证</h3><p>如果代理服务器要求通过用户名密码认证，客户端在收到代理服务器的方法选中消息后，就要向代理服务器发送一个包含用户名和密码的消息，格式如下：</p>
+<table>
+<thead>
+<tr>
+<th>ver</th>
+<th>ulen</th>
+<th>uname</th>
+<th>plen</th>
+<th>passwd</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1</td>
+<td>1-255</td>
+<td>1</td>
+<td>1-255</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>ver</code> 认证协议的版本号，固定为 <code>0x01</code></li>
+<li><code>ulen</code> 用户名的长度</li>
+<li><code>uname</code> 用户名</li>
+<li><code>plen</code> 密码的长度</li>
+<li><code>passwd</code> 密码</li>
+</ul>
+<p>若客户端提供的用户名是 <code>admin</code>，密码是 <code>123456</code>，实际发送的数据如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ver  ulen uname plen passwd</span><br><span class="line">0x01 0x05 admin 0x06 123456</span><br></pre></td></tr></table></figure>
+
+<p>代理服务器校验后，给客户端发送一个说明认证结果的消息，格式如下：</p>
+<table>
+<thead>
+<tr>
+<th>ver</th>
+<th>status</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>ver</code> 认证协议的版本号，固定为 <code>0x01</code></li>
+<li><code>status</code> 认证结果，只有等于 <code>0x00</code> 时才表示认证成功</li>
+</ul>
+<h2 id="🎯-确定服务阶段"><a href="#🎯-确定服务阶段" class="headerlink" title="🎯 确定服务阶段"></a>🎯 确定服务阶段</h2><h3 id="客户端发送请求-1"><a href="#客户端发送请求-1" class="headerlink" title="客户端发送请求"></a>客户端发送请求</h3><p>客户端发送一个请求，说明需要代理服务器提供何种服务，格式如下：</p>
+<table>
+<thead>
+<tr>
+<th>ver</th>
+<th>cmd</th>
+<th>rsv</th>
+<th>atyp</th>
+<th>dst.addr</th>
+<th>dst.port</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>Variable</td>
+<td>2</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>ver</code> 协议的版本号，固定为 <code>0x05</code></li>
+<li><code>cmd</code> 命令，说明需要代理服务器提供何种服务，取值如下：<ul>
+<li><code>0x01</code> CONNECT，建立 TCP 连接（提供 TCP 代理服务）</li>
+<li><code>0x02</code> BIND，用于 FTP 等罕见场景</li>
+<li><code>0x03</code> UDP，关联 UDP 请求（提供 UDP 代理服务）</li>
+</ul>
+</li>
+<li><code>rsv</code> reserved 的缩写，保留，无意义，固定为 <code>0x00</code></li>
+<li><code>atyp</code> address type 的缩写，下一个字段的类型，取值如下：<ul>
+<li><code>0x01</code> 下一个字段 <code>dst.addr</code> 是 4 个字节的 IPv4 地址</li>
+<li><code>0x03</code> 下一个字段 <code>dst.addr</code> 的第 1 个字节是域名长度，之后是域名本身</li>
+<li><code>0x04</code> 下一个字段 <code>dst.addr</code> 是 16 个字节的 IPv6 地址</li>
+</ul>
+</li>
+<li><code>dst.addr</code> destination address 的缩写，目标地址或源地址</li>
+<li><code>dst.port</code> 目标端口或源端口</li>
+</ul>
+<p>最后两个字段 <code>dst.addr</code> 和 <code>dst.port</code> 在不同的情况下有不同的含义：在 TCP 代理中，是目标服务器的地址和端口号；在 UDP 代理中，是 UDP 数据报的源地址和源端口号。</p>
+<h3 id="代理服务器发送应答-1"><a href="#代理服务器发送应答-1" class="headerlink" title="代理服务器发送应答"></a>代理服务器发送应答</h3><p>代理服务器收到客户端的请求后，要给客户端一个应答，格式如下：</p>
+<table>
+<thead>
+<tr>
+<th>ver</th>
+<th>rep</th>
+<th>rsv</th>
+<th>atyp</th>
+<th>bnd.addr</th>
+<th>bnd.port</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>Variable</td>
+<td>2</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>ver</code> 协议的版本号，固定为 <code>0x05</code></li>
+<li><code>rep</code> 状态码，说明客户端的请求是否能够得到满足，取值如下：<ul>
+<li><code>0x00</code>  succeeded，成功</li>
+<li><code>0x01</code>  general SOCKS server failure，一般错误</li>
+<li><code>0x02</code>  connection not allowed by ruleset，连接不被规则集所接受</li>
+<li><code>0x03</code>  Network unreachable，网络不可到达</li>
+<li><code>0x04</code>  Host unreachable，主机不可到达（主机名无效）</li>
+<li><code>0x05</code>  Connection refused，连接被拒绝</li>
+<li><code>0x06</code>  TTL expired，TTL 过期</li>
+<li><code>0x07</code>  Command not supported，命令不支持</li>
+<li><code>0x08</code>  Address type not supported，地址类型不支持</li>
+<li><code>0x09 - 0xff</code> unassigned，未指派（暂无意义）</li>
+</ul>
+</li>
+<li><code>rsv</code> 保留，无任何作用，固定为 <code>0x00</code></li>
+<li><code>atyp</code> 下一个字段的类型，取值如下：<ul>
+<li><code>0x01</code> IPv4</li>
+<li><code>0x03</code> 域名</li>
+<li><code>0x04</code> IPv6</li>
+</ul>
+</li>
+<li><code>bnd.addr</code> 地址</li>
+<li><code>bnd.port</code> 端口</li>
+</ul>
+<p>同样，最后两个字段 <code>bnd.addr</code> 和 <code>bnd.port</code> 在不同的情况下有不同的含义：在 TCP 代理中，是代理服务器与目标服务器通信使用的地址和端口号；在 UDP 代理中，是代理服务器用来接收来自客户端的 UDP 数据报的地址和端口号。</p>
+<h3 id="TCP-代理"><a href="#TCP-代理" class="headerlink" title="TCP 代理"></a>TCP 代理</h3><p>如果客户端要代理服务器提供 TCP 代理服务，应该把 <code>cmd</code> 设为 <code>0x01</code>。如果目标地址的类型是 IPv4，应该把 <code>atyp</code> 设为 <code>0x01</code>，接着 4 个字节的 IPv4 地址和 2 字节的端口号。</p>
+<p>例如，客户端要访问 <code>192.168.1.3:80</code>，实际发送的请求数据如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ver  cmd  rsv  atyp dst.addr    dst.port</span><br><span class="line">0x05 0x01 0x00 0x01 192.168.1.3 80</span><br></pre></td></tr></table></figure>
+
+<p>若代理服务器与目标服务器成功建立连接，使用的 IP 地址和端口号是 <code>192.168.1.2:58328</code>，实际发送的应答数据如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ver  cmd  rsv  atyp bnd.addr    bnd.port</span><br><span class="line">0x05 0x00 0x00 0x01 192.168.1.2 58328</span><br></pre></td></tr></table></figure>
+
+<p>在实际应用中，代理服务器常常忽略应答中的 <code>bnd.addr</code> 和 <code>bnd.port</code> 两个字段，并用 0 填充。</p>
+<h3 id="UDP-代理"><a href="#UDP-代理" class="headerlink" title="UDP 代理"></a>UDP 代理</h3><p>如果客户端要代理服务器提供 UDP 代理服务，应该把 <code>cmd</code> 设为 <code>0x03</code>。假如客户端准备将 UDP 数据报从 <code>192.168.0.2:59285</code> 发出，实际发送的请求数据如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ver  cmd  rsv  atyp dst.addr    dst.port</span><br><span class="line">0x05 0x03 0x00 0x01 192.168.0.2 59285</span><br></pre></td></tr></table></figure>
+
+<p>若代理服务器希望从 <code>192.168.0.3:1080</code> 接收 UDP 数据报，实际发送的应答数据如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ver  cmd  rsv  atyp bnd.addr    bnd.port</span><br><span class="line">0x05 0x00 0x00 0x01 192.168.0.3 1080</span><br></pre></td></tr></table></figure>
+
+<h3 id="C-语言对请求的封装"><a href="#C-语言对请求的封装" class="headerlink" title="C 语言对请求的封装"></a>C 语言对请求的封装</h3><p>可用下面结构体封装客户端发送的请求：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">uint8_t</span> ver;</span><br><span class="line">    <span class="type">uint8_t</span> cmd;</span><br><span class="line">    <span class="type">uint8_t</span> rsv;</span><br><span class="line">    <span class="type">uint8_t</span> atyp;</span><br><span class="line">    <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">            <span class="type">in_addr_t</span> addr;</span><br><span class="line">            <span class="type">in_port_t</span> port;</span><br><span class="line">        &#125; ipv4;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">            <span class="type">uint8_t</span> len;</span><br><span class="line">            <span class="type">char</span> str[];</span><br><span class="line">        &#125; domain;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">            <span class="type">uint8_t</span> addr[<span class="number">16</span>];</span><br><span class="line">            <span class="type">in_port_t</span> port;</span><br><span class="line">        &#125; ipv6;</span><br><span class="line">    &#125; dst;</span><br><span class="line">&#125; <span class="type">request_t</span>;</span><br></pre></td></tr></table></figure>
+
+<p>通过上述的结构指针来访问发送缓存，可以很方便地读写各个字段的值。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">char</span> buf[<span class="number">1024</span>];</span><br><span class="line"><span class="type">request_t</span> * req;</span><br><span class="line"></span><br><span class="line">req = (<span class="type">request_t</span> *)buf;</span><br><span class="line">req-&gt;ver = <span class="number">0x05</span>;</span><br><span class="line">req-&gt;cmd = <span class="number">0x01</span>;</span><br><span class="line">req-&gt;rsv = <span class="number">0x00</span>;</span><br><span class="line">req-&gt;atyp = <span class="number">0x01</span>;</span><br><span class="line">req-&gt;dst.ipv4.addr = inet_addr(<span class="string">&quot;127.0.0.1&quot;</span>);</span><br><span class="line">req-&gt;dst.ipv4.port = htons(<span class="number">8080</span>);</span><br></pre></td></tr></table></figure>
+
+<p>在填写目标地址和目标端口时，用到下面两个函数：</p>
+<ul>
+<li><code>inet_addr()</code> 将一个点分十进制表示的 IP 地址转换成网络字节序</li>
+<li><code>htons()</code> 将端口号从主机字节序转换成网络字节序</li>
+</ul>
+<h3 id="C-语言对应答的封装"><a href="#C-语言对应答的封装" class="headerlink" title="C 语言对应答的封装"></a>C 语言对应答的封装</h3><p>代理服务器发送给客户端的应答可用下面结构体封装：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">uint8_t</span> ver;</span><br><span class="line">    <span class="type">uint8_t</span> rep;</span><br><span class="line">    <span class="type">uint8_t</span> rsv;</span><br><span class="line">    <span class="type">uint8_t</span> atyp;</span><br><span class="line">    <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">            <span class="type">in_addr_t</span> addr;</span><br><span class="line">            <span class="type">in_port_t</span> port;</span><br><span class="line">        &#125; ipv4;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">            <span class="type">uint8_t</span> len;</span><br><span class="line">            <span class="type">uint8_t</span> str[];</span><br><span class="line">        &#125; domain;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">            <span class="type">uint8_t</span> addr[<span class="number">16</span>];</span><br><span class="line">            <span class="type">in_port_t</span> port;</span><br><span class="line">        &#125; ipv6;</span><br><span class="line">    &#125; bnd;</span><br><span class="line">&#125; <span class="type">reply_t</span>;</span><br></pre></td></tr></table></figure>
+
+<p>代理服务器用一个 <code>request</code> 结构指针来访问接收缓存，可以很方便地解析客户端发来的请求，同时准备一个 <code>reply</code> 结构的指针来访问发送缓存，可以很方便地解设定应答的各个字段。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> recv_buf[<span class="number">1024</span>];</span><br><span class="line"><span class="type">char</span> send_buf[<span class="number">1024</span>];</span><br><span class="line"></span><br><span class="line"><span class="type">request_t</span> * req = (<span class="type">request_t</span> *)recv_buf;</span><br><span class="line"><span class="type">reply_t</span> * rep = (<span class="type">reply_t</span> *)send_buf;</span><br></pre></td></tr></table></figure>
+
+<p>代理服务器先检查 <code>cmd</code>，以确定客户端的需求，若服务器只支持 TCP 代理，可使用下面条件判断语句：在 <code>cmd</code> 不是 <code>0x01</code> 时，将状态码 <code>rep</code> 设为 <code>0x07</code>，表示命令不支持。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (req-&gt;cmd != <span class="number">0x01</span>) &#123;</span><br><span class="line">    rep-&gt;rep = <span class="number">0x07</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Command not supported.\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后检查 <code>atyp</code>，以确定地址的类型，若代理服务器不支持 IPv6，可使用下面条件判断语句：在 <code>atyp</code> 是 <code>0x04</code> 时，将状态码 <code>rep</code> 设为 <code>0x08</code>，表示地址类型不支持。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (req-&gt;atyp == <span class="number">0x04</span>) &#123;</span><br><span class="line">    rep-&gt;rep = <span class="number">0x08</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;Address type not supported.\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="📡-转发数据阶段"><a href="#📡-转发数据阶段" class="headerlink" title="📡 转发数据阶段"></a>📡 转发数据阶段</h2><h3 id="TCP-代理-1"><a href="#TCP-代理-1" class="headerlink" title="TCP 代理"></a>TCP 代理</h3><p>这个阶段，代理服务器只需简单地在客户端和目标服务器之间转发数据。对于 TCP 代理，使用的连接是现有的连接，即前面进行握手和确定服务两个过程的连接。</p>
+<p>下面函数是在两个套接字之间转发数据，将两个套接字的描述符将作为参数调用即可。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/socket.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;netinet/in.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;arpa/inet.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BUFF_SIZE 10240</span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">tcp_forward</span><span class="params">(<span class="type">int</span> fd1, <span class="type">int</span> fd2)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> maxfd = fd1 &gt; fd2 ? fd1 : fd2;</span><br><span class="line">    maxfd++;</span><br><span class="line">    fd_set readfds;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">timeout</span>;</span></span><br><span class="line">    <span class="type">int</span> n;</span><br><span class="line">    <span class="type">uint8_t</span> buf[BUFF_SIZE];</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        FD_ZERO(&amp;readfds);</span><br><span class="line">        FD_SET(fd1, &amp;readfds);</span><br><span class="line">        FD_SET(fd2, &amp;readfds);</span><br><span class="line">        timeout.tv_sec = <span class="number">10</span>;</span><br><span class="line">        timeout.tv_usec = <span class="number">0</span>;</span><br><span class="line">        n = select(maxfd, &amp;readfds, <span class="literal">NULL</span>, <span class="literal">NULL</span>, &amp;timeout);</span><br><span class="line">        <span class="keyword">if</span> (n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">memset</span>(buf, <span class="number">0</span>, BUFF_SIZE);</span><br><span class="line">            <span class="keyword">if</span> (FD_ISSET(fd1, &amp;readfds)) &#123;</span><br><span class="line">                n = recv(fd1, buf, BUFF_SIZE, <span class="number">0</span>);</span><br><span class="line">                <span class="keyword">if</span> (n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    send(fd2, buf, n, <span class="number">0</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    perror(<span class="string">&quot;recv&quot;</span>);</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                n = recv(fd2, buf, BUFF_SIZE, <span class="number">0</span>);</span><br><span class="line">                <span class="keyword">if</span> (n &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    send(fd1, buf, n, <span class="number">0</span>);</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    perror(<span class="string">&quot;recv&quot;</span>);</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (n == <span class="number">-1</span>) &#123;</span><br><span class="line">            perror(<span class="string">&quot;select&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="UDP-代理-1"><a href="#UDP-代理-1" class="headerlink" title="UDP 代理"></a>UDP 代理</h3><p>在第二阶段，客户端说明了其发送 UDP 数据报使用的地址和端口，代理服务器说明了其用来接收 UDP 数据报的地址和端口。至于目标地址和端口号，则是包含在每个 UDP 数据报中。</p>
+<p>客户端必须在 UDP 数据报中给出目标服务器的地址和端口，否则代理服务器无法知道要将 UDP 数据报发往何处；代理服务器在收到目标服务器的响应数据后，也要在前面加上目标服务器的地址和端口后，才能返回给对应的客户端。</p>
+<p>客户端发出的 UDP 数据报和代理服务器返回的 UDP 数据报使用相同的格式，具体如下：</p>
+<table>
+<thead>
+<tr>
+<th>rsv</th>
+<th>frag</th>
+<th>atyp</th>
+<th>dst.addr</th>
+<th>dst.port</th>
+<th>data</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2</td>
+<td>1</td>
+<td>1</td>
+<td>Variable</td>
+<td>2</td>
+<td>Variable</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>rsv</code> 保留，无意义，固定为 <code>0x0000</code></li>
+<li><code>frag</code> 分片的序号，一般为 <code>0x00</code></li>
+<li><code>atyp</code> 下一个字段的类型</li>
+<li><code>dst.addr</code> 目标地址</li>
+<li><code>dst.port</code> 目标端口</li>
+<li><code>data</code> 数据</li>
+</ul>
+<p>如果一个 UDP 数据报所携带的数据并不完整，完整的数据由若干个 UDP 数据报有序拼接而成，这种数据报就称为 <strong>分片</strong>，分片的序号通过 <code>frag</code> 字段给出。如果该字段被设为 <code>0x00</code>，则表示该 UDP 数据报不是分片，携带的是完整的数据。</p>
+<p>在代理服务器和客户端之间传输的 UDP 数据报可用下面结构体封装：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">datagram</span> &#123;</span></span><br><span class="line">    <span class="type">uint16_t</span> rsv;</span><br><span class="line">    <span class="type">uint8_t</span> frag;</span><br><span class="line">    <span class="type">uint8_t</span> atyp;</span><br><span class="line">    <span class="class"><span class="keyword">union</span> &#123;</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">            <span class="type">in_addr_t</span> addr;</span><br><span class="line">            <span class="type">in_port_t</span> port;</span><br><span class="line">        &#125; ipv4;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">            <span class="type">uint8_t</span> len;</span><br><span class="line">            <span class="type">char</span> str[];</span><br><span class="line">        &#125; domain;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">            <span class="type">uint8_t</span> addr[<span class="number">16</span>];</span><br><span class="line">            <span class="type">in_port_t</span> port;</span><br><span class="line">        &#125; ipv6;</span><br><span class="line">    &#125; dst;</span><br><span class="line">    <span class="type">uint8_t</span> data[];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>实际上，代理服务器要维护一个客户端和目标服务器之间的关系表，这样代理服务器才知道哪些 UDP 数据报对应是合法的，以及在收到目标服务器的响应数据时，才能正确返回给客户端。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>totravel
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://totravel.github.io/2021/01/04/2021-03-05-socks5-protocol/" title="SOCKS5 协议与 C 语言实现">https://totravel.github.io/2021/01/04/2021-03-05-socks5-protocol/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/C-%E8%AF%AD%E8%A8%80/" rel="tag"><i class="fa fa-tag"></i> C 语言</a>
+              <a href="/tags/SOCKS-5/" rel="tag"><i class="fa fa-tag"></i> SOCKS 5</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/02/11/2021-03-05-scrcpy-guide/" rel="prev" title="开源、跨平台安卓投屏软件 Scrcpy 中文指南">
+                  <i class="fa fa-chevron-left"></i> 开源、跨平台安卓投屏软件 Scrcpy 中文指南
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/02/01/2021-03-05-libsodium-guide/" rel="next" title="开源、先进、易用 C 语言加密函数库 Libsodium 中文指南">
+                  开源、先进、易用 C 语言加密函数库 Libsodium 中文指南 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">totravel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

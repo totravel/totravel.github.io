@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"totravel.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Windows 上的批处理程序相当于 Linux 上的 Shell 脚本，常用于实现重复性工作的自动化。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一天学会 Windows 批处理">
+<meta property="og:url" content="https://totravel.github.io/2022/11/04/2022-11-04-bat-tutorial/">
+<meta property="og:site_name" content="旅行 · 之间">
+<meta property="og:description" content="Windows 上的批处理程序相当于 Linux 上的 Shell 脚本，常用于实现重复性工作的自动化。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-04T06:15:00.000Z">
+<meta property="article:modified_time" content="2023-02-22T13:25:00.740Z">
+<meta property="article:author" content="totravel">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://totravel.github.io/2022/11/04/2022-11-04-bat-tutorial/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://totravel.github.io/2022/11/04/2022-11-04-bat-tutorial/","path":"2022/11/04/2022-11-04-bat-tutorial/","title":"一天学会 Windows 批处理"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>一天学会 Windows 批处理 | 旅行 · 之间</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">旅行 · 之间</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">总是跌跌撞撞，到底是顺其自然还是无头苍蝇？傻傻分不清……</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">47</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">2</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">19</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E4%B8%AA%E6%89%B9%E5%A4%84%E7%90%86%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.1.</span> <span class="nav-text">第一个批处理程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC-Windows-%E5%91%BD%E4%BB%A4"><span class="nav-number">1.2.</span> <span class="nav-text">基本 Windows 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E5%9B%9E%E6%98%BE"><span class="nav-number">1.3.</span> <span class="nav-text">命令回显</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AD%E5%8F%A5"><span class="nav-number">2.1.</span> <span class="nav-text">语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E9%87%8A"><span class="nav-number">2.2.</span> <span class="nav-text">注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E9%87%8F"><span class="nav-number">2.3.</span> <span class="nav-text">变量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="nav-number">2.3.1.</span> <span class="nav-text">环境变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0"><span class="nav-number">2.3.2.</span> <span class="nav-text">命令行参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BB%B6%E8%BF%9F%E5%B1%95%E5%BC%80"><span class="nav-number">2.3.3.</span> <span class="nav-text">延迟展开</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="nav-number">2.3.4.</span> <span class="nav-text">运算符</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6"><span class="nav-number">2.4.</span> <span class="nav-text">流程控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%A1%E4%BB%B6%E8%AF%AD%E5%8F%A5"><span class="nav-number">2.4.1.</span> <span class="nav-text">条件语句</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%96%87%E4%BB%B6%E6%98%AF%E5%90%A6%E5%AD%98%E5%9C%A8"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">判断文件是否存在</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%8F%98%E9%87%8F%E6%98%AF%E5%90%A6%E6%9C%89%E5%AE%9A%E4%B9%89"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">判断变量是否有定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%AF%94%E8%BE%83%E4%B8%A4%E4%B8%AA%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%88%96%E6%95%B0%E5%AD%97"><span class="nav-number">2.4.1.3.</span> <span class="nav-text">比较两个字符串或数字</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5%E9%80%80%E5%87%BA%E7%A0%81"><span class="nav-number">2.4.1.4.</span> <span class="nav-text">检查退出码</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5"><span class="nav-number">2.4.2.</span> <span class="nav-text">循环语句</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#C-%E8%AF%AD%E8%A8%80%E9%A3%8E%E6%A0%BC"><span class="nav-number">2.4.2.1.</span> <span class="nav-text">C 语言风格</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%81%8D%E5%8E%86%E6%96%87%E4%BB%B6%E5%90%8D"><span class="nav-number">2.4.2.2.</span> <span class="nav-text">遍历文件名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%81%8D%E5%8E%86%E7%9B%AE%E5%BD%95%E5%90%8D"><span class="nav-number">2.4.2.3.</span> <span class="nav-text">遍历目录名</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%81%8D%E5%8E%86%E7%9B%AE%E5%BD%95%E6%A0%91"><span class="nav-number">2.4.2.4.</span> <span class="nav-text">遍历目录树</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8C%89%E8%A1%8C%E6%8C%89%E5%88%97%E9%81%8D%E5%8E%86%E6%96%87%E6%9C%AC"><span class="nav-number">2.4.2.5.</span> <span class="nav-text">按行按列遍历文本</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0"><span class="nav-number">2.5.</span> <span class="nav-text">函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%B3%E8%BD%AC%E5%91%BD%E4%BB%A4%E4%B8%8E%E6%A0%87%E5%8F%B7"><span class="nav-number">2.5.1.</span> <span class="nav-text">跳转命令与标号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89%E5%92%8C%E8%B0%83%E7%94%A8"><span class="nav-number">2.5.2.</span> <span class="nav-text">函数的定义和调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%80%E9%83%A8%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-number">2.5.3.</span> <span class="nav-text">局部作用域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0"><span class="nav-number">2.5.4.</span> <span class="nav-text">函数的参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%93%E9%A2%98"><span class="nav-number">3.</span> <span class="nav-text">专题</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="totravel"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">totravel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/totravel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;totravel" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:totravel@foxmail.com" title="E-Mail → mailto:totravel@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_nd.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://totravel.github.io/2022/11/04/2022-11-04-bat-tutorial/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="totravel">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="旅行 · 之间">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="一天学会 Windows 批处理 | 旅行 · 之间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一天学会 Windows 批处理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-04 14:15:00" itemprop="dateCreated datePublished" datetime="2022-11-04T14:15:00+08:00">2022-11-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-02-22 21:25:00" itemprop="dateModified" datetime="2023-02-22T21:25:00+08:00">2023-02-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>Windows 批处理文件的扩展名为 <code>.bat</code>，它是由 Windows 命令解释器 <code>cmd.exe</code> 负责解释和运行的。一个批处理文件就是一个批处理程序。Windows 上的批处理程序相当于 Linux 上的 Shell 脚本，常用于实现重复性工作的自动化。</p>
+<h3 id="第一个批处理程序"><a href="#第一个批处理程序" class="headerlink" title="第一个批处理程序"></a>第一个批处理程序</h3><p>批处理文件是文本文件，内容主要是一些可以直接在控制台（命令提示符）执行的 Windows 命令，比如：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">echo</span> Hello, World!</span><br></pre></td></tr></table></figure>
+
+<p>将以上内容保存在扩展名为 <code>.bat</code> 的文本文件就得到一个批处理程序。要运行该批处理程序，只需打开控制台，输入批处理程序的路径，再按回车即可，比如：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">C:\<span class="title">Users</span>\<span class="title">John</span>&gt;<span class="title">a.bat</span></span></span><br><span class="line"><span class="function"><span class="title">Hello</span>, <span class="title">World</span>!</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="基本-Windows-命令"><a href="#基本-Windows-命令" class="headerlink" title="基本 Windows 命令"></a>基本 Windows 命令</h3><p>Windows 命令及其选项都不区分大小写。命令的选项以 <code>/</code> 开头，比如 <code>/?</code> 通常是显示帮助信息的选项。下列是 3 个最基本的 Windows 命令：</p>
+<ul>
+<li><code>echo</code>，用于显示消息</li>
+<li><code>cls</code>，用于清除屏幕</li>
+<li><code>chcp</code>，用于切换代码页</li>
+</ul>
+<p><code>echo</code> 命令会把紧随其后的字符串显示在屏幕中：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">C:\<span class="title">Users</span>\<span class="title">John</span>&gt;<span class="title">echo</span> <span class="title">Hello</span>, <span class="title">World</span>!</span></span><br><span class="line"><span class="function"><span class="title">Hello</span>, <span class="title">World</span>!</span></span><br></pre></td></tr></table></figure>
+
+<p>字符串两边无需添加引号。</p>
+<p><code>cls</code> 命令会把屏幕上的内容清空，再将光标移动到屏幕顶部。</p>
+<p>不同的代码页对应不同的字符集。控制台只能显示当前代码页中的字符，显示其他字符时会显示成乱码。代码页还决定控制台使用的语言。不带参数执行 <code>chcp</code> 命令时将显示当前代码页的编号：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">C:\<span class="title">Users</span>\<span class="title">John</span>&gt;<span class="title">chcp</span></span></span><br><span class="line"><span class="function"><span class="title">Active</span> <span class="title">code</span> <span class="title">page</span>: 437</span></span><br></pre></td></tr></table></figure>
+
+<p>要切换到其他代码页则需要提供目标代码页的编号。常用的代码页有下列 3 个：</p>
+<ul>
+<li><code>936</code> GBK - 简体中文</li>
+<li><code>437</code> ASCII - 美国英语</li>
+<li><code>65001</code> Unicode</li>
+</ul>
+<p>控制台的默认代码页是 936。默认代码页只能通过注册表修改：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HKEY_CURRENT_USER\Console\%SystemRoot%_system32_cmd.exe</span><br></pre></td></tr></table></figure>
+
+<p>将属性 <code>CodePage</code> 的值由 936 修改为 65001。</p>
+<h3 id="命令回显"><a href="#命令回显" class="headerlink" title="命令回显"></a>命令回显</h3><p>批处理程序在运行时会显示执行的每个命令，即命令回显。如果把 <code>rd /?</code> 命令保存在一个名为 <code>a.bat</code> 的批处理程序中，运行该批处理程序时就会看到如下输出：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">C:\<span class="title">Users</span>\<span class="title">John</span>&gt;<span class="title">a.bat</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">C</span>:\<span class="title">Users</span>\<span class="title">John</span>&gt;<span class="title">rd</span> /?</span></span><br><span class="line"><span class="function"><span class="title">Removes</span> (<span class="title">deletes</span>) <span class="title">a</span> <span class="title">directory</span>.</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">RMDIR</span> [/<span class="title">S</span>] [/<span class="title">Q</span>] [<span class="title">drive</span>:]<span class="title">path</span></span></span><br><span class="line"><span class="function"><span class="title">RD</span> [/<span class="title">S</span>] [/<span class="title">Q</span>] [<span class="title">drive</span>:]<span class="title">path</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    /<span class="title">S</span>      <span class="title">Removes</span> <span class="title">all</span> <span class="title">directories</span> <span class="title">and</span> <span class="title">files</span> <span class="title">in</span> <span class="title">the</span> <span class="title">specified</span> <span class="title">directory</span></span></span><br><span class="line"><span class="function">            <span class="title">in</span> <span class="title">addition</span> <span class="title">to</span> <span class="title">the</span> <span class="title">directory</span> <span class="title">itself</span>.  <span class="title">Used</span> <span class="title">to</span> <span class="title">remove</span> <span class="title">a</span> <span class="title">directory</span></span></span><br><span class="line"><span class="function">            <span class="title">tree</span>.</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    /<span class="title">Q</span>      <span class="title">Quiet</span> <span class="title">mode</span>, <span class="title">do</span> <span class="title">not</span> <span class="title">ask</span> <span class="title">if</span> <span class="title">ok</span> <span class="title">to</span> <span class="title">remove</span> <span class="title">a</span> <span class="title">directory</span> <span class="title">tree</span> <span class="title">with</span> /<span class="title">S</span></span></span><br></pre></td></tr></table></figure>
+
+<p>要禁用或启用命令回显，可以在批处理程序中使用 <code>echo off</code> 或 <code>echo on</code> 命令。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">rd</span> /?</span><br></pre></td></tr></table></figure>
+
+<p>虽然 <code>echo off</code> 命令用于禁用命令回显，但是它只对后续的命令有效。因此，在执行包含上述命令的批处理程序时，会看到 <code>echo off</code> 命令。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">C:\<span class="title">Users</span>\<span class="title">John</span>&gt;<span class="title">a.bat</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">C</span>:\<span class="title">Users</span>\<span class="title">John</span>&gt;<span class="title">echo</span> <span class="title">off</span></span></span><br><span class="line"><span class="function"><span class="title">Removes</span> (<span class="title">deletes</span>) <span class="title">a</span> <span class="title">directory</span>.</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">RMDIR</span> [/<span class="title">S</span>] [/<span class="title">Q</span>] [<span class="title">drive</span>:]<span class="title">path</span></span></span><br><span class="line"><span class="function"><span class="title">RD</span> [/<span class="title">S</span>] [/<span class="title">Q</span>] [<span class="title">drive</span>:]<span class="title">path</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    /<span class="title">S</span>      <span class="title">Removes</span> <span class="title">all</span> <span class="title">directories</span> <span class="title">and</span> <span class="title">files</span> <span class="title">in</span> <span class="title">the</span> <span class="title">specified</span> <span class="title">directory</span></span></span><br><span class="line"><span class="function">            <span class="title">in</span> <span class="title">addition</span> <span class="title">to</span> <span class="title">the</span> <span class="title">directory</span> <span class="title">itself</span>.  <span class="title">Used</span> <span class="title">to</span> <span class="title">remove</span> <span class="title">a</span> <span class="title">directory</span></span></span><br><span class="line"><span class="function">            <span class="title">tree</span>.</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    /<span class="title">Q</span>      <span class="title">Quiet</span> <span class="title">mode</span>, <span class="title">do</span> <span class="title">not</span> <span class="title">ask</span> <span class="title">if</span> <span class="title">ok</span> <span class="title">to</span> <span class="title">remove</span> <span class="title">a</span> <span class="title">directory</span> <span class="title">tree</span> <span class="title">with</span> /<span class="title">S</span></span></span><br></pre></td></tr></table></figure>
+
+<p>另一种禁用命令回显的方法是在命令的开头添加 <code>@</code> 符号，它只对当前命令有效。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">rd</span> /?</span><br></pre></td></tr></table></figure>
+
+<p>在实际应用中，经常把 <code>@</code> 和 <code>echo off</code> 结合起来使用：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">rd</span> /?</span><br></pre></td></tr></table></figure>
+
+<h2 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h2><h3 id="语句"><a href="#语句" class="headerlink" title="语句"></a>语句</h3><p>在批处理程序中，一条命令就是一条语句。语句也可以由多条命令复合而成，比如：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cls</span> &amp; <span class="built_in">chcp</span> &amp; <span class="built_in">echo</span></span><br></pre></td></tr></table></figure>
+
+<p>以下 3 种逻辑运算符可以用于组合语句：</p>
+<ul>
+<li><code>&amp;&amp;</code> 只有前一条语句执行成功，后一条语句才会执行</li>
+<li><code>||</code> 只有前一条语句执行失败，后一条语句才会执行</li>
+<li><code>&amp;</code> 无论前一条语句是否执行成功，后一条语句都会执行</li>
+</ul>
+<p>可以在语句中间换行，但是换行时必须以 <code>^</code> 结尾，比如：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cmake -S .     ^</span><br><span class="line">      -B build ^</span><br><span class="line">      -A Win32</span><br></pre></td></tr></table></figure>
+
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>批处理程序只支持两种形式的注释：单行注释和行内注释。单行注释必须独占一行，而行内注释可以跟在命令结尾，甚至可以嵌入命令。这两种注释都不能包含换行符。</p>
+<p>添加单行注释的方法是用 <code>rem</code> 命令或者将注释防止两个 <code>::</code> 之后；添加行内注释的方法是将注释放在两个 <code>%</code> 中间：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">:: 这是单行注释</span><br><span class="line"><span class="comment">rem 这是单行注释</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> .. <span class="variable">%这是行内注释%</span></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">%这是行内注释%</span> ..</span><br></pre></td></tr></table></figure>
+
+<p>添加注释通常用 <code>rem</code> 命令。与其他命令一样，如批处理在执行时没有禁用命令回显，就会看到用 <code>rem</code> 命令添加的单行注释。</p>
+<h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>变量用 <code>set</code> 命令设置。比如设置名为 <code>message</code> 值为 <code>&quot;Hello, World!&quot;</code> 的变量：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> message=Hello, World!</span><br></pre></td></tr></table></figure>
+
+<p>批处理中的变量都是字符串变量，并且在设置变量时无需把等号右边的字符串放在双引号中。</p>
+<p>等号两边不应该有多余的空格，因为多余的空格会被视为变量名和字符串的一部分。下面的命令实际上设置了一个名为 <code>&quot;message &quot;</code> 值为 <code>&quot; Hello, World!&quot;</code> 的变量：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> message = Hello, World!</span><br></pre></td></tr></table></figure>
+
+<p>访问变量的方法是将变量名放在两个 <code>%</code> 中间，比如打印变量 <code>message</code> 的值：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">%message%</span></span><br><span class="line"><span class="comment">rem output &quot;Hello, World!&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>变量的值也可以由用户输入。带 <code>/p</code> 选项执行 <code>set</code> 命令时，等号右边的字符串将用作提示。此时用户需要输入一个字符串并按下回车键。输入的字符串会被设为变量的值。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> /p number=Please enter a number: </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><code>set</code> 命令的 <code>/p</code> 选项只有在命令解释器的命令扩展启用时才有效。命令解释器的命令扩展默认启用。</p>
+</blockquote>
+<h4 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h4><p>实际上，用 <code>set</code> 命令设置的变量都是环境变量，因此访问环境变量的方法也是使用两个 <code>%</code>：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">%PATH%</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>环境变量的变量名不区分大小写，因此 <code>PATH</code> 和 <code>path</code> 是同一个变量。</p>
+</blockquote>
+<p>常用的环境变量有：</p>
+<ul>
+<li><code>DATE</code> 当前日期</li>
+<li><code>TIME</code> 当前时间</li>
+<li><code>RANDOM</code> 随机数，范围 0 - 32767</li>
+<li><code>USERNAME</code> 用户名</li>
+<li><code>USERPROFILE</code> 用户文件夹</li>
+<li><code>TEMP</code> 临时文件夹</li>
+<li><code>CD</code> 当前目录</li>
+<li><code>PATH</code> 搜索路径列表</li>
+<li><code>OS</code> 操作系统的名称</li>
+<li><code>PROCESSOR_ARCHITECTURE</code> 处理器的架构</li>
+<li><code>NUMBER_OF_PROCESSORS</code> 逻辑处理器个数</li>
+</ul>
+<h4 id="命令行参数"><a href="#命令行参数" class="headerlink" title="命令行参数"></a>命令行参数</h4><p>批处理程序的第 <code>n</code> 个参数用 <code>%n</code> 表示，其中 <code>n</code> 可以是 0 到 9 中的任何一个数字，<code>%0</code> 是批处理程序的路径，<code>%*</code> 相当于 <code>%0 %1 %2 %3 ...</code>。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">@<span class="built_in">echo</span> off</span><br><span class="line"><span class="built_in">echo</span> %<span class="number">0</span></span><br><span class="line"><span class="built_in">echo</span> %<span class="number">1</span></span><br><span class="line"><span class="built_in">echo</span> %<span class="number">2</span></span><br><span class="line"><span class="built_in">echo</span> %<span class="number">3</span></span><br><span class="line"><span class="built_in">echo</span> %*</span><br></pre></td></tr></table></figure>
+
+<p>运行以上批处理时可以看到如下输出：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">C:\<span class="title">Users</span>\<span class="title">John</span>&gt;<span class="title">a.bat</span> 1 2 3</span></span><br><span class="line"><span class="function"><span class="title">a.bat</span></span></span><br><span class="line"><span class="function">1</span></span><br><span class="line"><span class="function">2</span></span><br><span class="line"><span class="function">3</span></span><br><span class="line"><span class="function">1 2 3</span></span><br></pre></td></tr></table></figure>
+
+<p>如果参数是一个文件的路径，还可以在 <code>%</code> 和 <code>n</code> 之间可以插入 <code>~</code>、<code>f</code> 和 <code>d</code> 等字符来获取该文件的完整路径和属性信息，例如：</p>
+<table>
+<thead>
+<tr>
+<th>语法</th>
+<th>作用</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>%1</code></td>
+<td>-</td>
+<td><code>&quot;a.txt&quot;</code></td>
+</tr>
+<tr>
+<td><code>%~1</code></td>
+<td>去除参数两边的引号</td>
+<td><code>a.txt</code></td>
+</tr>
+<tr>
+<td><code>%~f1</code></td>
+<td>绝对路径</td>
+<td><code>C:\Users\John\a.txt</code></td>
+</tr>
+<tr>
+<td><code>%~d1</code></td>
+<td>盘符</td>
+<td><code>C:</code></td>
+</tr>
+<tr>
+<td><code>%~p1</code></td>
+<td>路径</td>
+<td><code>\Users\John\</code></td>
+</tr>
+<tr>
+<td><code>%~n1</code></td>
+<td>文件名</td>
+<td><code>a</code></td>
+</tr>
+<tr>
+<td><code>%~x1</code></td>
+<td>扩展名</td>
+<td><code>.txt</code></td>
+</tr>
+<tr>
+<td><code>%~t1</code></td>
+<td>修改日期</td>
+<td><code>2022/11/08 22:30</code></td>
+</tr>
+<tr>
+<td><code>%~z1</code></td>
+<td>文件大小</td>
+<td><code>386</code></td>
+</tr>
+</tbody></table>
+<h4 id="延迟展开"><a href="#延迟展开" class="headerlink" title="延迟展开"></a>延迟展开</h4><p>每条语句中的变量在语句执行前就会被展开成相应的值，因此下面的程序会输出 <code>1</code> 而不是 <code>2</code>：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> a=<span class="number">1</span></span><br><span class="line"><span class="built_in">set</span> a=<span class="number">2</span> &amp; <span class="built_in">echo</span> <span class="variable">%a%</span></span><br></pre></td></tr></table></figure>
+
+<p>这是因为命令解释器在执行第二条语句前就会展开其中的 <code>%a%</code>，而变量 <code>a</code> 此时的值为 <code>1</code>。</p>
+<p>如果用 <code>!</code> 代替 <code>%</code> 访问变量，解释器就会在执行语句时再展开变量，即延迟展开，例如：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">setlocal</span> EnableDelayedExpansion</span><br><span class="line"><span class="built_in">set</span> a=<span class="number">1</span></span><br><span class="line"><span class="built_in">set</span> a=<span class="number">2</span> &amp; <span class="built_in">echo</span> <span class="variable">!a!</span></span><br></pre></td></tr></table></figure>
+
+<p>延迟展开默认是禁用的，需要用 <code>setlocal EnableDelayedExpansion</code> 命令开启。</p>
+<h4 id="运算符"><a href="#运算符" class="headerlink" title="运算符"></a>运算符</h4><p>批处理中的算术运算符、位运算符和复合运算符是由 <code>set</code> 命令提供的。使用 <code>set</code> 命令时，需要添加 <code>/a</code> 选项才能使用这些运算符，它表示将命令的参数视为表达式进行求解。例如，要计算 <code>1 + 1</code> 的值并赋给变量 <code>sum</code>：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> /a sum = <span class="number">1</span> + <span class="number">1</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">%sum%</span></span><br><span class="line"><span class="comment">rem output &quot;2&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>在表达式中可以添加多余的空格并且引用环境变量时无需在变量名两边添加 <code>%</code>。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> a=<span class="number">2</span></span><br><span class="line"><span class="built_in">set</span> /a b = a + <span class="number">1</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">%b%</span></span><br><span class="line"><span class="comment">rem output &quot;3&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>set</code> 命令支持 3 种进制：以 <code>0x</code> 开头的数字视为 16 进制，以 <code>0</code> 开头的数字视为 8 进制，其他数字视为 10 进制。<code>set</code> 命令不支持 2 进制。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> /a a = <span class="number">0</span>x12</span><br><span class="line"><span class="built_in">set</span> /a b = <span class="number">18</span></span><br><span class="line"><span class="built_in">set</span> /a c = <span class="number">022</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">%a%</span> <span class="variable">%b%</span> <span class="variable">%c%</span></span><br><span class="line"><span class="comment">rem output &quot;18 18 18&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>set</code> 命令支持下列运算符：</p>
+<ul>
+<li>算术运算符：加 <code>+</code>、减 <code>-</code>、乘 <code>*</code>、除 <code>/</code>、取余 <code>%</code> 和取相反数 <code>-</code></li>
+<li>位运算符<ul>
+<li>按位与 <code>&amp;</code></li>
+<li>按位或 <code>|</code></li>
+<li>按位异 <code>^</code></li>
+<li>按位取反 <code>~</code></li>
+<li>左移 <code>&lt;&lt;</code></li>
+<li>右移 <code>&gt;&gt;</code></li>
+</ul>
+</li>
+<li>逻辑运算符：取反 <code>!</code></li>
+<li>复合运算符：<code>+=</code>、<code>-=</code>、<code>*=</code>、<code>/=</code> 和 <code>%=</code> 等</li>
+</ul>
+<p>表达式中包含位运算符或取余运算符时，需要将整个表达式放在双引号中。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">rem 0x03 = 0xb0011</span></span><br><span class="line"><span class="comment">rem 0x05 = 0xb0101</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> /a &quot;a = <span class="number">0</span>x03 &amp; <span class="number">0</span>x05&quot;</span><br><span class="line"><span class="built_in">set</span> /a &quot;b = <span class="number">0</span>x03 | <span class="number">0</span>x05&quot;</span><br><span class="line"><span class="built_in">set</span> /a &quot;c = <span class="number">0</span>x03 ^ <span class="number">0</span>x05&quot;</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">%a%</span> <span class="variable">%b%</span> <span class="variable">%c%</span></span><br><span class="line"><span class="comment">rem output &quot;1 7 6&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">set</span> /a &quot;d = <span class="number">0</span>xff&lt;&lt;<span class="number">32</span>&quot;</span><br><span class="line"><span class="built_in">set</span> /a &quot;e = <span class="number">0</span>x08&gt;&gt;<span class="number">2</span>&quot;</span><br><span class="line"><span class="built_in">set</span> /a &quot;f = ~<span class="number">0</span>x01&quot;</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">%d%</span> <span class="variable">%e%</span> <span class="variable">%f%</span></span><br><span class="line"><span class="comment">rem output &quot;0 2 -2&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>运算符的操作数是用补码表示的 32 位有符号数，因此任何数左移 32 位都将变成 0。16 进制数 <code>0x01</code> 转换成二进制数是 <code>0...1</code>，按位取反是 <code>1...10</code>，刚好是 2 的补码，因此 <code>~0x01</code> 等于 <code>-2</code>。</p>
+<p>取反运算符 <code>!</code> 的规则很简单：任何非 0 数取反都等于 0，只有 0 取反等于 1。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> /a g = !<span class="number">255</span></span><br><span class="line"><span class="built_in">set</span> /a h = !<span class="number">0</span></span><br><span class="line"><span class="built_in">set</span> /a i = !-<span class="number">128</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">%g%</span> <span class="variable">%h%</span> <span class="variable">%i%</span></span><br><span class="line"><span class="comment">rem output &quot;0 1 0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="流程控制"><a href="#流程控制" class="headerlink" title="流程控制"></a>流程控制</h3><h4 id="条件语句"><a href="#条件语句" class="headerlink" title="条件语句"></a>条件语句</h4><p>条件语句由 <code>if</code> 命令实现，完整形式如下：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> condition (</span><br><span class="line">  command</span><br><span class="line">) <span class="keyword">else</span> (</span><br><span class="line">  command</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><code>else</code> 子句是可选的。<code>if</code> 语句的条件 <code>condition</code> 有以下几种形式。</p>
+<h5 id="判断文件是否存在"><a href="#判断文件是否存在" class="headerlink" title="判断文件是否存在"></a>判断文件是否存在</h5><p>形如 <code>exist filename</code> 的条件用于判断文件 <code>filename</code> 是否存在； <code>not exist filename</code> 则用于判断文件 <code>filename</code> 是否不存在。文件的路径 <code>filename</code> 应该放在双引号中。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">exist</span> &quot;C:\Users\John\a.bat&quot; (</span><br><span class="line">  <span class="built_in">echo</span> true</span><br><span class="line">) <span class="keyword">else</span> (</span><br><span class="line">  <span class="built_in">echo</span> false</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h5 id="判断变量是否有定义"><a href="#判断变量是否有定义" class="headerlink" title="判断变量是否有定义"></a>判断变量是否有定义</h5><p>形如 <code>defined variable</code> 的条件用于判断变量 <code>variable</code> 是否有定义； <code>not defined variable</code> 则用于判断变量 <code>variable</code> 是否未定义。变量名 <code>variable</code> 无需放在两个 <code>%</code> 中。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">defined</span> message (</span><br><span class="line">  <span class="built_in">echo</span> true</span><br><span class="line">) <span class="keyword">else</span> (</span><br><span class="line">  <span class="built_in">echo</span> false</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h5 id="比较两个字符串或数字"><a href="#比较两个字符串或数字" class="headerlink" title="比较两个字符串或数字"></a>比较两个字符串或数字</h5><p>可以用下列关系运算符比较两个字符串：</p>
+<ul>
+<li><code>==</code> 等于</li>
+<li><code>equ</code> 等于</li>
+<li><code>neq</code> 不等于</li>
+<li><code>lss</code> 小于</li>
+<li><code>leq</code> 小于等于</li>
+<li><code>gtr</code> 大于</li>
+<li><code>geq</code> 大于等于</li>
+</ul>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> &quot;<span class="variable">%message%</span>&quot; == &quot;aaa&quot; (</span><br><span class="line">  <span class="built_in">echo</span> &quot;<span class="variable">%message%</span>&quot; equal &quot;aaa&quot;</span><br><span class="line">) <span class="keyword">else</span> (</span><br><span class="line">  <span class="built_in">echo</span> &quot;<span class="variable">%message%</span>&quot; <span class="keyword">not</span> equal &quot;aaa&quot;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>不同于 <code>set</code> 命令，用 <code>if</code> 命令比较两个字符串时，应该把字符串放在双引号中。如果比较两个字符串时不需要区分大小写，添加 <code>/i</code> 选项。</p>
+<p>除了 <code>==</code> 之外，以上关系运算符还可用于比较两个数字。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="variable">%number%</span> <span class="keyword">lss</span> <span class="number">3</span> (</span><br><span class="line">  <span class="built_in">echo</span> <span class="variable">%number%</span> less than <span class="number">3</span></span><br><span class="line">) <span class="keyword">else</span> (</span><br><span class="line">  <span class="built_in">echo</span> <span class="variable">%number%</span> greater than or equal <span class="number">3</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h5 id="检查退出码"><a href="#检查退出码" class="headerlink" title="检查退出码"></a>检查退出码</h5><p>形如 <code>errorlevel number</code> 的条件用于判断上一个程序或上一条命令的退出码是否大于等于 <code>number</code>。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">errorlevel</span> <span class="number">1</span> (</span><br><span class="line">  <span class="built_in">echo</span> an error occurred</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>环境变量 <code>errorlevel</code> 的初始值为 <code>0</code>。当一个程序或一条命令遇到错误时，该变量就会被设置为一个大于 0 的数字。</p>
+<h4 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h4><p>循环语句由 <code>for</code> 命令实现，基本形式如下：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> <span class="variable">%%v</span> <span class="keyword">in</span> (<span class="built_in">set</span>) <span class="keyword">do</span> (</span><br><span class="line">  command</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>%%v</code> 是循环变量；小括号中的 <code>set</code> 是需要遍历的元素的集合，元素之间用空格或逗号隔开；<code>do</code> 之后是循环体。</p>
+<blockquote>
+<p>循环变量的变量名只能由一个字母构成并且区分大小写。</p>
+</blockquote>
+<p>通过搭配 <code>for</code> 命令的不同选项，<code>set</code> 部分可以有以下几种形式。</p>
+<h5 id="C-语言风格"><a href="#C-语言风格" class="headerlink" title="C 语言风格"></a>C 语言风格</h5><p>带有 <code>/l</code> 选项时，<code>set</code> 由 3 个用逗号 <code>,</code> 或空格隔开的数字 <code>start, step, end</code> 组成。它表示循环变量从 <code>start</code> 递增到 <code>end</code>，每次递增 <code>step</code>。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> /l <span class="variable">%%i</span> <span class="keyword">in</span> (<span class="number">0</span>, <span class="number">1</span>, <span class="number">3</span>) <span class="keyword">do</span> (</span><br><span class="line">  <span class="built_in">echo</span> <span class="variable">%%i</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h5 id="遍历文件名"><a href="#遍历文件名" class="headerlink" title="遍历文件名"></a>遍历文件名</h5><p>不带任何选项时，<code>for</code> 语句用于遍历文件名，此时 <code>set</code> 是文件名的列表，文件名可以包含通配符 <code>*</code>。例如，遍历当前目录下的所有 <code>.bat</code> 文件，以及 <code>C:\Windows\SysWOW64</code> 目录下所有以 <code>api-</code> 开头的动态库。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> <span class="variable">%%f</span> <span class="keyword">in</span> (&quot;*.bat&quot;, &quot;C:\Windows\SysWOW64\api-*.dll&quot;) <span class="keyword">do</span> (</span><br><span class="line">  <span class="built_in">echo</span> <span class="variable">%%f</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h5 id="遍历目录名"><a href="#遍历目录名" class="headerlink" title="遍历目录名"></a>遍历目录名</h5><p>带上 <code>/d</code> 选项时，<code>for</code> 语句用于遍历目录名。例如，遍历 <code>C</code> 盘根目录和用户文件夹下的所有文件夹。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> /d <span class="variable">%%d</span> <span class="keyword">in</span> (&quot;C:\*&quot;, &quot;<span class="variable">%userprofile%</span>\*&quot;) <span class="keyword">do</span> (</span><br><span class="line">  <span class="built_in">echo</span> <span class="variable">%%d</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h5 id="遍历目录树"><a href="#遍历目录树" class="headerlink" title="遍历目录树"></a>遍历目录树</h5><p>带上 <code>r</code> 选项时，<code>for</code> 语句用于遍历目录树，树根在 <code>/r</code> 选项之后给出，缺省时为当前目录，此时 <code>set</code> 是每个目录中需要遍历的文件名的列表。例如，遍历图片文件夹中所有 PNG 和 GIF 格式的图片：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> /r &quot;<span class="variable">%userprofile%</span>\Pictures&quot; <span class="variable">%%f</span> <span class="keyword">in</span> (&quot;*.png&quot;, &quot;*.gif&quot;) <span class="keyword">do</span> (</span><br><span class="line">  <span class="built_in">echo</span> <span class="variable">%%f</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h5 id="按行按列遍历文本"><a href="#按行按列遍历文本" class="headerlink" title="按行按列遍历文本"></a>按行按列遍历文本</h5><p>带上 <code>/f</code> 选项时，<code>for</code> 语句可以按行按列遍历文本。文本支持 3 种来源：</p>
+<ul>
+<li>文件的内容，此时 <code>set</code> 是文件名的列表，例如 <code>a.txt</code></li>
+<li>字符串，此时 <code>set</code> 是字符串的列表，每个字符串必须放在双引号中，例如 <code>&quot;a b c&quot;</code></li>
+<li>命令的输出，此时 <code>set</code> 是命令的列表，每个命令必须放在单引号中，例如 <code>&#39;dir&#39;</code></li>
+</ul>
+<p>默认情况下，<code>for</code> 语句只遍历每一行的第一列。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> /f <span class="variable">%%i</span> <span class="keyword">in</span> (a.txt) <span class="keyword">do</span> (</span><br><span class="line">  <span class="built_in">echo</span> <span class="variable">%%i</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>/f</code> 选项之后可以插入下列参数来改变 <code>for</code> 语句的行为：</p>
+<ul>
+<li><code>eol=c</code> 将字符 <code>c</code> 视为行结束符。</li>
+<li><code>skip=n</code> 跳过前 <code>n</code> 行。</li>
+<li><code>delims=xxx</code> 用 <code>xxx</code> 这些字符作为列的定界符。比如 <code>delims=,;</code> 表示用 <code>,</code> 或 <code>;</code> 作为定界符。</li>
+<li><code>tokens=x,y,m-n</code> 提取每一行的第 <code>x</code>、<code>y</code> 和 <code>m-n</code> 列。</li>
+</ul>
+<p>用 <code>tokens</code> 参数提取多列时，<code>for</code> 语句会按字母表顺序自动定义额外的循环变量，每个循环变量对应一列，以便在循环体中可以访问每一列。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> /f &quot;tokens=<span class="number">1</span>,<span class="number">3</span>,<span class="number">5</span>-<span class="number">7</span> delims=;&quot; <span class="variable">%%a</span> <span class="keyword">in</span> (a.txt) <span class="keyword">do</span> (</span><br><span class="line">  <span class="built_in">echo</span> <span class="variable">%%a</span>, <span class="variable">%%b</span>, <span class="variable">%%c</span>, <span class="variable">%%d</span>, <span class="variable">%%e</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h3><p>批处理程序并不支持真正意义上的函数。批处理程序中的函数更像是汇编程序中的子程序，它是通过 <code>call</code> 命令和 <code>goto</code> 命令的结合实现的。</p>
+<h4 id="跳转命令与标号"><a href="#跳转命令与标号" class="headerlink" title="跳转命令与标号"></a>跳转命令与标号</h4><p>跳转命令 <code>goto</code> 要配合标号使用。标号是以 <code>:</code> 开头且独占一行的标识符，比如 <code>:eof</code>。用标号作为参数执行 <code>goto</code> 命令，标号下方的命令就会成为下一条被执行的命令。例如，在下面的批处理程序中，命令的执行顺序是：先执行 <code>goto :output</code> 命令，再执行 <code>echo Hello, World!</code> 命令。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">goto</span> :output</span><br><span class="line"><span class="built_in">set</span> message=Hello, World!</span><br><span class="line">:output</span><br><span class="line"><span class="built_in">echo</span> Hello, World!</span><br></pre></td></tr></table></figure>
+
+<p><code>:eof</code> 其实是预定义的标号，它表示批处理程序的末尾。如果跳转到批处理程序的末尾，批处理程序就会退出。例如，下面的批处理程序中的 <code>echo</code> 语句不会被执行，因为批处理程序在它之前就已经退出了。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">goto</span> :eof</span><br><span class="line"><span class="built_in">echo</span> Hello, World!</span><br></pre></td></tr></table></figure>
+
+<h4 id="函数的定义和调用"><a href="#函数的定义和调用" class="headerlink" title="函数的定义和调用"></a>函数的定义和调用</h4><p>函数的定义以一个标号开始，以一条 <code>goto :eof</code> 语句结束。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">:add</span><br><span class="line"><span class="built_in">set</span> /a sum = %<span class="number">1</span> + %<span class="number">2</span></span><br><span class="line"><span class="built_in">echo</span> %<span class="number">1</span> + %<span class="number">2</span> = <span class="variable">%sum%</span></span><br><span class="line"><span class="keyword">goto</span> :eof</span><br></pre></td></tr></table></figure>
+
+<p>函数要用 <code>call</code> 命令调用。使用 <code>call</code> 命令时，先给出函数的标号，再列出需要传递给函数的参数。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">call</span> :add <span class="number">1</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>实际上，<code>call</code> 命令是用于调用其他批处理程序的命令，用 <code>call</code> 命令调用函数时，相当于再创建一个进程来执行当前批处理程序。新的进程会从函数的第一条命令开始依次执行批处理程序中的命令，因此，每个函数的末尾都要包含一条 <code>goto :eof</code> 命令用来结束新的进程。新的进程结束后，原来的进程就会继续执行 <code>call</code> 命令之后的命令。</p>
+<p>标号本身并不会影响程序的走向。如果一个函数的标号前没有任何 <code>goto</code> 命令，解释器就会跳过标号执行这个函数中的命令。在批处理程序中定义和调用函数的完整示例如下：</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">call</span> :add <span class="number">1</span> <span class="number">1</span></span><br><span class="line"><span class="keyword">goto</span> :eof</span><br><span class="line"></span><br><span class="line">:add</span><br><span class="line"><span class="built_in">set</span> /a sum = %<span class="number">1</span> + %<span class="number">2</span></span><br><span class="line"><span class="built_in">echo</span> %<span class="number">1</span> + %<span class="number">2</span> = <span class="variable">%sum%</span></span><br><span class="line"><span class="keyword">goto</span> :eof</span><br></pre></td></tr></table></figure>
+
+<h4 id="局部作用域"><a href="#局部作用域" class="headerlink" title="局部作用域"></a>局部作用域</h4><p>默认情况下，用 <code>set</code> 命令定义的变量都是全局变量，包括函数中的 <code>set</code> 命令。因此，在函数中可以读写函数外部定义的变量，在函数外部也可以读写函数中定义的变量。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> a=<span class="number">1</span></span><br><span class="line"><span class="keyword">call</span> :fn</span><br><span class="line"><span class="built_in">echo</span> a=<span class="variable">%a%</span></span><br><span class="line"><span class="built_in">echo</span> b=<span class="variable">%b%</span></span><br><span class="line"><span class="keyword">goto</span> :eof</span><br><span class="line"></span><br><span class="line">:fn</span><br><span class="line"><span class="built_in">set</span> a=<span class="number">0</span></span><br><span class="line"><span class="built_in">set</span> b=<span class="number">2</span></span><br><span class="line"><span class="keyword">goto</span> :eof</span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">rem output:</span></span><br><span class="line"><span class="comment">rem a=0</span></span><br><span class="line"><span class="comment">rem b=2</span></span><br></pre></td></tr></table></figure>
+
+<p>要定义局部变量，需要借助 <code>setlocal</code> 和 <code>endlocal</code> 两个命令。这两个命令必须成对使用，它们中间会形成一个局部作用域，在局部作用域中定义的局部变量只在局部作用域中有效，在局部作用域中给全局变量重新赋值也不会影响原来的全局变量。</p>
+<figure class="highlight bat"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set</span> a=<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">setlocal</span></span><br><span class="line"><span class="built_in">set</span> a=<span class="number">0</span></span><br><span class="line"><span class="built_in">set</span> b=<span class="number">2</span></span><br><span class="line"><span class="built_in">endlocal</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> a=<span class="variable">%a%</span></span><br><span class="line"><span class="built_in">echo</span> b=<span class="variable">%b%</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">rem output:</span></span><br><span class="line"><span class="comment">rem a=1</span></span><br><span class="line"><span class="comment">rem b=</span></span><br></pre></td></tr></table></figure>
+
+<p>在启用命令扩展的情况下，<code>setlocal</code> 命令还支持下列参数：</p>
+<ul>
+<li><code>EnableExtensions</code> 在局部作用域中启用命令扩展</li>
+<li><code>DisableExtensions</code> 在局部作用域中禁用命令扩展</li>
+<li><code>EnableDelayedExpansion</code> 在局部作用域中启用环境变量延迟展开</li>
+<li><code>DisableDelayedexpansion</code> 在局部作用域中禁用环境变量延迟展开</li>
+</ul>
+<h4 id="函数的参数"><a href="#函数的参数" class="headerlink" title="函数的参数"></a>函数的参数</h4><p>访问函数的参数的方法与访问命令行参数的方法一致。</p>
+<h2 id="专题"><a href="#专题" class="headerlink" title="专题"></a>专题</h2><p>…</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>totravel
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://totravel.github.io/2022/11/04/2022-11-04-bat-tutorial/" title="一天学会 Windows 批处理">https://totravel.github.io/2022/11/04/2022-11-04-bat-tutorial/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/10/10/2022-10-10-ffmpeg-tutorial/" rel="prev" title="C 库 FFmpeg 入门指南">
+                  <i class="fa fa-chevron-left"></i> C 库 FFmpeg 入门指南
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/12/05/2022-12-05-winsock2/" rel="next" title="Windows 套接字入门">
+                  Windows 套接字入门 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">totravel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

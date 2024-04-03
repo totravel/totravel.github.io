@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"totravel.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Premiere Pro 是 Adobe 推出的一款功能强大的视频编辑软件。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Premiere 视频剪辑快速入门">
+<meta property="og:url" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/">
+<meta property="og:site_name" content="旅行 · 之间">
+<meta property="og:description" content="Premiere Pro 是 Adobe 推出的一款功能强大的视频编辑软件。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/01.gif">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/02.png">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/03.png">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/04.gif">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/05.gif">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/06.gif">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/07.gif">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/08.gif">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/09.gif">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/10.gif">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/11.gif">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/12.png">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/13.png">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/14.png">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/15.png">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/16.png">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/17.png">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/18.png">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/19.png">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/20.gif">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/21.gif">
+<meta property="og:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/22.png">
+<meta property="article:published_time" content="2019-05-22T12:24:10.000Z">
+<meta property="article:modified_time" content="2022-11-14T18:06:26.853Z">
+<meta property="article:author" content="totravel">
+<meta property="article:tag" content="Pr">
+<meta property="article:tag" content="video editing">
+<meta property="article:tag" content="视频剪辑">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/01.gif">
+
+
+<link rel="canonical" href="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/","path":"2019/05/22/2021-03-05-pr-guide/","title":"Premiere 视频剪辑快速入门"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Premiere 视频剪辑快速入门 | 旅行 · 之间</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">旅行 · 之间</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">总是跌跌撞撞，到底是顺其自然还是无头苍蝇？傻傻分不清……</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">47</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">2</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">19</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">新建项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E7%B4%A0%E6%9D%90"><span class="nav-number">2.</span> <span class="nav-text">导入素材</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E7%B4%A0%E6%9D%90"><span class="nav-number">3.</span> <span class="nav-text">管理素材</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E8%A7%88%E7%B4%A0%E6%9D%90"><span class="nav-number">4.</span> <span class="nav-text">预览素材</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%B0%E5%BB%BA%E5%BA%8F%E5%88%97"><span class="nav-number">5.</span> <span class="nav-text">新建序列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E5%BA%8F%E5%88%97"><span class="nav-number">6.</span> <span class="nav-text">管理序列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%84%E8%A7%88%E5%BA%8F%E5%88%97"><span class="nav-number">7.</span> <span class="nav-text">预览序列</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%87%BA%E5%AA%92%E4%BD%93"><span class="nav-number">8.</span> <span class="nav-text">导出媒体</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%AA%E8%BE%91%E7%9A%84%E5%85%A5%E7%82%B9%E3%80%81%E5%87%BA%E7%82%B9"><span class="nav-number">9.</span> <span class="nav-text">剪辑的入点、出点</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="totravel"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">totravel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/totravel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;totravel" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:totravel@foxmail.com" title="E-Mail → mailto:totravel@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_nd.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="totravel">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="旅行 · 之间">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Premiere 视频剪辑快速入门 | 旅行 · 之间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Premiere 视频剪辑快速入门
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-05-22 20:24:10" itemprop="dateCreated datePublished" datetime="2019-05-22T20:24:10+08:00">2019-05-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-11-15 02:06:26" itemprop="dateModified" datetime="2022-11-15T02:06:26+08:00">2022-11-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">工具</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>Premiere Pro 是 Adobe 推出的一款功能强大的视频编辑软件。</p>
+<p>在使用 Pr 进行创作之前，要事先准备好素材，并且为便于管理，还应该把所有素材放到同一个文件夹下。为此，在桌面创建文件夹 <code>test</code>，在里面放置一些图片素材和视频素材。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/01.gif"></p>
+<h2 id="新建项目"><a href="#新建项目" class="headerlink" title="新建项目"></a>新建项目</h2><p>使用 Pr 的第一步，是创建一个扩展名为 <code>.prproj</code> 的文件，后续的操作都将记录在这个文件中，建议把这个文件和素材放在同一文件夹下。</p>
+<p>菜单栏 &gt; 文件 &gt; 新建 &gt; 项目，下图表示在文件夹 <code>test</code> 中创建文件 <code>未命名.prproj</code></p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/02.png"></p>
+<h2 id="导入素材"><a href="#导入素材" class="headerlink" title="导入素材"></a>导入素材</h2><p>要在 Pr 中使用这些素材，要将素材导入，这样 Pr 才知道有哪些素材可以用。导入的素材会罗列在 <strong>项目面板</strong> 中。项目面板默认位于左下角。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/03.png"></p>
+<p>菜单栏 &gt; 文件 &gt; 导入，或者在项目面板中间的空白处双击，就可以开始导入素材。</p>
+<p>当然，也可以通过拖拽的方式导入素材，只须将素材拖拽到项目面板。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/04.gif"></p>
+<h2 id="管理素材"><a href="#管理素材" class="headerlink" title="管理素材"></a>管理素材</h2><p>素材在项目面板中呈现的名称可以修改，文件名不会跟着改变。</p>
+<p>先选中素材，再单击名称，就可以编辑素材的名称。下面将一个素材的名称修改为 <code>spring</code></p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/05.gif"></p>
+<p>下列操作作用同上：</p>
+<ul>
+<li>选中素材 &gt; 鼠标右键 &gt; 重命名</li>
+<li>选中素材 &gt; 菜单栏 &gt; 剪辑 &gt; 重命名</li>
+</ul>
+<p>可以对素材进行分类，如同把不同类型的文件放到不同的文件夹一样，素材可以放到 <strong>素材箱</strong> 中。单击项目面板右下角的「新建素材箱」按钮，就可以创建一个素材箱。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/06.gif"></p>
+<p>下列操作作用同上：</p>
+<ul>
+<li>在项目面板中间的空白处 &gt; 鼠标右键 &gt; 新建素材箱</li>
+</ul>
+<h2 id="预览素材"><a href="#预览素材" class="headerlink" title="预览素材"></a>预览素材</h2><p>在 Pr 中，素材又称为 <strong>源</strong>，在 <strong>源监视器</strong> 中可以打开素材。</p>
+<p>单击素材的名称，拖拽到源监视器中，就可以在源监视器中打开。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/07.gif"></p>
+<p>下列操作作用同上：</p>
+<ul>
+<li>选中素材 &gt; 在素材名称以外区域双击</li>
+<li>选中素材 &gt; 鼠标右键 &gt; 在源监视器中打开</li>
+</ul>
+<p>使用源监视器时，可以使用下列按键来控制视频的播放：</p>
+<ul>
+<li>按 J 倒放，倒放时再按 J 快退</li>
+<li>按 K 暂停</li>
+<li>按 L 播放，播放时再按 L 快进</li>
+</ul>
+<blockquote>
+<p>小结：</p>
+<ul>
+<li>项目面板列出了所有素材，以及后续操作产生的所有文件。</li>
+<li>可以在源监视器中预览素材。</li>
+</ul>
+</blockquote>
+<h2 id="新建序列"><a href="#新建序列" class="headerlink" title="新建序列"></a>新建序列</h2><p>简单地说，剪辑就是把素材修剪后，再拼接起来。显然，这种拼接是有序的，而不是杂乱无章的。这将形成一个 <strong>序列</strong>。下面要做的是将两个视频拼接起来。</p>
+<p>拼接操作在 <strong>时间轴面板</strong> 中进行，只需将素材拖拽到时间轴面板中。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/08.gif"></p>
+<p>可以发现，在把第一个素材拖过去后，项目面板中就多出了一项，这就是对应的序列。现在，它就是前面所做操作（拼接）的成果。</p>
+<p>实际上，在把第一个素材拖过去时，Pr 做了两个动作：</p>
+<ol>
+<li>新建一个空白的序列。</li>
+<li>放置第一个素材。</li>
+</ol>
+<blockquote>
+<p>在这里，序列是由 Pr 根据放入的素材自动创建的，因此分辨率、帧速率和采样率等参数都和第一个素材一致。</p>
+</blockquote>
+<p>也可以通过拖拽的方式，将正在源监视器中预览的素材放入序列中。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/09.gif"></p>
+<h2 id="管理序列"><a href="#管理序列" class="headerlink" title="管理序列"></a>管理序列</h2><p>下面将前面得到的序列在项目面板中对应的条目重命名为 <code>序列 01</code> 并移出 <code>videos</code> 素材箱。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/10.gif"></p>
+<p>时间轴面板就是用来编辑序列的面板。在需要编辑的序列上双击，就可以在时间轴内打开。面板的标题就是当前打开的序列名称。可以同时打开多个序列，也可以逐个关闭。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/11.gif"></p>
+<p>下列操作作用同上：</p>
+<ul>
+<li>选中序列 &gt; 鼠标右键 &gt; 在时间轴内打开</li>
+</ul>
+<h2 id="预览序列"><a href="#预览序列" class="headerlink" title="预览序列"></a>预览序列</h2><p><strong>节目监视器</strong> 用来预览序列的最终效果。其实，序列在时间轴内打开的同时，也会在节目监视器中打开，并且节目监视器和时间轴的光标是同步的。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/12.png"></p>
+<h2 id="导出媒体"><a href="#导出媒体" class="headerlink" title="导出媒体"></a>导出媒体</h2><p>最终的成果应该是一个普通的视频文件，如 <code>.mp4</code> 格式的文件，以便在一般的视频播放器中播放。得到一个序列后，需要 <strong>导出媒体</strong>，来得到一个普通的视频文件。</p>
+<p>选中序列 &gt; 鼠标右键 &gt; 导出媒体，这将弹出一个对话框。在这个对话框的左侧，切换到「源」看到的是序列，切换到「输出」看到的是最终的效果。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/13.png"></p>
+<p>右侧提供了一些参数设置，如果想要得到一个 <code>mp4</code> 文件，格式应该选择 <code>H.264</code></p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/14.png"></p>
+<p>预设一般选择 <code>匹配源 - 中等比特率</code>，这会影响文件的大小，在底部可以看到估算值。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/15.png"></p>
+<p>可以分别决定是否要包含画面和声音。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/16.png"></p>
+<p>也可以直接勾选「与序列设置匹配」，这样就不需要再设定其他参数。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/17.png"></p>
+<p>单击「输出名称」，可以设定导出的位置和文件名。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/18.png"></p>
+<p>最后单击「导出」按钮，开始导出。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/19.png"></p>
+<h2 id="剪辑的入点、出点"><a href="#剪辑的入点、出点" class="headerlink" title="剪辑的入点、出点"></a>剪辑的入点、出点</h2><p>通常只需要素材的一小段，这一小段的起点称为 <strong>入点</strong>，终点称为 <strong>出点</strong>。在源监视器中预览素材时，就可以设定入点、出点。</p>
+<p>将光标定位到入点，单击底部的「标记入点」按钮设定入点；将光标定位到出点，单击底部的「标记出点」按钮设定出点。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/20.gif"></p>
+<p>此时若将其拖拽到时间轴，就只有入点到出点之间的片段会加入到序列中去。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/21.gif"></p>
+<p>素材在使用前一般都要经过简单地修剪，为了和硬盘上实实在在的文件区分开来，一般把和某个素材对应的条目，称为 <strong>剪辑</strong>。例如，通过导入而罗列在项目面板中的素材，这些「剪辑」都是完整的素材；而上面放入序列的「剪辑」则是片段，不是完整的素材。</p>
+<p>如果没有设定入点、出点，那么剪辑的入点就是素材的开头，剪辑的出点就是素材的结尾，并且会有相应的白色的三角形标记。</p>
+<p><img data-src="/2019/05/22/2021-03-05-pr-guide/22.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>totravel
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/" title="Premiere 视频剪辑快速入门">https://totravel.github.io/2019/05/22/2021-03-05-pr-guide/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Pr/" rel="tag"><i class="fa fa-tag"></i> Pr</a>
+              <a href="/tags/video-editing/" rel="tag"><i class="fa fa-tag"></i> video editing</a>
+              <a href="/tags/%E8%A7%86%E9%A2%91%E5%89%AA%E8%BE%91/" rel="tag"><i class="fa fa-tag"></i> 视频剪辑</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/03/17/2021-03-06-linux-multi-process-and-muti-threaded/" rel="prev" title="Linux 多进程、多线程编程">
+                  <i class="fa fa-chevron-left"></i> Linux 多进程、多线程编程
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/02/11/2021-03-05-scrcpy-guide/" rel="next" title="开源、跨平台安卓投屏软件 Scrcpy 中文指南">
+                  开源、跨平台安卓投屏软件 Scrcpy 中文指南 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">totravel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

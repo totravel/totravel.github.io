@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"totravel.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="响应式是指变量的值发生改变时，用到这个变量的其他变量的值会被重新计算。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue 3 响应式原理初探——从零开始实现响应式 API">
+<meta property="og:url" content="https://totravel.github.io/2022/01/30/2022-01-30-vuejs-reactivity/">
+<meta property="og:site_name" content="旅行 · 之间">
+<meta property="og:description" content="响应式是指变量的值发生改变时，用到这个变量的其他变量的值会被重新计算。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-01-29T17:38:00.000Z">
+<meta property="article:modified_time" content="2022-11-24T16:17:48.327Z">
+<meta property="article:author" content="totravel">
+<meta property="article:tag" content="Vue.js">
+<meta property="article:tag" content="Javascript">
+<meta property="article:tag" content="Web">
+<meta property="article:tag" content="响应式">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://totravel.github.io/2022/01/30/2022-01-30-vuejs-reactivity/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://totravel.github.io/2022/01/30/2022-01-30-vuejs-reactivity/","path":"2022/01/30/2022-01-30-vuejs-reactivity/","title":"Vue 3 响应式原理初探——从零开始实现响应式 API"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Vue 3 响应式原理初探——从零开始实现响应式 API | 旅行 · 之间</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">旅行 · 之间</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">总是跌跌撞撞，到底是顺其自然还是无头苍蝇？傻傻分不清……</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">47</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">2</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">19</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E5%99%A8%E5%B1%9E%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">访问器属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-ref-%E5%87%BD%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">实现 ref() 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-getter-%E4%B8%AD%E8%BF%BD%E8%B8%AA"><span class="nav-number">3.</span> <span class="nav-text">在 getter 中追踪</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%A8-setter-%E4%B8%AD%E8%A7%A6%E5%8F%91"><span class="nav-number">4.</span> <span class="nav-text">在  setter 中触发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-watchEffect-%E5%87%BD%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">实现 watchEffect() 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%8C%E6%95%B4%E4%BB%A3%E7%A0%81"><span class="nav-number">6.</span> <span class="nav-text">完整代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95"><span class="nav-number">7.</span> <span class="nav-text">测试</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="totravel"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">totravel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/totravel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;totravel" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:totravel@foxmail.com" title="E-Mail → mailto:totravel@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_nd.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://totravel.github.io/2022/01/30/2022-01-30-vuejs-reactivity/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="totravel">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="旅行 · 之间">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Vue 3 响应式原理初探——从零开始实现响应式 API | 旅行 · 之间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vue 3 响应式原理初探——从零开始实现响应式 API
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-01-30 01:38:00" itemprop="dateCreated datePublished" datetime="2022-01-30T01:38:00+08:00">2022-01-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2022-11-25 00:17:48" itemprop="dateModified" datetime="2022-11-25T00:17:48+08:00">2022-11-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>响应式是指变量的值发生改变时，用到这个变量的其他变量的值会被重新计算。</p>
+<p>在下面的例子中，<code>sum</code> 是 <code>num1</code> 和 <code>num2</code> 的和。无论哪个加数被修改，都要重新计算 <code>sum</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> num1 = <span class="number">2</span></span><br><span class="line"><span class="keyword">let</span> num2 = <span class="number">3</span></span><br><span class="line"><span class="keyword">let</span> sum = num1 + num2</span><br><span class="line"></span><br><span class="line">num1 = <span class="number">4</span> <span class="comment">// 自动执行 `sum = num1 + num2`</span></span><br></pre></td></tr></table></figure>
+
+<p>要在一个变量发生变化时，重新计算另一个变量的值，就必须知道哪些计算过程用到了这个变量，以及具体的计算过程，以便在变量发生变化时重新执行这些计算。</p>
+<p>具体的计算过程可以用一个函数来表示。但是要知道变量被哪些函数所使用，就必须在变量的值被读取时，记住当前正在读取该变量的函数。可惜，JavaScript 并没有提供一种可以满足上述需求的机制。</p>
+<h2 id="访问器属性"><a href="#访问器属性" class="headerlink" title="访问器属性"></a>访问器属性</h2><p>庆幸的是，如果把变量换成对象的属性的话，情况就大不相同了。利用对象的 <strong>访问器属性</strong> 就可以实现上述需求。这就是为什么在 Vue 3 中，原始类型必须用 <code>ref()</code> 方法包装成对象类型。</p>
+<p>访问器是对象的特殊方法，用关键字 <code>get</code> 或 <code>set</code> 定义而不是 <code>function</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123;</span><br><span class="line">  <span class="keyword">get</span> <span class="title function_">value</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello World!&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="keyword">set</span> <span class="title function_">value</span>(<span class="params">val</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`The new value is &#x27;<span class="subst">$&#123;val&#125;</span>&#x27;`</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>get value()</code> 方法是读取对象的 <code>value</code> 属性（实际上不存在）时会被调用的函数，称为 getter，它的返回值将被当作该属性的值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(obj.<span class="property">value</span>) <span class="comment">// Hello World!</span></span><br></pre></td></tr></table></figure>
+
+<p><code>set value()</code> 方法是设置对象的 <code>value</code> 属性时会被调用的函数，称为 setter，它的参数是希望赋予该属性的值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">obj.<span class="property">value</span> = <span class="string">&#x27;JavaScript&#x27;</span></span><br><span class="line"><span class="title class_">The</span> <span class="keyword">new</span> value is <span class="string">&#x27;JavaScript&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="实现-ref-函数"><a href="#实现-ref-函数" class="headerlink" title="实现 ref() 函数"></a>实现 <code>ref()</code> 函数</h2><p>为了把前面的例子中提到的变量包装成对象，需要定义一个包装函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">ref</span>(<span class="params">val</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">_value</span>: val,     <span class="comment">// 用 `_value` 属性来保存实际值</span></span><br><span class="line">    <span class="keyword">get</span> <span class="title function_">value</span>() &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">_value</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span> <span class="title function_">value</span>(<span class="params">val</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">_value</span> = val</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>此处的 <code>ref()</code> 方法还不完善，它仅仅创建一个对象，并用 <code>_value</code> 属性来保存实际值，没有额外功能。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> num1 = <span class="title function_">ref</span>(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">const</span> num2 = <span class="title function_">ref</span>(<span class="number">3</span>)</span><br><span class="line"><span class="keyword">const</span> sum = <span class="title function_">ref</span>(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(num1.<span class="property">value</span>) <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="在-getter-中追踪"><a href="#在-getter-中追踪" class="headerlink" title="在 getter 中追踪"></a>在 <code>getter</code> 中追踪</h2><p>利用 getter 很容易在属性的值被读取时执行一些操作，比如记住正在读取该属性的函数。为了做到这一点，必须要求每个函数在读取属性前，将自身的引用赋予一个全局变量。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> activeEffect = <span class="literal">null</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">fn</span>(<span class="params"></span>) &#123;</span><br><span class="line">  activeEffect = effect               <span class="comment">// 自身的引用赋予全局变量 `activeEffect`</span></span><br><span class="line">  sum.<span class="property">value</span> = num1.<span class="property">value</span> + num2.<span class="property">value</span> <span class="comment">// 求和</span></span><br><span class="line">  activeEffect = <span class="literal">null</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样，当 getter 被调用时，就可以通过 <code>activeEffect</code> 得知当前是哪个函数正在读取属性。为了记住这个函数以及它正在操作的对象，定义一个追踪函数 <code>track(obj)</code>，在 getter 中调用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> activeEffect = <span class="literal">null</span></span><br><span class="line"><span class="keyword">let</span> effects = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">track</span>(<span class="params">obj</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> effect = activeEffect</span><br><span class="line">  <span class="keyword">if</span> ( !effects.<span class="title function_">find</span>(<span class="function"><span class="params">item</span> =&gt;</span> item.<span class="property">obj</span> === obj &amp;&amp; item.<span class="property">effect</span> === effect) )</span><br><span class="line">    effects.<span class="title function_">push</span>(&#123; obj, effect &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">ref</span>(<span class="params">val</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">_value</span>: val,</span><br><span class="line">    <span class="keyword">get</span> <span class="title function_">value</span>() &#123;</span><br><span class="line">      <span class="title function_">track</span>(<span class="variable language_">this</span>)        <span class="comment">// 追踪</span></span><br><span class="line">      <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">_value</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span> <span class="title function_">value</span>(<span class="params">val</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">_value</span> = val</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>追踪函数用一个对象来保存相关信息并推送到数组 <code>effects</code> 中（推送之前先检查是否已存在重复元素，不存在才推送）。</p>
+<h2 id="在-setter-中触发"><a href="#在-setter-中触发" class="headerlink" title="在  setter 中触发"></a>在  <code>setter</code> 中触发</h2><p>在属性的值被读取时，已经将相关函数都记录下来。这些函数可能用该属性修改了一些变量。如果现在这个属性的值变了，自然就要重新调用这些函数，以更新相关变量的值。</p>
+<p>定义一个触发函数 <code>trigger(obj)</code>，在 setter 中调用：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">trigger</span>(<span class="params">obj</span>) &#123;</span><br><span class="line">  effects.<span class="title function_">forEach</span>(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (item.<span class="property">obj</span> === obj) item.<span class="title function_">effect</span>() <span class="comment">// 调用操作过该对象的函数</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">ref</span>(<span class="params">val</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">_value</span>: val,</span><br><span class="line">    <span class="keyword">get</span> <span class="title function_">value</span>() &#123;</span><br><span class="line">      <span class="title function_">track</span>(<span class="variable language_">this</span>)        <span class="comment">// 追踪</span></span><br><span class="line">      <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">_value</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span> <span class="title function_">value</span>(<span class="params">val</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">_value</span> = val</span><br><span class="line">      <span class="title function_">trigger</span>(<span class="variable language_">this</span>)      <span class="comment">// 触发</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>至此，一组极其简陋的响应式 API 已经基本实现。</p>
+<h2 id="实现-watchEffect-函数"><a href="#实现-watchEffect-函数" class="headerlink" title="实现 watchEffect() 函数"></a>实现 <code>watchEffect()</code> 函数</h2><p>要求每个函数在读取属性前，将自身的引用赋予一个全局变量，显然太繁琐。可以增加一个侦听函数负责此动作：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">watchEffect</span>(<span class="params">fn</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">effect</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    activeEffect = effect</span><br><span class="line">    <span class="title function_">fn</span>()</span><br><span class="line">    activeEffect = <span class="literal">null</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">effect</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>watchEffect()</code> 在调用目标函数 <code>fn()</code> 之前，先将目标函数 <code>fn()</code> 包裹在箭头函数 <code>effect()</code> 中。这个箭头函数在调用目标函数之前，会被赋予全局变量 <code>activeEffect</code>。</p>
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><p>响应式 API 的完整代码如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> activeEffect = <span class="literal">null</span></span><br><span class="line"><span class="keyword">let</span> effects = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">track</span>(<span class="params">obj</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> effect = activeEffect</span><br><span class="line">  <span class="keyword">if</span> ( !effects.<span class="title function_">find</span>(<span class="function"><span class="params">item</span> =&gt;</span> item.<span class="property">obj</span> === obj &amp;&amp; item.<span class="property">effect</span> === effect) )</span><br><span class="line">    effects.<span class="title function_">push</span>(&#123; obj, effect &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">trigger</span>(<span class="params">obj</span>) &#123;</span><br><span class="line">  effects.<span class="title function_">forEach</span>(<span class="function"><span class="params">item</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (item.<span class="property">obj</span> === obj) item.<span class="title function_">effect</span>()</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">ref</span>(<span class="params">val</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    <span class="attr">_value</span>: val,</span><br><span class="line">    <span class="keyword">get</span> <span class="title function_">value</span>() &#123;</span><br><span class="line">      <span class="title function_">track</span>(<span class="variable language_">this</span>)</span><br><span class="line">      <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">_value</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="keyword">set</span> <span class="title function_">value</span>(<span class="params">val</span>) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">_value</span> = val</span><br><span class="line">      <span class="title function_">trigger</span>(<span class="variable language_">this</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="title function_">watchEffect</span>(<span class="params">fn</span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">effect</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    activeEffect = effect</span><br><span class="line">    <span class="title function_">fn</span>()</span><br><span class="line">    activeEffect = <span class="literal">null</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="title function_">effect</span>()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>定义 3 个响应式变量，用 <code>watchEffect()</code> 调用求和函数：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> num1 = <span class="title function_">ref</span>(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">const</span> num2 = <span class="title function_">ref</span>(<span class="number">3</span>)</span><br><span class="line"><span class="keyword">const</span> sum  = <span class="title function_">ref</span>(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="title function_">watchEffect</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">  sum.<span class="property">value</span> = num1.<span class="property">value</span> + num2.<span class="property">value</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">num1 <span class="comment">// Object &#123; _value: 2, value: Getter &amp; Setter &#125;</span></span><br><span class="line">num2 <span class="comment">// Object &#123; _value: 3, value: Getter &amp; Setter &#125;</span></span><br><span class="line">sum  <span class="comment">// Object &#123; _value: 5, value: Getter &amp; Setter &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>现在，修改其中一个加数的值：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">num1.<span class="property">value</span> = <span class="number">4</span></span><br><span class="line">num1 <span class="comment">// Object &#123; _value: 4, value: Getter &amp; Setter &#125;</span></span><br><span class="line">num2 <span class="comment">// Object &#123; _value: 3, value: Getter &amp; Setter &#125;</span></span><br><span class="line">sum  <span class="comment">// Object &#123; _value: 7, value: Getter &amp; Setter &#125;</span></span><br></pre></td></tr></table></figure>
+
+<p>可以看到，<code>sum</code> 的值已经被重新计算。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>totravel
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://totravel.github.io/2022/01/30/2022-01-30-vuejs-reactivity/" title="Vue 3 响应式原理初探——从零开始实现响应式 API">https://totravel.github.io/2022/01/30/2022-01-30-vuejs-reactivity/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Vue-js/" rel="tag"><i class="fa fa-tag"></i> Vue.js</a>
+              <a href="/tags/Javascript/" rel="tag"><i class="fa fa-tag"></i> Javascript</a>
+              <a href="/tags/Web/" rel="tag"><i class="fa fa-tag"></i> Web</a>
+              <a href="/tags/%E5%93%8D%E5%BA%94%E5%BC%8F/" rel="tag"><i class="fa fa-tag"></i> 响应式</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/01/29/2022-01-30-vuejs-composition-api/" rel="prev" title="Vue 3 组合式 API 快速入门">
+                  <i class="fa fa-chevron-left"></i> Vue 3 组合式 API 快速入门
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/04/05/2022-04-05-from-c-to-cplusplus/" rel="next" title="从 C 语言到 C++">
+                  从 C 语言到 C++ <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">totravel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>

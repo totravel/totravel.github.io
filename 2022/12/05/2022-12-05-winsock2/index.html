@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"totravel.github.io","root":"/","images":"/images","scheme":"Pisces","darkmode":true,"version":"8.13.2","exturl":false,"sidebar":{"position":"right","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":"flat"},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="套接字（Socket）的概念起源于 BSD Unix 操作系统，它表示计算机网络中可以和其他端点进行通信的一个端点。Windows 上的套接字简称 Winsock，它已经发展到第二个版本。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Windows 套接字入门">
+<meta property="og:url" content="https://totravel.github.io/2022/12/05/2022-12-05-winsock2/">
+<meta property="og:site_name" content="旅行 · 之间">
+<meta property="og:description" content="套接字（Socket）的概念起源于 BSD Unix 操作系统，它表示计算机网络中可以和其他端点进行通信的一个端点。Windows 上的套接字简称 Winsock，它已经发展到第二个版本。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-12-05T08:21:59.000Z">
+<meta property="article:modified_time" content="2023-02-22T13:25:38.251Z">
+<meta property="article:author" content="totravel">
+<meta property="article:tag" content="Socket">
+<meta property="article:tag" content="TCP">
+<meta property="article:tag" content="套接字">
+<meta property="article:tag" content="Windows">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://totravel.github.io/2022/12/05/2022-12-05-winsock2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":"","permalink":"https://totravel.github.io/2022/12/05/2022-12-05-winsock2/","path":"2022/12/05/2022-12-05-winsock2/","title":"Windows 套接字入门"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Windows 套接字入门 | 旅行 · 之间</title>
+  
+
+
+
+
+
+
+  <script async defer data-website-id="" src=""></script>
+
+  <script defer data-domain="" src=""></script>
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">旅行 · 之间</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">总是跌跌撞撞，到底是顺其自然还是无头苍蝇？傻傻分不清……</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">47</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">2</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">19</span></a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B"><span class="nav-number">1.</span> <span class="nav-text">快速开始</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">1.1.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-TCP-%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">1.2.</span> <span class="nav-text">实现 TCP 服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%A5%97%E6%8E%A5%E5%AD%97"><span class="nav-number">1.2.1.</span> <span class="nav-text">创建套接字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%91%E5%AE%9A-IP-%E5%9C%B0%E5%9D%80%E5%92%8C%E7%AB%AF%E5%8F%A3%E5%8F%B7"><span class="nav-number">1.2.2.</span> <span class="nav-text">绑定 IP 地址和端口号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A5%E5%8F%97%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.2.3.</span> <span class="nav-text">接受客户端连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%84%E7%90%86%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.2.4.</span> <span class="nav-text">处理客户端连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.5.</span> <span class="nav-text">传输数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%AD%E5%BC%80%E8%BF%9E%E6%8E%A5"><span class="nav-number">1.2.6.</span> <span class="nav-text">断开连接</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E5%A5%97%E6%8E%A5%E5%AD%97"><span class="nav-number">1.2.7.</span> <span class="nav-text">关闭套接字</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-TCP-%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">1.3.</span> <span class="nav-text">实现 TCP 客户端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="nav-number">2.</span> <span class="nav-text">参考文献</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%99%84%E5%BD%95%EF%BC%9A%E5%AE%8C%E6%95%B4%E7%9A%84-TCP-%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%92%8C%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="nav-number">3.</span> <span class="nav-text">附录：完整的 TCP 服务器和客户端</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="totravel"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">totravel</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">47</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/totravel" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;totravel" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:totravel@foxmail.com" title="E-Mail → mailto:totravel@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_nd.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://totravel.github.io/2022/12/05/2022-12-05-winsock2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="totravel">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="旅行 · 之间">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Windows 套接字入门 | 旅行 · 之间">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Windows 套接字入门
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-12-05 16:21:59" itemprop="dateCreated datePublished" datetime="2022-12-05T16:21:59+08:00">2022-12-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-02-22 21:25:38" itemprop="dateModified" datetime="2023-02-22T21:25:38+08:00">2023-02-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BC%96%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">编程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><p>使用 Winsock 的程序必须包含头文件 <code>winsock2.h</code> 并链接到动态库 <code>Ws2_32.dll</code>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;winsock2.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ws2tcpip.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>头文件 <code>ws2tcpip.h</code> 包含一些用于处理 IP 地址的函数，比如 <code>getaddrinfo()</code> 函数。</p>
+<p>用到 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/iphlp/ip-helper-start-page">IP Helper</a> API 的程序还需要头文件 <code>Iphlpapi.h</code>。在包含 <code>Iphlpapi.h</code> 时，要先包含 <code>winsock2.h</code>。</p>
+<p><code>Winsock2.h</code> 已经包含了 <code>windows.h</code>。如果需要先包含 <code>windows.h</code>，则包含 <code>windows.h</code> 前要先定义宏 <code>WIN32_LEAN_AND_MEAN</code>，例如：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> WIN32_LEAN_AND_MEAN</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> WIN32_LEAN_AND_MEAN</span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;winsock2.h&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>在调用任何 Winsock 函数之前，要先调用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsastartup"><code>WSAStartup()</code></a> 函数初始化 Winsock。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">WSADATA wsaData;</span><br><span class="line"><span class="type">int</span> iResult = <span class="built_in">WSAStartup</span>(<span class="built_in">MAKEWORD</span>(<span class="number">2</span>, <span class="number">2</span>), &amp;wsaData);</span><br><span class="line"><span class="keyword">if</span> (iResult != <span class="number">0</span>) &#123;</span><br><span class="line">  std::cerr &lt;&lt; <span class="string">&quot;WSAStartup() failed, error &quot;</span> &lt;&lt; iResult &lt;&lt; std::endl;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;WSAStartup() succeeded\n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/winsock/ns-winsock-wsadata"><code>WSADATA</code></a> 结构用于保存 Winsock 的信息。<code>MAKEWORD(2, 2)</code> 表示需要 Winsock 2.2。</p>
+<p>不需要再使用 Winsock 时，应该调用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsacleanup"><code>WSACleanup()</code></a> 函数释放 Winsock 占用的资源。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">WSACleanup</span>()</span><br></pre></td></tr></table></figure>
+
+<h3 id="实现-TCP-服务器"><a href="#实现-TCP-服务器" class="headerlink" title="实现 TCP 服务器"></a>实现 TCP 服务器</h3><p>套接字用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/ws2def/ns-ws2def-addrinfoa"><code>addrinfo</code></a> 结构描述，它有下列成员：</p>
+<ul>
+<li><code>ai_family</code> 指示 IP 地址的类型，<code>AF_INET</code> 表示 IPv4，<code>AF_INET6</code> 表示 IPv6。</li>
+<li><code>ai_socktype</code> 指示服务的类型，<code>SOCK_STREAM</code> 表示字节流，<code>SOCK_DGRAM</code> 表示数据报。</li>
+<li><code>ai_protocol</code> 指示传输层协议，<code>IPPROTO_TCP</code> 表示 TCP 协议，<code>IPPROTO_UDP</code> 表示 UDP 协议。</li>
+<li><code>ai_flags</code> 指示套接字的其他属性，<code>AI_PASSIVE</code> 表示套接字用于被动接受客户端的连接。</li>
+<li><code>ai_addr</code> 包含 IP 地址和端口号。</li>
+<li><code>ai_addrlen</code> 指示 IP 地址和端口号的长度。</li>
+<li><code>ai_next</code> 指向下一个 <code>addrinfo</code> 结构，用于形成 <code>addrinfo</code> 结构的链表。</li>
+</ul>
+<p><code>ai_addr</code> 和 <code>ai_addrlen</code> 两个字段要借助 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/ws2tcpip/nf-ws2tcpip-getaddrinfo"><code>getaddrinfo()</code></a> 函数设置。<code>getaddrinfo()</code> 函数可以将主机名或字符串表示的 IP 地址转换成 IP 地址，它的原型如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">INT WSAAPI <span class="title">getaddrinfo</span><span class="params">(</span></span></span><br><span class="line"><span class="params"><span class="function">  [in, optional] PCSTR           pNodeName,</span></span></span><br><span class="line"><span class="params"><span class="function">  [in, optional] PCSTR           pServiceName,</span></span></span><br><span class="line"><span class="params"><span class="function">  [in, optional] <span class="type">const</span> ADDRINFOA *pHints,</span></span></span><br><span class="line"><span class="params"><span class="function">  [out]          PADDRINFOA      *ppResult</span></span></span><br><span class="line"><span class="params"><span class="function">)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>pNodeName</code> 主机名或字符串表示的 IP 地址，可以是 <code>NULL</code>，如 <code>&quot;localhost&quot;</code> 或 <code>&quot;127.0.0.1&quot;</code>。</li>
+<li><code>pServiceName</code> 服务名称或字符串表示的端口号，如 <code>&quot;http&quot;</code> 或 <code>&quot;80&quot;</code>。</li>
+<li><code>pHints</code> 描述套接字的 <code>addrinfo</code> 结构。</li>
+<li><code>ppResult</code> 如果 <code>getaddrinfo()</code> 函数调用成功，它将指向一个 <code>addrinfo</code> 结构的链表。</li>
+</ul>
+<p><code>getaddrinfo()</code> 函数会根据 <code>hints</code> 创建一个 <code>addrinfo</code> 结构的链表，其中的每一个 <code>addrinfo</code> 结构的 <code>ai_addrlen</code> 和 <code>ai_addr</code> 两个字段均已设置。链表的内存空间由 <code>getaddrinfo()</code> 函数自动分配。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">addrinfo</span> hints, result = <span class="literal">NULL</span>;</span><br><span class="line"><span class="built_in">ZeroMemory</span>(&amp;hints, <span class="built_in">sizeof</span> (hints));</span><br><span class="line">hints.ai_family   = AF_INET;</span><br><span class="line">hints.ai_socktype = SOCK_STREAM;</span><br><span class="line">hints.ai_protocol = IPPROTO_TCP;</span><br><span class="line">hints.ai_flags    = AI_PASSIVE;</span><br><span class="line"></span><br><span class="line">iResult = iResult = <span class="built_in">getaddrinfo</span>(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="string">&quot;80&quot;</span>, &amp;hints, &amp;result);</span><br><span class="line"><span class="keyword">if</span> (iResult != <span class="number">0</span>) &#123;</span><br><span class="line">  std::cerr &lt;&lt; <span class="string">&quot;getaddrinfo() failed, error &quot;</span> &lt;&lt; iResult &lt;&lt; std::endl;</span><br><span class="line">  <span class="built_in">WSACleanup</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;getaddrinfo() succeeded\n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>当 <code>pNodeName</code> 是 <code>NULL</code> 并且 <code>ppResult</code> 包含 <code>AI_PASSIVE</code> 标志时，<code>getaddrinfo()</code> 会把 <code>ai_addr</code> 设置为 <code>INADDR_ANY</code> 或 <code>IN6ADDR_ANY_INIT</code>，前者是全 0 的 IPv4 地址，后者是全 0 的 IPv6 地址。</p>
+<h4 id="创建套接字"><a href="#创建套接字" class="headerlink" title="创建套接字"></a>创建套接字</h4><p>使用 <code>addrinfo</code> 结构的 <code>ai_family</code>、<code>ai_socktype</code> 和 <code>ai_protocol</code> 三个成员作为参数调用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-socket"><code>socket()</code></a> 函数即可创建一个套接字。套接字的唯一标识是它的描述符（Descriptor）。<code>socket()</code> 函数在套接字创建成功时返回一个套接字的描述符，在发生错误时返回非法的套接字描述符 <code>INVALID_SOCKET</code>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SOCKET ListenSocket = <span class="built_in">socket</span>(result-&gt;ai_family, result-&gt;ai_socktype, result-&gt;ai_protocol);</span><br><span class="line"><span class="keyword">if</span> (ListenSocket == INVALID_SOCKET) &#123;</span><br><span class="line">  std::cerr &lt;&lt; <span class="string">&quot;socket() failed, error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">  <span class="built_in">freeaddrinfo</span>(result);</span><br><span class="line">  <span class="built_in">WSACleanup</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;socket() succeeded\n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>当 Winsock 函数发生错误时，可以调用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-wsagetlasterror"><code>WSAGetLastError()</code></a> 函数获取 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/winsock/windows-sockets-error-codes-2">错误代号</a>。</p>
+<h4 id="绑定-IP-地址和端口号"><a href="#绑定-IP-地址和端口号" class="headerlink" title="绑定 IP 地址和端口号"></a>绑定 IP 地址和端口号</h4><p>使用新建的套接字的描述符以及 <code>addrinfo</code> 结构的 <code>ai_addr</code> 和 <code>ai_addrlen</code> 两个成员作为参数调用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/desktop/api/winsock/nf-winsock-bind"><code>bind()</code></a> 函数即可将套接字与本机的 IP 地址和端口号绑定。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">iResult = <span class="built_in">bind</span>(ListenSocket, result-&gt;ai_addr, (<span class="type">int</span>)result-&gt;ai_addrlen);</span><br><span class="line"><span class="keyword">if</span> (iResult == SOCKET_ERROR) &#123;</span><br><span class="line">  std::cerr &lt;&lt; <span class="string">&quot;bind() failed, error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">  <span class="built_in">freeaddrinfo</span>(result);</span><br><span class="line">  <span class="built_in">closesocket</span>(ListenSocket);</span><br><span class="line">  <span class="built_in">WSACleanup</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">freeaddrinfo</span>(result);</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;bind() succeeded\n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>将套接字与地址绑定之后，就可以用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/desktop/api/Ws2tcpip/nf-ws2tcpip-freeaddrinfo"><code>freeaddrinfo()</code></a> 函数释放 <code>getaddrinfo()</code> 函数为 <code>addrinfo</code> 链表分配的内存空间了。</p>
+<h4 id="接受客户端连接"><a href="#接受客户端连接" class="headerlink" title="接受客户端连接"></a>接受客户端连接</h4><p>将套接字与 IP 地址和端口号绑定后，调用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/desktop/api/Winsock2/nf-winsock2-listen"><code>listen()</code></a> 函数即可开始接受客户端建立连接的请求。与客户端建立连接时，服务器需要创建新的套接字。每建立一个新的连接，服务器就需要创建一个新的套接字。随着连接的不断建立，新的套接字将形成一个队列。第二个参数 <code>backlog</code> 用于限制队列的长度，宏 <code>SOMAXCONN</code> 的值是系统所能承受的最大长度。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">iResult = <span class="built_in">listen</span>(ListenSocket, SOMAXCONN);</span><br><span class="line"><span class="keyword">if</span> (iResult == SOCKET_ERROR) &#123;</span><br><span class="line">  std::cerr &lt;&lt; <span class="string">&quot;listen() failed, error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">  <span class="built_in">closesocket</span>(ListenSocket);</span><br><span class="line">  <span class="built_in">WSACleanup</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;listen() succeeded\n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>调用 <code>listen()</code> 函数之后，服务器就已经侦听在指定端口，可以和客户端完成 TCP 协议的三次握手。</p>
+<h4 id="处理客户端连接"><a href="#处理客户端连接" class="headerlink" title="处理客户端连接"></a>处理客户端连接</h4><p>用于获取队列中的套接字的函数是 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/desktop/api/Winsock2/nf-winsock2-accept"><code>accept()</code></a>，它返回套接字的描述符。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SOCKET ClientSocket = <span class="built_in">accept</span>(ListenSocket, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line"><span class="keyword">if</span> (ClientSocket == INVALID_SOCKET) &#123;</span><br><span class="line">  std::cerr &lt;&lt; <span class="string">&quot;accept() failed, error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">  <span class="built_in">closesocket</span>(ListenSocket);</span><br><span class="line">  <span class="built_in">WSACleanup</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;accept() succeeded\n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>服务器通常都需要同时处理多个客户端连接。有多种办法可以让服务器具备同时处理多个连接的能力。最简单的办法是，由主线程循环调用 <code>accept()</code> 函数获取队列中的套接字，再将套接字交给其他线程处理。此外，还可以借助 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/desktop/api/Winsock2/nf-winsock2-select">select()</a> 或 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-wsapoll">WSAPoll()</a> 函数。</p>
+<h4 id="传输数据"><a href="#传输数据" class="headerlink" title="传输数据"></a>传输数据</h4><p>从接收缓存读数据可以用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-recv"><code>recv()</code></a> 函数；向发送缓存写数据可以用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/desktop/api/Winsock2/nf-winsock2-send"><code>sent()</code></a> 函数。它们接受相同的参数：第一个参数指示一个套接字；第二个参数指示一段内存空间；第三个参数指示上述内存空间的大小；第四个参数会影响它们的行为。它们的返回值有相同的含义：如果读写成功，返回实际读写的字节数；如果对端发送了 <code>FIN</code> 报文段，返回 <code>0</code>；如果读写失败，返回 <code>SOCKET_ERROR</code>。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">char</span> recvbuf[<span class="number">1024</span>];</span><br><span class="line">iResult = <span class="built_in">recv</span>(ClientSocket, recvbuf, <span class="built_in">sizeof</span>(recvbuf), <span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (iResult &gt; <span class="number">0</span>) &#123;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;recv() succeeded, &quot;</span> &lt;&lt; iResult &lt;&lt; <span class="string">&quot; bytes received\n&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (iResult == <span class="number">0</span>) &#123;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;recv() succeeded, connection closed\n&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  std::cerr &lt;&lt; <span class="string">&quot;recv() failed, error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">char</span> sendbuf[] = <span class="string">&quot;hello, world!&quot;</span>;</span><br><span class="line">iResult = <span class="built_in">send</span>(ClientSocket, sendbuf, <span class="built_in">strlen</span>(sendbuf), <span class="number">0</span>);</span><br><span class="line"><span class="keyword">if</span> (iResult &gt; <span class="number">0</span>) &#123;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;send() succeeded, &quot;</span> &lt;&lt; iResult &lt;&lt; <span class="string">&quot; bytes sent\n&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (iResult == <span class="number">0</span>) &#123;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;send() succeeded, connection closed\n&quot;</span>;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">  std::cerr &lt;&lt; <span class="string">&quot;send() failed, error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>recv()</code> 函数不一定立即返回：若接收缓存有数据，则立即返回读取的字节数；否则，对于阻塞的套接字，<code>recv()</code> 函数将阻塞直到收到数据或对端发送了 <code>FIN</code> 报文段；对于非阻塞的套接字，<code>recv()</code> 函数将立即返回 <code>SOCKET_ERROR</code> 并产生代号为 <code>WSAEWOULDBLOCK</code> 的错误。</p>
+<p><code>send()</code> 函数总是立即返回。注意，写缓存成功不等于发送成功。</p>
+<p>在收到对端发送的 <code>RST</code> 报文段后读写缓存会导致代号为 <code>WSAECONNRESET</code> 的错误，错误消息是 <code>Connection reset by peer</code>。</p>
+<h4 id="断开连接"><a href="#断开连接" class="headerlink" title="断开连接"></a>断开连接</h4><p>有两种断开连接的方式：</p>
+<ul>
+<li>Graceful disconnect，正常断开，将发送 <code>FIN</code> 报文段。</li>
+<li>Abortive disconnect，粗暴断开，将发送 <code>RST</code> 报文段。</li>
+</ul>
+<p>如果发送缓存中还有数据，正常断开的情况下，这些数据会被发送，而粗暴断开的情况下，这些数据会被丢弃。正常断开连接的方式是使用 <code>shutdown()</code> 函数：</p>
+<p>不需要再向对端发送数据时，用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-shutdown"><code>shutdown()</code></a> 函数关闭数据的发送方向。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">shutdown</span>(ClientSocket, SD_SEND)</span><br></pre></td></tr></table></figure>
+
+<p>关闭发送方向后就不能再调用 <code>sent()</code> 函数写发送缓存，否则就会导致代号为 <code>WSAESHUTDOWN</code> 的错误。关闭发送方向时，本端会发送 <code>FIN</code> 报文段，使连接进入半关闭状态，即 <code>FIN_WAIT1</code> 状态。若关闭发送方向时发送缓存中还有数据，则 <code>FIN</code> 报文段会在所有数据发送完后再发送。</p>
+<p>不希望再收到对端的数据时，用 <code>shutdown()</code> 函数关闭数据的接收方向。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">shutdown</span>(ClientSocket, SD_RECEIVE)</span><br></pre></td></tr></table></figure>
+
+<p>关闭接收方向后就不能再调用 <code>recv()</code> 函数读接收缓存，否则就会导致代号为 <code>WSAESHUTDOWN</code> 的错误。如果接收缓存还有数据未读取就关闭接收方向，或者关闭接收方向后又收到对端的数据，本端就会发送 <code>RST</code> 报文段。</p>
+<h4 id="关闭套接字"><a href="#关闭套接字" class="headerlink" title="关闭套接字"></a>关闭套接字</h4><p>不再使用的套接字要用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-closesocket"><code>closesocket()</code></a> 函数关闭，以释放套接字占用的资源：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">closesocket</span>(ClientSocket);</span><br></pre></td></tr></table></figure>
+
+<p>若调用 <code>closesocket()</code> 函数时连接还未断开，则 <code>closesocket()</code> 函数会尝试断开连接。<code>closesocket()</code> 函数断开连接的方式由 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/winsock/ns-winsock-linger"><code>linger</code></a> 结构决定：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="title class_">linger</span> &#123;</span><br><span class="line">  u_short l_onoff;</span><br><span class="line">  u_short l_linger;</span><br><span class="line">&#125; LINGER, *PLINGER, *LPLINGER;</span><br></pre></td></tr></table></figure>
+
+<p><code>l_onoff</code> 指示 <code>closesocket()</code> 函数在断开连接并关闭套接字之前是否需要先等待一段时间，默认值 <code>0</code> 表示不等待，非 <code>0</code> 值表示需要等待，等待时长由 <code>l_linger</code> 指示，单位秒。具体行为如下：</p>
+<ul>
+<li>当 <code>l_onoff</code> 为 <code>0</code> 时，<code>l_linger</code> 被忽略，<code>closesocket()</code> 函数总是立即返回 <code>0</code>。若接收缓存还有数据，则连接会粗暴断开；否则，若发送缓存还有数据，则连接会在所有数据发送完后正常断开。</li>
+<li>当 <code>l_onoff</code> 不为 <code>0</code> 且 <code>l_linger</code> 为 <code>0</code> 时，<code>closesocket()</code> 函数总是立即返回 <code>0</code>。连接总是立即粗暴断开，无论接收缓存和发送缓存是否为空。</li>
+<li>当 <code>l_onoff</code> 不为 <code>0</code> 且 <code>l_linger</code> 也不为 <code>0</code> 时：<ul>
+<li>对于阻塞的套接字：若接收缓存还有数据，则连接会粗暴断开；否则，若发送缓存中的数据能够在超时之前发送完，则连接会正常断开；否则，连接会粗暴断开。无论连接以哪种方式断开，<code>closesocket()</code> 函数总是阻塞直到连接断开并返回 <code>0</code>。</li>
+<li>对于非阻塞的套接字：若接收缓存还有数据，则连接会粗暴断开；否则，若发送缓存为空，则连接正常断开；否则，连接状态保持不变。无论连接是否断开，<code>closesocket()</code> 函数总是立即返回。若连接断开，则 <code>closesocket()</code> 函数返回 <code>0</code>；否则，<code>closesocket()</code> 函数返回 <code>SOCKET_ERROR</code> 并产生代号为 <code>WSAEWOULDBLOCK</code> 的错误。</li>
+</ul>
+</li>
+</ul>
+<p><code>linger</code> 结构可以用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/winsock/nf-winsock-setsockopt"><code>setsockopt()</code></a> 函数设置：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">LINGER linger;</span><br><span class="line">linger.l_onoff = <span class="number">1</span>;</span><br><span class="line">linger.l_linger = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">setsockopt</span>(ClientSocket, SOL_SOCKET, SO_LINGER, (<span class="type">const</span> <span class="type">char</span>*)&amp;linger, <span class="built_in">sizeof</span>(linger));</span><br></pre></td></tr></table></figure>
+
+<p>套接字默认是阻塞的。可以用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-ioctlsocket">ioctlsocket()</a> 函数把套接字设置为非阻塞的：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">u_long ulMode = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">ioctlsocket</span>(ClientSocket, FIONBIO, &amp;ulMode);</span><br></pre></td></tr></table></figure>
+
+<h3 id="实现-TCP-客户端"><a href="#实现-TCP-客户端" class="headerlink" title="实现 TCP 客户端"></a>实现 TCP 客户端</h3><p>客户端在用 <code>socket()</code> 函数创建套接字后，就可以用 <a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/api/winsock2/nf-winsock2-connect"><code>connect()</code></a> 函数和服务器建立连接了。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">iResult = <span class="built_in">connect</span>(ConnectSocket, result-&gt;ai_addr, (<span class="type">int</span>)result-&gt;ai_addrlen);</span><br><span class="line"><span class="keyword">if</span> (iResult == SOCKET_ERROR) &#123;</span><br><span class="line">  std::cerr &lt;&lt; <span class="string">&quot;connect() failed with error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">  <span class="built_in">closesocket</span>(ConnectSocket);</span><br><span class="line">  <span class="built_in">freeaddrinfo</span>(result);</span><br><span class="line">  <span class="built_in">WSACleanup</span>();</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">freeaddrinfo</span>(result);</span><br><span class="line">std::cout &lt;&lt; <span class="string">&quot;connect() succeeded\n&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/winsock/getting-started-with-winsock">Getting Started with Winsock</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/winsock/graceful-shutdown-linger-options-and-socket-closure-2">Graceful Shutdown, Linger Options, and Socket Closure</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/winsock/winsock-socket-state-notifications">Winsock socket state notifications</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/fileio/i-o-completion-ports">I&#x2F;O Completion Ports</a></li>
+<li><a target="_blank" rel="noopener" href="https://learn.microsoft.com/en-us/windows/win32/winsock/windows-sockets-error-codes-2">Windows Sockets Error Codes</a></li>
+</ul>
+<h2 id="附录：完整的-TCP-服务器和客户端"><a href="#附录：完整的-TCP-服务器和客户端" class="headerlink" title="附录：完整的 TCP 服务器和客户端"></a>附录：完整的 TCP 服务器和客户端</h2><p>客户端和服务器建立连接后：</p>
+<ul>
+<li>客户端首先向服务器发送一些数据，接着关闭发送方向，然后从服务器接收数据，最后关闭接收方向并关闭套接字。</li>
+<li>服务器首先从客户端接收数据，接着关闭接收方向，然后向客户端发送一些数据，最后关闭发送方向并关闭套接字。</li>
+</ul>
+<p><em>server.cpp</em></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;winsock2.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ws2tcpip.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> <span class="type">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// Initialize Winsock</span></span><br><span class="line">  WSADATA wsaData;</span><br><span class="line">  <span class="type">int</span> iResult = <span class="built_in">WSAStartup</span>(<span class="built_in">MAKEWORD</span>(<span class="number">2</span>, <span class="number">2</span>), &amp;wsaData);</span><br><span class="line">  <span class="keyword">if</span> (iResult != <span class="number">0</span>) &#123;</span><br><span class="line">    std::cerr &lt;&lt; <span class="string">&quot;WSAStartup() failed, error &quot;</span> &lt;&lt; iResult &lt;&lt; std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;WSAStartup() succeeded\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">addrinfo</span> hints, *result = <span class="literal">NULL</span>;</span><br><span class="line">  <span class="built_in">ZeroMemory</span>(&amp;hints, <span class="built_in">sizeof</span>(hints));</span><br><span class="line">  hints.ai_family   = AF_INET;</span><br><span class="line">  hints.ai_socktype = SOCK_STREAM;</span><br><span class="line">  hints.ai_protocol = IPPROTO_TCP;</span><br><span class="line">  hints.ai_flags    = AI_PASSIVE;</span><br><span class="line"></span><br><span class="line">  iResult = <span class="built_in">getaddrinfo</span>(<span class="string">&quot;localhost&quot;</span>, <span class="string">&quot;23&quot;</span>, &amp;hints, &amp;result);</span><br><span class="line">  <span class="keyword">if</span> (iResult != <span class="number">0</span>) &#123;</span><br><span class="line">    std::cerr &lt;&lt; <span class="string">&quot;getaddrinfo() failed, error &quot;</span> &lt;&lt; iResult &lt;&lt; std::endl;</span><br><span class="line">    <span class="built_in">WSACleanup</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;getaddrinfo() succeeded\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Creating a Socket</span></span><br><span class="line">  SOCKET ListenSocket = <span class="built_in">socket</span>(result-&gt;ai_family, result-&gt;ai_socktype, result-&gt;ai_protocol);</span><br><span class="line">  <span class="keyword">if</span> (ListenSocket == INVALID_SOCKET) &#123;</span><br><span class="line">    std::cerr &lt;&lt; <span class="string">&quot;socket() failed, error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">    <span class="built_in">freeaddrinfo</span>(result);</span><br><span class="line">    <span class="built_in">WSACleanup</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;socket() succeeded\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Binding a Socket</span></span><br><span class="line">  iResult = <span class="built_in">bind</span>(ListenSocket, result-&gt;ai_addr, (<span class="type">int</span>)result-&gt;ai_addrlen);</span><br><span class="line">  <span class="keyword">if</span> (iResult == SOCKET_ERROR) &#123;</span><br><span class="line">    std::cerr &lt;&lt; <span class="string">&quot;bind() failed, error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">    <span class="built_in">closesocket</span>(ListenSocket);</span><br><span class="line">    <span class="built_in">freeaddrinfo</span>(result);</span><br><span class="line">    <span class="built_in">WSACleanup</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">freeaddrinfo</span>(result);</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;bind() succeeded\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Listening on a Socket</span></span><br><span class="line">  iResult = <span class="built_in">listen</span>(ListenSocket, SOMAXCONN);</span><br><span class="line">  <span class="keyword">if</span> (iResult == SOCKET_ERROR) &#123;</span><br><span class="line">    std::cerr &lt;&lt; <span class="string">&quot;listen() failed, error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">    <span class="built_in">closesocket</span>(ListenSocket);</span><br><span class="line">    <span class="built_in">WSACleanup</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;listen() succeeded\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Accepting a connection</span></span><br><span class="line">  SOCKET ClientSocket = <span class="built_in">accept</span>(ListenSocket, <span class="literal">NULL</span>, <span class="literal">NULL</span>);</span><br><span class="line">  <span class="keyword">if</span> (ClientSocket == INVALID_SOCKET) &#123;</span><br><span class="line">    std::cerr &lt;&lt; <span class="string">&quot;accept() failed, error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">    <span class="built_in">closesocket</span>(ListenSocket);</span><br><span class="line">    <span class="built_in">WSACleanup</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;accept() succeeded\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Receiving and Sending Data</span></span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="type">char</span> recvbuf[<span class="number">1024</span>];</span><br><span class="line">    iResult = <span class="built_in">recv</span>(ClientSocket, recvbuf, <span class="built_in">sizeof</span>(recvbuf), <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (iResult &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      std::cout &lt;&lt; <span class="string">&quot;recv() succeeded, &quot;</span> &lt;&lt; iResult &lt;&lt; <span class="string">&quot; bytes received\n&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (iResult == <span class="number">0</span>) &#123;</span><br><span class="line">      std::cout &lt;&lt; <span class="string">&quot;recv() succeeded, connection closed\n&quot;</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      std::cerr &lt;&lt; <span class="string">&quot;recv() failed, error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">shutdown</span>(ClientSocket, SD_RECEIVE);</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> sendbuf[] = <span class="string">&quot;server hello&quot;</span>;</span><br><span class="line">    iResult = <span class="built_in">send</span>(ClientSocket, sendbuf, <span class="built_in">strlen</span>(sendbuf), <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (iResult &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      std::cout &lt;&lt; <span class="string">&quot;send() succeeded, &quot;</span> &lt;&lt; iResult &lt;&lt; <span class="string">&quot; bytes sent\n&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (iResult == <span class="number">0</span>) &#123;</span><br><span class="line">      std::cout &lt;&lt; <span class="string">&quot;send() succeeded, connection closed\n&quot;</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      std::cerr &lt;&lt; <span class="string">&quot;send() failed, error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">shutdown</span>(ClientSocket, SD_SEND);</span><br><span class="line">  &#125; <span class="keyword">while</span> (<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="built_in">closesocket</span>(ClientSocket);</span><br><span class="line">  <span class="built_in">closesocket</span>(ListenSocket);</span><br><span class="line">  <span class="built_in">WSACleanup</span>();</span><br><span class="line">  <span class="keyword">return</span> iResult;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><em>client.cpp</em></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;winsock2.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;ws2tcpip.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">(<span class="type">int</span> argc, <span class="type">char</span> <span class="type">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// Initialize Winsock</span></span><br><span class="line">  WSADATA wsaData;</span><br><span class="line">  <span class="type">int</span> iResult = <span class="built_in">WSAStartup</span>(<span class="built_in">MAKEWORD</span>(<span class="number">2</span>, <span class="number">2</span>), &amp;wsaData);</span><br><span class="line">  <span class="keyword">if</span> (iResult != <span class="number">0</span>) &#123;</span><br><span class="line">    std::cerr &lt;&lt; <span class="string">&quot;WSAStartup() failed with error &quot;</span> &lt;&lt; iResult &lt;&lt; std::endl;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;WSAStartup() succeeded\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">struct</span> <span class="title class_">addrinfo</span> hints, *result = <span class="literal">NULL</span>;</span><br><span class="line">  <span class="built_in">ZeroMemory</span>(&amp;hints, <span class="built_in">sizeof</span>(hints));</span><br><span class="line">  hints.ai_family   = AF_INET;</span><br><span class="line">  hints.ai_socktype = SOCK_STREAM;</span><br><span class="line">  hints.ai_protocol = IPPROTO_TCP;</span><br><span class="line"></span><br><span class="line">  iResult = <span class="built_in">getaddrinfo</span>(<span class="string">&quot;localhost&quot;</span>, <span class="string">&quot;23&quot;</span>, &amp;hints, &amp;result);</span><br><span class="line">  <span class="keyword">if</span> (iResult != <span class="number">0</span>) &#123;</span><br><span class="line">    std::cerr &lt;&lt; <span class="string">&quot;getaddrinfo() failed with error &quot;</span> &lt;&lt; iResult &lt;&lt; std::endl;</span><br><span class="line">    <span class="built_in">WSACleanup</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;getaddrinfo() succeeded\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Creating a Socket</span></span><br><span class="line">  SOCKET ConnectSocket = <span class="built_in">socket</span>(result-&gt;ai_family, result-&gt;ai_socktype, result-&gt;ai_protocol);</span><br><span class="line">  <span class="keyword">if</span> (ConnectSocket == INVALID_SOCKET) &#123;</span><br><span class="line">    std::cerr &lt;&lt; <span class="string">&quot;socket() failed with error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">    <span class="built_in">freeaddrinfo</span>(result);</span><br><span class="line">    <span class="built_in">WSACleanup</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;socket() succeeded\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Connecting to a Socket</span></span><br><span class="line">  iResult = <span class="built_in">connect</span>(ConnectSocket, result-&gt;ai_addr, (<span class="type">int</span>)result-&gt;ai_addrlen);</span><br><span class="line">  <span class="keyword">if</span> (iResult == SOCKET_ERROR) &#123;</span><br><span class="line">    std::cerr &lt;&lt; <span class="string">&quot;connect() failed with error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">    <span class="built_in">closesocket</span>(ConnectSocket);</span><br><span class="line">    <span class="built_in">freeaddrinfo</span>(result);</span><br><span class="line">    <span class="built_in">WSACleanup</span>();</span><br><span class="line">    <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">freeaddrinfo</span>(result);</span><br><span class="line">  std::cout &lt;&lt; <span class="string">&quot;connect() succeeded\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="comment">// Sending and Receiving Data</span></span><br><span class="line">  <span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="type">char</span> sendbuf[] = <span class="string">&quot;client hello&quot;</span>;</span><br><span class="line">    iResult = <span class="built_in">send</span>(ConnectSocket, sendbuf, <span class="built_in">strlen</span>(sendbuf), <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (iResult &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      std::cout &lt;&lt; <span class="string">&quot;send() succeeded, &quot;</span> &lt;&lt; iResult &lt;&lt; <span class="string">&quot; bytes sent\n&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (iResult == <span class="number">0</span>) &#123;</span><br><span class="line">      std::cout &lt;&lt; <span class="string">&quot;send() succeeded, connection closed\n&quot;</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      std::cerr &lt;&lt; <span class="string">&quot;send() failed with error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">shutdown</span>(ConnectSocket, SD_SEND);</span><br><span class="line"></span><br><span class="line">    <span class="type">char</span> recvbuf[<span class="number">1024</span>];</span><br><span class="line">    iResult = <span class="built_in">recv</span>(ConnectSocket, recvbuf, <span class="built_in">sizeof</span>(recvbuf), <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (iResult &gt; <span class="number">0</span>) &#123;</span><br><span class="line">      std::cout &lt;&lt; <span class="string">&quot;recv() succeeded, &quot;</span> &lt;&lt; iResult &lt;&lt; <span class="string">&quot; bytes received\n&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (iResult == <span class="number">0</span>) &#123;</span><br><span class="line">      std::cout &lt;&lt; <span class="string">&quot;recv() succeeded, connection closed\n&quot;</span>;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      std::cerr &lt;&lt; <span class="string">&quot;recv() failed with error &quot;</span> &lt;&lt; <span class="built_in">WSAGetLastError</span>() &lt;&lt; std::endl;</span><br><span class="line">      <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">shutdown</span>(ConnectSocket, SD_RECEIVE);</span><br><span class="line">  &#125; <span class="keyword">while</span> (<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="built_in">closesocket</span>(ConnectSocket);</span><br><span class="line">  <span class="built_in">WSACleanup</span>();</span><br><span class="line">  <span class="keyword">return</span> iResult;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>totravel
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://totravel.github.io/2022/12/05/2022-12-05-winsock2/" title="Windows 套接字入门">https://totravel.github.io/2022/12/05/2022-12-05-winsock2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-ND</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Socket/" rel="tag"><i class="fa fa-tag"></i> Socket</a>
+              <a href="/tags/TCP/" rel="tag"><i class="fa fa-tag"></i> TCP</a>
+              <a href="/tags/%E5%A5%97%E6%8E%A5%E5%AD%97/" rel="tag"><i class="fa fa-tag"></i> 套接字</a>
+              <a href="/tags/Windows/" rel="tag"><i class="fa fa-tag"></i> Windows</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/04/2022-11-04-bat-tutorial/" rel="prev" title="一天学会 Windows 批处理">
+                  <i class="fa fa-chevron-left"></i> 一天学会 Windows 批处理
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">totravel</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/pisces/" rel="noopener" target="_blank">NexT.Pisces</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script size="300" alpha="0.6" zIndex="-1" src="https://cdnjs.cloudflare.com/ajax/libs/ribbon.js/1.0.2/ribbon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/next-theme-pjax/0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lozad.js/1.16.0/lozad.min.js" integrity="sha256-mOFREFhqmHeQbXpK2lp4nA3qooVgACfh88fpJftLBbc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pangu/4.0.7/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/next-boot.js"></script><script src="/js/pjax.js"></script>
+
+  
+
+
+  <script src="/js/third-party/fancybox.js"></script>
+
+
+  
+
+
+
+
+
+</body>
+</html>
